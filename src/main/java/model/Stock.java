@@ -17,7 +17,11 @@ public class Stock {
 		}
 	}
 
+<<<<<<< HEAD
 	public Tile draw() { return stock.pop(); }
+=======
+	public void pop() { stock.pop(); }
+>>>>>>> 905caf2... Created Stock model
 	public void shuffle() { Collections.shuffle(stock); }
 	public List<Tile> getStock() { return Collections.unmodifiableList(stock); }
 }
