@@ -23,12 +23,12 @@ public class StockTest {
         stock = new Stock();
     }
 
-	@Test
-	public void testStockCreation() {
-		assertThat(stock.getStock(), hasSize(104));
-	}
+    @Test
+    public void testStockCreation() {
+        assertThat(stock.getStock(), hasSize(104));
+    }
 
-	@Test
+    @Test
     public void testStockShuffle() {
         List<Tile> unshuffledTiles = new ArrayList<>(stock.getStock());
         // Check that unshuffled cards is the same as the base deck
@@ -40,15 +40,15 @@ public class StockTest {
 
     @Test 
     public void testStockDraw() {
-    	Tile tile = stock.draw();
-    	assertThat(stock.getStock(), hasSize(103));
-    	assertThat(stock.getStock(), not(hasItem(tile)));
+        Tile tile = stock.draw();
+        assertThat(stock.getStock(), hasSize(103));
+        assertThat(stock.getStock(), not(hasItem(tile)));
     }
 
     @Test
     public void testStockDoubleDraw() {
-    	Tile tile1 = stock.draw();
-    	Tile tile2 = stock.draw();
-    	assertThat(tile1, is(not(tile2)));
+        Tile tile1 = stock.draw();
+        Tile tile2 = stock.draw();
+        assertThat(tile1, is(not(tile2)));
     }
 }
