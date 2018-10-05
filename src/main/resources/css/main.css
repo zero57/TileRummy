@@ -1,0 +1,17 @@
+* {
+    -fx-bg-color: #1e88e5;
+    -fx-bg-dark-color: #005cb2;
+    -fx-alt-color: #6ab7ff;
+}
+
+#hboxMenuBar .jfx-button {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-bg-color;
+    -fx-text-fill: white;
+}
+
+#btnDrawTile {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-bg-color;
+    -fx-text-fill: white;
+}
