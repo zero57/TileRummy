@@ -1,7 +1,7 @@
 package model;
 
 public class Tile {
-	public enum Colours{ RED, BLUE, GREEN, ORANGE; }
+	public enum Colours {RED, BLUE, GREEN, ORANGE}
 
 	private final int rank;
 	private final Colours colour;
@@ -12,5 +12,9 @@ public class Tile {
 	}
 
 	public int getRank() { return rank; }
+
 	public Colours getColour() { return colour; }
+
+	@Override
+	public String toString() { return getRank() + " " + getColour().name(); }
 }
