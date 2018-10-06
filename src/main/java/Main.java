@@ -23,8 +23,6 @@ public class Main extends Application {
 		Scene scene = new Scene(decorator, width, height);
 		stage.setTitle("Tile Rummy");
 		stage.setScene(scene);
-		stage.setMinWidth(width);
-		stage.setMinHeight(height);
 		stage.show();
 		logger.info("Stage shown");
 	}
