@@ -17,8 +17,8 @@ public class Stock {
 		}
 	}
 
-
 	public Tile draw() { return stock.pop(); }
 	public void shuffle() { Collections.shuffle(stock); }
 	public List<Tile> getStock() { return Collections.unmodifiableList(stock); }
+	public int getSize() { return stock.size(); }
 }

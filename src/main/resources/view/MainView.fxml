@@ -9,11 +9,12 @@
     <HBox fx:id="hboxMenuBar" maxHeight="-Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS">
         <JFXButton fx:id="btnEndTurn" maxWidth="Infinity" text="End Turn" HBox.hgrow="ALWAYS"/>
     </HBox>
-    <BorderPane fx:id="bpPlayScreen" prefHeight="480.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+    <BorderPane fx:id="bpPlayScreen" VBox.vgrow="ALWAYS">
         <center>
-            <HBox fx:id="hboxCenter" maxHeight="Infinity" maxWidth="Infinity"
+            <HBox fx:id="hboxCenter" maxHeight="Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS"
                   BorderPane.alignment="CENTER">
-                <JFXButton fx:id="btnDrawTile" maxHeight="Infinity" minWidth="-Infinity"
+                <JFXButton fx:id="btnDrawTile" maxHeight="Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS"
+                           VBox.vgrow="ALWAYS"
                            text="Draw&#10;Tile" textAlignment="CENTER"/>
             </HBox>
         </center>

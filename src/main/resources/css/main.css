@@ -2,6 +2,10 @@
     -fx-bg-color: #1e88e5;
     -fx-bg-dark-color: #005cb2;
     -fx-alt-color: #6ab7ff;
+    -fx-red-color: #ef5350;
+    -fx-blue-color: #42A5F5;
+    -fx-green-color: #66BB6A;
+    -fx-orange-color: #FF7043;
 }
 
 #hboxMenuBar .jfx-button {
@@ -14,4 +18,34 @@
     -jfx-button-type: RAISED;
     -fx-background-color: -fx-bg-color;
     -fx-text-fill: white;
+}
+
+.redTile {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-red-color;
+    -fx-text-fill: white;
+}
+
+.blueTile {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-blue-color;
+    -fx-text-fill: white;
+}
+
+.greenTile {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-green-color;
+    -fx-text-fill: white;
+}
+
+.orangeTile {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-orange-color;
+    -fx-text-fill: white;
+}
+
+.playerHand {
+    -fx-background-color: #6ab7ff;
+    -fx-text-fill: white;
+    -fx-padding: 4 4 4 4;
 }

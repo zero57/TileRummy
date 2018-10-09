@@ -3,11 +3,12 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import model.Game;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,35 +34,54 @@ public class MainController {
 	@FXML
 	private JFXButton btnDrawTile;
 
+	private Game game;
+
+	public MainController() {
+		game = new Game();
+	}
+
 	@FXML
 	public void initialize() {
 		logger.info("Initializing Main view");
-		Parent tableView = null;
-		FlowPane player1HandView = null;
-		FlowPane player2HandView = null;
-		FlowPane player3HandView = null;
-		FlowPane player4HandView = null;
+
+		Parent tableView;
+		VBox player1HandView;
+		VBox player2HandView;
+		VBox player3HandView;
+		VBox player4HandView;
+
+		FXMLLoader loader;
 
 		try {
 			tableView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/TableView.fxml")));
-			player1HandView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/HandView.fxml")));
-			player2HandView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/HandView.fxml")));
-			player3HandView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/HandView.fxml")));
-			player4HandView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/HandView.fxml")));
+
+			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+			loader.setControllerFactory(c -> new HandController(game, 1));
+			player1HandView = loader.load();
+
+			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+			loader.setControllerFactory(c -> new HandController(game, 2));
+			player2HandView = loader.load();
+
+			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+			loader.setControllerFactory(c -> new HandController(game, 3));
+			player3HandView = loader.load();
+
+			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+			loader.setControllerFactory(c -> new HandController(game, 4));
+			player4HandView = loader.load();
 		} catch (IOException e) {
 			logger.error("Failed to load fxml files", e);
+			return;
 		}
 
-		player1HandView.setPrefHeight(48);
-		player3HandView.setPrefHeight(48);
-		player2HandView.setPrefWidth(48);
-		player4HandView.setPrefWidth(48);
-		player2HandView.setOrientation(Orientation.VERTICAL);
-		player4HandView.setOrientation(Orientation.VERTICAL);
 		bpPlayScreen.setBottom(player1HandView);
 		bpPlayScreen.setLeft(player2HandView);
 		bpPlayScreen.setTop(player3HandView);
 		bpPlayScreen.setRight(player4HandView);
 		hboxCenter.getChildren().add(0, tableView);
+		HBox.setHgrow(tableView, Priority.ALWAYS);
+
+		game.dealInitialTiles();
 	}
 }
