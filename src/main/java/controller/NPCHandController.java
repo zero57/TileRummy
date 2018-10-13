@@ -14,8 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 
-public class HandController {
-	private static final Logger logger = LogManager.getLogger(HandController.class.getName());
+public class NPCHandController {
+	private static final Logger logger = LogManager.getLogger(NPCHandController.class.getName());
 
 	@FXML
 	private Label lblPlayerNumber;
@@ -28,7 +28,7 @@ public class HandController {
 	private final int playerNumber;
 	private TileButtonFactory tileButtonFactory;
 
-	public HandController(Game game, int playerNumber) {
+	public NPCHandController(Game game, int playerNumber) {
 		this.game = game;
 		this.playerNumber = playerNumber;
 		switch (playerNumber) {
@@ -56,11 +56,19 @@ public class HandController {
 	public void initialize() {
 		logger.info("Initializing Hand for Player " + playerNumber);
 		switch (playerNumber) {
-			case 1:
-				lblPlayerNumber.setText("Player 1");
+			case 2:
+				lblPlayerNumber.setText("Player 2");
+				fpHand.setOrientation(Orientation.VERTICAL);
+				break;
+			case 3:
+				lblPlayerNumber.setText("Player 3");
+				break;
+			case 4:
+				lblPlayerNumber.setText("Player 4");
+				fpHand.setOrientation(Orientation.VERTICAL);
 				break;
 			default:
-				logger.error("Can't create a HandController for Player " + playerNumber);
+				logger.error("Can't create a NPCHandController for Player " + playerNumber);
 				return;
 		}
 		hand.getTiles().addListener(onTileListChange());
@@ -72,7 +80,7 @@ public class HandController {
 				if (change.wasAdded()) {
 					logger.debug(MessageFormat.format("Adding {0} to Player {1}s hand", change.getAddedSubList().toString(), playerNumber));
 					for (Tile t : change.getAddedSubList()) {
-						var btn = tileButtonFactory.newTileButton(t.getRank(), t.getColour(), false);
+						var btn = tileButtonFactory.newTileButton(t.getRank(), t.getColour(), true);
 						fpHand.getChildren().add(btn);
 					}
 				} else if (change.wasRemoved()) {
