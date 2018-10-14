@@ -60,15 +60,15 @@ public class MainController {
 			player1HandView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new HandController(game, 2));
+			loader.setControllerFactory(c -> new NPCHandController(game, 2));
 			player2HandView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new HandController(game, 3));
+			loader.setControllerFactory(c -> new NPCHandController(game, 3));
 			player3HandView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new HandController(game, 4));
+			loader.setControllerFactory(c -> new NPCHandController(game, 4));
 			player4HandView = loader.load();
 		} catch (IOException e) {
 			logger.error("Failed to load fxml files", e);

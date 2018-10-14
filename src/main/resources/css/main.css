@@ -44,6 +44,11 @@
     -fx-text-fill: white;
 }
 
+.blankTile {
+    -fx-background-color: #c3c4c4;
+    -fx-text-fill: #c3c4c4;
+}
+
 .playerHand {
     -fx-background-color: #6ab7ff;
     -fx-text-fill: white;

@@ -12,7 +12,7 @@ public class TileButtonFactory {
 
 	}
 
-	public JFXButton newTileButton(int rank, Tile.Colours colour) {
+	public JFXButton newTileButton(int rank, Tile.Colours colour, boolean hide) {
 		JFXButton btn = new JFXButton(Integer.toString(rank));
 		switch (colour) {
 			case RED:
@@ -27,6 +27,10 @@ public class TileButtonFactory {
 			case ORANGE:
 				btn.getStyleClass().add("orangeTile");
 				break;
+		}
+
+		if (hide) {
+			btn.getStyleClass().add("blankTile");
 		}
 		HBox.setHgrow(btn, Priority.ALWAYS);
 		VBox.setVgrow(btn, Priority.ALWAYS);
