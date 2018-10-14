@@ -1,10 +1,11 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -13,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class MainController {
 
@@ -44,7 +44,7 @@ public class MainController {
 	public void initialize() {
 		logger.info("Initializing Main view");
 
-		Parent tableView;
+		GridPane tableView;
 		VBox player1HandView;
 		VBox player2HandView;
 		VBox player3HandView;
@@ -53,7 +53,9 @@ public class MainController {
 		FXMLLoader loader;
 
 		try {
-			tableView = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/TableView.fxml")));
+			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/TableView.fxml"));
+			loader.setControllerFactory(c -> new TableController(game));
+			tableView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
 			loader.setControllerFactory(c -> new HandController(game, 1));
@@ -75,12 +77,14 @@ public class MainController {
 			return;
 		}
 
-		bpPlayScreen.setBottom(player1HandView);
-		bpPlayScreen.setLeft(player2HandView);
-		bpPlayScreen.setTop(player3HandView);
-		bpPlayScreen.setRight(player4HandView);
-		hboxCenter.getChildren().add(0, tableView);
 		HBox.setHgrow(tableView, Priority.ALWAYS);
+		Platform.runLater(() -> {
+			bpPlayScreen.setBottom(player1HandView);
+			bpPlayScreen.setLeft(player2HandView);
+			bpPlayScreen.setTop(player3HandView);
+			bpPlayScreen.setRight(player4HandView);
+			hboxCenter.getChildren().add(0, tableView);
+		});
 
 		game.dealInitialTiles();
 	}
