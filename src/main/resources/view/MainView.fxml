@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.MainController" stylesheets="/css/main.css">
+      fx:controller="controller.MainController" stylesheets="/css/main.css" styleClass="root">
     <HBox fx:id="hboxMenuBar" maxHeight="-Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS">
         <JFXButton fx:id="btnEndTurn" maxWidth="Infinity" text="End Turn" HBox.hgrow="ALWAYS"/>
     </HBox>
