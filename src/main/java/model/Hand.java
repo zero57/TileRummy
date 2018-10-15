@@ -9,9 +9,9 @@ public class Hand {
 
 	Hand() { tiles = FXCollections.observableArrayList(); }
 
-	public void addTile(Tile tile) { tiles.add(tile); }
+	public boolean addTile(Tile tile) { return tiles.add(tile); }
 
-	public void removeTile(Tile tile) { tiles.remove(tile); }
+	public boolean removeTile(Tile tile) { return tiles.remove(tile); }
 
 	public ObservableList<Tile> getTiles() { return tiles; }
 }

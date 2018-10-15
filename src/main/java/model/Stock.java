@@ -10,7 +10,7 @@ public class Stock {
 	Stock() {
 		stock = new Stack<>();
 		for (Tile.Colours colour : Tile.Colours.values()) {
-			for (int rank=0; rank<13; rank++) {
+			for (int rank=1; rank<=13; rank++) {
 				stock.add(new Tile(rank, colour));
 				stock.add(new Tile(rank, colour));
 			}

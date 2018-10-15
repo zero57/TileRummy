@@ -8,6 +8,10 @@
     -fx-orange-color: #FF7043;
 }
 
+.root {
+    -fx-background-color: white;
+}
+
 #hboxMenuBar .jfx-button {
     -jfx-button-type: RAISED;
     -fx-background-color: -fx-bg-color;
@@ -53,4 +57,15 @@
     -fx-background-color: #6ab7ff;
     -fx-text-fill: white;
     -fx-padding: 4 4 4 4;
+}
+
+.grid-cell-on-drag-exit,.grid-cell-empty {
+    -fx-border-width: 2;
+    -fx-border-color: -fx-bg-dark-color;
+}
+
+.grid-cell-on-drag-enter {
+    -fx-background-color: -fx-bg-color;
+    -fx-border-width: 2;
+    -fx-border-color: -fx-bg-dark-color;
 }
