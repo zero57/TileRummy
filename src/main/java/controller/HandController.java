@@ -69,6 +69,7 @@ public class HandController {
 					logger.debug(MessageFormat.format("Adding {0} to Player {1}s hand", change.getAddedSubList().toString(), playerNumber));
 					for (Tile t : change.getAddedSubList()) {
 						var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
+						btn.disableProperty().bind(game.getNPCTurn());
 						Platform.runLater(() -> fpHand.getChildren().add(btn));
 					}
 				} else if (change.wasRemoved()) {

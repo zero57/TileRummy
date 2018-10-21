@@ -33,7 +33,7 @@ public class MainController {
 
 	@FXML
 	private JFXButton btnDrawTile;
-
+	
 	private Game game;
 
 	public MainController() {
@@ -85,6 +85,8 @@ public class MainController {
 			bpPlayScreen.setRight(player4HandView);
 			hboxCenter.getChildren().add(0, tableView);
 		});
+
+		btnEndTurn.setOnMouseClicked(b -> game.endTurn());
 
 		game.dealInitialTiles();
 	}
