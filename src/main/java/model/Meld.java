@@ -10,7 +10,7 @@ public class Meld {
 	private Types type;
 	private int value;
 
-	Meld() {
+	public Meld() {
 		tiles = FXCollections.observableArrayList();
 		type = Types.UNDETERMINED;
 		value = 0;
@@ -126,5 +126,9 @@ public class Meld {
 		if (!tiles.isEmpty()) {
 			value -= tiles.remove(tiles.size() - 1).getRank();
 		}
+	}
+
+	public int getSize() {
+		return tiles.size();
 	}
 }
