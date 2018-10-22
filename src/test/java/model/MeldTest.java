@@ -193,25 +193,25 @@ public class MeldTest {
 
 	@Test
 	public void testValid() {
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 		//now add cards
 		meld.addLastTile(new Tile(4, Tile.Colours.RED));
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 		meld.addLastTile(new Tile(5, Tile.Colours.RED));
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 		meld.addFirstTile(new Tile(2, Tile.Colours.RED));
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 		meld.addLastTile(new Tile(2, Tile.Colours.RED));
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 		meld.addFirstTile(new Tile(3, Tile.Colours.RED));
-		assertTrue(meld.isValid());
+		assertTrue(meld.isValidLength());
 		meld.addFirstTile(new Tile(2, Tile.Colours.RED));
-		assertTrue(meld.isValid());
+		assertTrue(meld.isValidLength());
 		meld.removeLastTile();
-		assertTrue(meld.isValid());
+		assertTrue(meld.isValidLength());
 		meld.removeFirstTile();
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 		meld.removeLastTile();
-		assertFalse(meld.isValid());
+		assertFalse(meld.isValidLength());
 	}
 }
