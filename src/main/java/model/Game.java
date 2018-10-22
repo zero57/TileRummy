@@ -40,6 +40,16 @@ public class Game {
 		return stock.draw();
 	}
 
+	public Hand getCurrentPlayerhand() {
+		switch (getPlayerTurn()) {
+			case 0: return player1Hand;
+			case 1: return player2Hand;
+			case 2: return player3Hand;
+			case 3: return player4Hand;	
+		}
+		return null;
+	}
+
 	public Hand getPlayer1Hand() {
 		return player1Hand;
 	}
@@ -64,7 +74,15 @@ public class Game {
 		playerTurn.set((playerTurn.getValue()+1) % 4);
 	}
 
+	public void drawTurn(Hand hand) {
+		hand.addTile(drawTile());
+		endTurn();
+	}
+
 	public BooleanBinding getNPCTurn() {
 		return isNPCTurn;
 	}
+
+	private int getPlayerTurn() { return playerTurn.get(); }
+	private IntegerProperty getPlayerTurnProperty() { return playerTurn; }
 }
