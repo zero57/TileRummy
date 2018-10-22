@@ -64,6 +64,11 @@ public class Game {
 		playerTurn.set((playerTurn.getValue()+1) % 4);
 	}
 
+	public void drawTurn() {
+		player1Hand.addTile(drawTile());
+		endTurn();
+	}
+
 	public BooleanBinding getNPCTurn() {
 		return isNPCTurn;
 	}
