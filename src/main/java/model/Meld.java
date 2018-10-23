@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Meld {
-	private enum Types {UNDETERMINED, SET, RUN}
+	public enum Types {UNDETERMINED, SET, RUN}
 
 	private ObservableList<Tile> tiles;
 	private Types type;
@@ -18,6 +18,10 @@ public class Meld {
 
 	public ObservableList<Tile> getMeld() {
 		return tiles;
+	}
+
+	public Types getType() {
+		return type;
 	}
 
 	public int getValue() {
@@ -130,5 +134,10 @@ public class Meld {
 
 	public int getSize() {
 		return tiles.size();
+	}
+
+	@Override
+	public String toString() {
+		return tiles.toString();
 	}
 }

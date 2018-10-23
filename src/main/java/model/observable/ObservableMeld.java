@@ -37,5 +37,4 @@ public class ObservableMeld extends Meld {
 	public IntegerProperty getColProperty() {
 		return col;
 	}
-
 }
