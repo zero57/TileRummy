@@ -115,6 +115,7 @@ public class TableController {
 			// Ignore the cell containing the tile
 			var ignoreRootNode = getCellFromGridPane(meld.getRow(), meld.getCol() + i).orElseThrow(); // We throw, but this should never happen as there will always be an HBox in the GridCell
 			var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(meld.getMeld().get(i), false, meld.getRow(), meld.getCol() + i), ignoreRootNode);
+			btn.disableProperty().bind(game.getNPCTurn());
 			addOrReplaceNodeAtCell(btn, meld.getRow(), meld.getCol() + i);
 		}
 	}
