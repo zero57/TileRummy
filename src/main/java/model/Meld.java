@@ -24,41 +24,31 @@ public class Meld {
 		return value;
 	}
 
-	public boolean isValid() {
-		return tiles.size() >= 3;
+	public int getLength() {
+		return tiles.size();
 	}
 
-	private void simpleAddFirstTile(Tile tile) {
-		value += tile.getRank();
-		tiles.add(0, tile);
+	public boolean isValidLength() {
+		return getLength() >= 3;
 	}
 
-	private void simpleAddLastTile(Tile tile) {
-		value += tile.getRank();
-		tiles.add(tile);
-	}
-
-	public boolean addFirstTile(Tile tile) {
+	public boolean isValidFirstTile(Tile tile) {
 		if (tiles.isEmpty()) {
-			simpleAddFirstTile(tile);
 			return true;
 		}
 		if (tiles.size() == 1) {
 			if ((tile.getRank() == tiles.get(0).getRank() - 1) && (tile.getColour() == tiles.get(0).getColour())) {
-				simpleAddFirstTile(tile);
 				type = Types.RUN;
 				return true;
 			}
 			if ((tile.getRank() == tiles.get(0).getRank()) && (tile.getColour() != tiles.get(0).getColour())) {
-				simpleAddFirstTile(tile);
 				type = Types.SET;
 				return true;
 			}
 			return false;
 		}
-		//tiles.size()>=1
+		//tiles.size()>1
 		if ((type == Types.RUN) && (tile.getRank() == tiles.get(0).getRank() - 1) && (tile.getColour() == tiles.get(0).getColour())) {
-			simpleAddFirstTile(tile);
 			return true;
 		}
 		if (type == Types.SET) {
@@ -68,7 +58,48 @@ public class Meld {
 				}
 			}
 			if (tile.getRank() == tiles.get(0).getRank()) {
-				simpleAddFirstTile(tile);
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	public boolean addFirstTile(Tile tile) {
+		boolean isValid = isValidFirstTile(tile);
+		if (isValid) {
+			value += tile.getRank();
+			tiles.add(0, tile);
+		}
+		return isValid;
+	}
+
+	public boolean isValidLastTile(Tile tile) {
+		if (tiles.isEmpty()) {
+			return true;
+		}
+		if (tiles.size() == 1) {
+			if ((tile.getRank() == tiles.get(tiles.size() - 1).getRank() + 1) && (tile.getColour() == tiles.get(0).getColour())) {
+				type = Types.RUN;
+				return true;
+			}
+			if ((tile.getRank() == tiles.get(0).getRank()) && (tile.getColour() != tiles.get(0).getColour())) {
+				type = Types.SET;
+				return true;
+			}
+			return false;
+		}
+		//tiles.size()>1
+		if ((type == Types.RUN) && (tile.getRank() == tiles.get(tiles.size() - 1).getRank() + 1) && (tile.getColour() == tiles.get(0).getColour())) {
+			return true;
+		}
+		if (type == Types.SET) {
+			for (Tile t : tiles) {
+				if (t.getColour() == tile.getColour()) {
+					return false;
+				}
+			}
+			if (tile.getRank() == tiles.get(0).getRank()) {
 				return true;
 			}
 			return false;
@@ -77,41 +108,12 @@ public class Meld {
 	}
 
 	public boolean addLastTile(Tile tile) {
-		if (tiles.isEmpty()) {
-			simpleAddLastTile(tile);
-			return true;
+		boolean isValid = isValidLastTile(tile);
+		if (isValid) {
+			value += tile.getRank();
+			tiles.add(tile);
 		}
-		if (tiles.size() == 1) {
-			if ((tile.getRank() == tiles.get(tiles.size() - 1).getRank() + 1) && (tile.getColour() == tiles.get(0).getColour())) {
-				simpleAddLastTile(tile);
-				type = Types.RUN;
-				return true;
-			}
-			if ((tile.getRank() == tiles.get(0).getRank()) && (tile.getColour() != tiles.get(0).getColour())) {
-				simpleAddLastTile(tile);
-				type = Types.SET;
-				return true;
-			}
-			return false;
-		}
-		//tiles.size()>=1
-		if ((type == Types.RUN) && (tile.getRank() == tiles.get(tiles.size() - 1).getRank() + 1) && (tile.getColour() == tiles.get(0).getColour())) {
-			simpleAddLastTile(tile);
-			return true;
-		}
-		if (type == Types.SET) {
-			for (Tile t : tiles) {
-				if (t.getColour() == tile.getColour()) {
-					return false;
-				}
-			}
-			if (tile.getRank() == tiles.get(0).getRank()) {
-				simpleAddLastTile(tile);
-				return true;
-			}
-			return false;
-		}
-		return false;
+		return isValid;
 	}
 
 	public void removeFirstTile() {
