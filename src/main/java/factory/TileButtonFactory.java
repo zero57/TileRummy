@@ -13,7 +13,11 @@ public class TileButtonFactory {
 	}
 
 	public TileButton newTileButton(Tile tile, boolean hide) {
-		TileButton btn = new TileButton(tile, hide);
+		return newTileButton(tile, hide, -1, -1);
+	}
+
+	public TileButton newTileButton(Tile tile, boolean hide, int row, int col) {
+		TileButton btn = new TileButton(tile, hide, row, col);
 		HBox.setHgrow(btn, Priority.ALWAYS);
 		VBox.setVgrow(btn, Priority.ALWAYS);
 		btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
