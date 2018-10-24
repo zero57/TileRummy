@@ -122,19 +122,27 @@ public class MeldTest {
 
 	@Test
 	public void testRunToSet() {
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		//create a run
 		Tile t1 = new Tile(3, Tile.Colours.RED);
 		meld.addLastTile(t1);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(new Tile(4, Tile.Colours.RED));
+		assertEquals(meld.getType(), Meld.Types.RUN);
 		meld.addLastTile(new Tile(5, Tile.Colours.RED));
+		assertEquals(meld.getType(), Meld.Types.RUN);
 		//remove all cards but one
 		meld.removeLastTile();
+		assertEquals(meld.getType(), Meld.Types.RUN);
 		meld.removeLastTile();
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		//create a set
 		Tile t2 = new Tile(3, Tile.Colours.ORANGE);
 		Tile t3 = new Tile(3, Tile.Colours.GREEN);
 		meld.addLastTile(t2);
+		assertEquals(meld.getType(), Meld.Types.SET);
 		meld.addLastTile(t3);
+		assertEquals(meld.getType(), Meld.Types.SET);
 		assertThat(meld.getMeld(), contains(t1, t2, t3));
 		//shouldn't behave as a run
 		meld.addFirstTile(new Tile(2, Tile.Colours.RED));
@@ -144,19 +152,27 @@ public class MeldTest {
 
 	@Test
 	public void testSetToRun() {
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		//create a set
 		Tile t1 = new Tile(3, Tile.Colours.RED);
 		meld.addLastTile(t1);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(new Tile(3, Tile.Colours.ORANGE));
+		assertEquals(meld.getType(), Meld.Types.SET);
 		meld.addLastTile(new Tile(3, Tile.Colours.GREEN));
+		assertEquals(meld.getType(), Meld.Types.SET);
 		//remove all cards but one
 		meld.removeLastTile();
+		assertEquals(meld.getType(), Meld.Types.SET);
 		meld.removeLastTile();
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		//create a run
 		Tile t2 = new Tile(2, Tile.Colours.RED);
 		Tile t3 = new Tile(4, Tile.Colours.RED);
 		meld.addFirstTile(t2);
+		assertEquals(meld.getType(), Meld.Types.RUN);
 		meld.addLastTile(t3);
+		assertEquals(meld.getType(), Meld.Types.RUN);
 		assertThat(meld.getMeld(), contains(t2, t1, t3));
 		//shouldn't behave as a set
 		meld.addFirstTile(new Tile(2, Tile.Colours.GREEN));
