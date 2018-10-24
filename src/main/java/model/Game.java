@@ -1,5 +1,11 @@
 package model;
 
+import ai.AIStrategy;
+import ai.AIStrategy1;
+import ai.AIStrategy2;
+import ai.AIStrategy3;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,6 +23,9 @@ public class Game {
 
 	private BooleanBinding isNPCTurn;
 	private IntegerProperty playerTurn;
+	private AIStrategy ai1;
+	private AIStrategy ai2;
+	private AIStrategy ai3;
 
 	public Game() {
 		table = FXCollections.observableArrayList();
@@ -30,6 +39,22 @@ public class Game {
 
 		playerTurn = new SimpleIntegerProperty(0);
 		isNPCTurn = playerTurn.greaterThanOrEqualTo(1);
+
+		ai1 = new AIStrategy1(this, player2Hand);
+		ai2 = new AIStrategy2(this, player3Hand);
+		ai3 = new AIStrategy3(this, player4Hand);
+
+		playerTurn.addListener((observableValue, oldVal, newVal) -> {
+			System.out.println(newVal);
+            switch ((int)newVal) {
+                case 1:
+                    ai1.doSomething(); break;
+                case 2:
+                    ai2.doSomething(); break;
+                case 3:
+                    ai3.doSomething(); break;
+                }
+            });
 	}
 
 	public void dealInitialTiles() {

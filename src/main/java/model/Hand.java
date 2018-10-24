@@ -7,7 +7,7 @@ public class Hand {
 
 	private ObservableList<Tile> tiles;
 
-	Hand() { tiles = FXCollections.observableArrayList(); }
+	public Hand() { tiles = FXCollections.observableArrayList(); }
 
 	public boolean addTile(Tile tile) { return tiles.add(tile); }
 
