@@ -69,3 +69,11 @@
     -fx-border-width: 2;
     -fx-border-color: -fx-bg-dark-color;
 }
+
+.hand-on-drag-enter {
+    -fx-background-color: -fx-bg-color;
+}
+
+.hand-on-drag-exit {
+    -fx-background-color: white;
+}

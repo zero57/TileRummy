@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import model.Game;
@@ -60,6 +61,15 @@ public class HandController {
 				return;
 		}
 		hand.getTiles().addListener(onTileListChange());
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> fpHand.getStyleClass().setAll("hand-on-drag-enter"));
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> fpHand.getStyleClass().setAll("hand-on-drag-exit"));
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> {
+			TileButton btn = (TileButton) e.getGestureSource();
+			Tile tile = btn.getTile();
+			if (btn.getOriginatesFromTable() && game.removeTileFromTable(tile, btn.getRow(), btn.getCol())) {
+				hand.addTile(tile);
+			}
+		});
 	}
 
 	private ListChangeListener<Tile> onTileListChange() {

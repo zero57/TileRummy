@@ -4,13 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Meld {
-	private enum Types {UNDETERMINED, SET, RUN}
+	public enum Types {UNDETERMINED, SET, RUN}
 
 	private ObservableList<Tile> tiles;
 	private Types type;
 	private int value;
 
-	Meld() {
+	public Meld() {
 		tiles = FXCollections.observableArrayList();
 		type = Types.UNDETERMINED;
 		value = 0;
@@ -18,6 +18,10 @@ public class Meld {
 
 	public ObservableList<Tile> getMeld() {
 		return tiles;
+	}
+
+	public Types getType() {
+		return type;
 	}
 
 	public int getValue() {
@@ -126,5 +130,14 @@ public class Meld {
 		if (!tiles.isEmpty()) {
 			value -= tiles.remove(tiles.size() - 1).getRank();
 		}
+	}
+
+	public int getSize() {
+		return tiles.size();
+	}
+
+	@Override
+	public String toString() {
+		return tiles.toString();
 	}
 }
