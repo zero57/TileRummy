@@ -80,7 +80,7 @@ public class HandController {
 					for (Tile t : change.getAddedSubList()) {
 						var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
 						btn.disableProperty().bind(game.getNPCTurn());
-						Platform.runLater(() -> fpHand.getChildren().add(btn));
+						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(),btn));
 					}
 				} else if (change.wasRemoved()) {
 					logger.debug(MessageFormat.format("Removing {0} in Player {1}s hand", change.getRemoved().toString(), playerNumber));

@@ -87,7 +87,7 @@ public class NPCHandController {
 					logger.debug(MessageFormat.format("Adding {0} to Player {1}s hand", change.getAddedSubList().toString(), playerNumber));
 					for (Tile t : change.getAddedSubList()) {
 						var btn = tileButtonFactory.newTileButton(t, true);
-						Platform.runLater(() -> fpHand.getChildren().add(btn));
+						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(),btn));
 					}
 				} else if (change.wasRemoved()) {
 					logger.debug(MessageFormat.format("Removing {0} in Player {1}s hand", change.getRemoved().toString(), playerNumber));
