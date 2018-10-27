@@ -1,6 +1,8 @@
 package model;
 
-public class Tile {
+import java.util.Comparator;
+
+public class Tile implements Comparable<Tile> {
 	public enum Colours {RED, BLUE, GREEN, ORANGE}
 
 	private final int rank;
@@ -11,10 +13,20 @@ public class Tile {
 		this.colour = colour;
 	}
 
-	public int getRank() { return rank; }
+	public int getRank() {
+		return rank;
+	}
 
-	public Colours getColour() { return colour; }
+	public Colours getColour() {
+		return colour;
+	}
 
 	@Override
-	public String toString() { return getRank() + " " + getColour().name(); }
+	public String toString() {
+		return getRank() + " " + getColour().name();
+	}
+
+	public int compareTo(Tile other) {
+		return Comparator.comparing(Tile::getColour).thenComparing(Tile::getRank).compare(this, other);
+	}
 }
