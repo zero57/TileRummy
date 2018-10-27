@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.observable.ObservableMeld;
+import model.observable.ObservableTile;
 
 public class Game {
 	private Stock stock;
@@ -81,6 +82,11 @@ public class Game {
 
 	public void endTurn() {
 		playerTurn.set((playerTurn.getValue() + 1) % 4);
+		playAllTiles();
+	}
+
+	private void playAllTiles() {
+		table.forEach(meld-> meld.getMeld().forEach(tile -> ((ObservableTile)tile).play()));
 	}
 
 	public void drawTurn(Hand hand) {

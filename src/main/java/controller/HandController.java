@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import model.Game;
 import model.Hand;
 import model.Tile;
+import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ui.TileButton;
@@ -77,7 +78,7 @@ public class HandController {
 		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> {
 			TileButton btn = (TileButton) e.getGestureSource();
 			Tile tile = btn.getTile();
-			if (btn.getOriginatesFromTable() && game.removeTileFromTable(tile, btn.getRow(), btn.getCol())) {
+			if (btn.getOriginatesFromTable() && !((ObservableTile) tile).hasBeenPlayed() && game.removeTileFromTable(tile, btn.getRow(), btn.getCol())) {
 				hand.addTile(tile);
 			}
 		});

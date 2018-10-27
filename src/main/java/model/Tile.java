@@ -8,7 +8,7 @@ public class Tile implements Comparable<Tile> {
 	private final int rank;
 	private final Colours colour;
 
-	Tile(int rank, Colours colour) {
+	public Tile(int rank, Colours colour) {
 		this.rank = rank;
 		this.colour = colour;
 	}

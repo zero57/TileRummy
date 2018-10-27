@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import model.Game;
 import model.Tile;
 import model.observable.ObservableMeld;
+import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ui.TileButton;
@@ -61,13 +62,14 @@ public class TableController {
 					}
 				} else {
 					// Click and drag tile from hand to table
-					if (game.addTileToTable(tile, row, col)) {
+					if (game.addTileToTable(new ObservableTile(tile), row, col)) {
 						game.getPlayer1Hand().removeTile(tile);
 					}
 				}
 			});
 		});
 		table.addListener(onTableMeldListChange());
+		game.getPlayerTurnProperty().addListener(c->updateTable());
 	}
 
 	private ListChangeListener<ObservableMeld> onTableMeldListChange() {
@@ -117,6 +119,12 @@ public class TableController {
 			// Ignore the cell containing the tile
 			var ignoreRootNode = getCellFromGridPane(meld.getRow(), meld.getCol() + i).orElseThrow(); // We throw, but this should never happen as there will always be an HBox in the GridCell
 			var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(meld.getMeld().get(i), false, meld.getRow(), meld.getCol() + i), ignoreRootNode);
+
+			if(((ObservableTile)((TileButton)btn).getTile()).hasBeenPlayed()){
+				((TileButton)btn).getStyleClass().add("opaqueTile");
+			}else {
+				((TileButton)btn).getStyleClass().add("fadeTile");
+			}
 			btn.disableProperty().bind(game.getNPCTurn());
 			addOrReplaceNodeAtCell(btn, meld.getRow(), meld.getCol() + i);
 		}
