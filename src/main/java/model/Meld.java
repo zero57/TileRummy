@@ -86,7 +86,7 @@ public class Meld {
 		return isValid;
 	}
 
-	public boolean isValidLastTile(Tile tile, boolean setType) {
+	private boolean isValidLastTile(Tile tile, boolean setType) {
 		if (tiles.isEmpty()) {
 			return true;
 		}

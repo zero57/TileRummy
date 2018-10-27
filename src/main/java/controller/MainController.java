@@ -86,8 +86,8 @@ public class MainController {
 			hboxCenter.getChildren().add(0, tableView);
 		});
 
-		btnEndTurn.setOnMouseClicked(b -> game.endTurn());
-		btnDrawTile.setOnMouseClicked(b -> game.drawTurn(game.getCurrentPlayerhand()));
+		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
+		btnDrawTile.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
 		btnDrawTile.disableProperty().bind(game.getNPCTurn());
 
 		game.dealInitialTiles();

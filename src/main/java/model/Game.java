@@ -80,18 +80,39 @@ public class Game {
 		return stock.getSize();
 	}
 
-	public void endTurn() {
-		playerTurn.set((playerTurn.getValue() + 1) % 4);
-		playAllTiles();
+	public void endTurn(Hand hand) {
+		if(allMeldsValid()){
+			if(noTilesAddedThisTurn()){
+				hand.addTile(drawTile());
+			}
+			playAllTiles();
+			playerTurn.set((playerTurn.getValue() + 1) % 4);
+		}
+	}
+
+	private boolean allMeldsValid(){
+		for (Meld meld:table) {
+			if(!meld.isValidLength()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean noTilesAddedThisTurn(){
+		for (Meld meld:table) {
+			for (Tile tile:meld.getMeld()) {
+				//if a tile is unplayed, that means tiles have been added to the table this turn
+				if(!((ObservableTile)tile).hasBeenPlayed()){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private void playAllTiles() {
 		table.forEach(meld-> meld.getMeld().forEach(tile -> ((ObservableTile)tile).play()));
-	}
-
-	public void drawTurn(Hand hand) {
-		hand.addTile(drawTile());
-		endTurn();
 	}
 
 	public BooleanBinding getNPCTurn() {
