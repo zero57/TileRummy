@@ -7,6 +7,9 @@ public class Hand {
 
 	private ObservableList<Tile> tiles;
 
+	public Hand(Hand another) { 
+		this.tiles = FXCollections.observableArrayList(another.tiles);
+	}
 	public Hand() { tiles = FXCollections.observableArrayList(); }
 
 	public boolean addTile(Tile tile) { return tiles.add(tile); }

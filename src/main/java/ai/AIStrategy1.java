@@ -8,6 +8,11 @@ import javafx.collections.FXCollections;
 import java.util.Comparator;
 import java.lang.Integer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+
 public class AIStrategy1 implements AIStrategy {
 
 	private Hand hand;
@@ -30,22 +35,91 @@ public class AIStrategy1 implements AIStrategy {
 
 	@Override
 	public void firstHandStrategy() {
-		//ArrayList<Meld> melds = findRunsInHand();
-		ArrayList<Meld> melds = findSetsInHand();
+		int runTotal = 0;
+		int setTotal = 0;
+		ArrayList<Meld> runMelds = findRunsInHand(this.hand);
+		ArrayList<Meld> setMelds = findSetsInHand(this.hand);
 
-		if (melds.isEmpty()) {
-			game.drawTurn(hand);
+		if (!(runMelds.isEmpty())) {
+			for (Meld meld : runMelds) {
+				runTotal += meld.getValue();
+			}
+		}
+		if (!(setMelds.isEmpty())) {
+			for (Meld meld : setMelds) {
+				setTotal += meld.getValue();
+			}
 		} else {
-			for (Meld meld : melds) {
-				System.out.println("SET DETECTED");
+			game.drawTurn(this.hand);
+			return;
+		}
+
+		if (runTotal > setTotal) {
+			int fakeSetTotal = 0;
+			Hand fakeHand = new Hand(this.hand);
+			for (Meld meld : runMelds) {
 				for (Tile t : meld.getMeld()) {
-					System.out.println(t);
+					fakeHand.removeTile(t);
 				}
+			}
+			ArrayList<Meld> fakeSetMelds = findSetsInHand(fakeHand);
+			if (!(fakeSetMelds.isEmpty())) {
+				for (Meld meld : fakeSetMelds) {
+					fakeSetTotal += meld.getValue();
+				}
+			}
+			if (runTotal + fakeSetTotal > 30) {
+				System.out.println("I HAVE A PLAYABLE FIRST HAND");
+
+				for (Meld meld : runMelds) {
+					System.out.println(meld);
+				}
+				for (Meld meld : fakeSetMelds) {
+					System.out.println(meld);
+				}
+
+				// TODO: play the tiles to the board. The correct melds are stored in 
+				// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
+				// show on GUI somehow.
+			} else {
+				game.drawTurn(this.hand);
+				return;
+			}
+		} else {
+			int fakeRunTotal = 0;
+			Hand fakeHand = new Hand(this.hand);
+			for (Meld meld : setMelds) {
+				for (Tile t : meld.getMeld()) {
+					fakeHand.removeTile(t);
+				}
+			}
+			ArrayList<Meld> fakeRunMelds = findRunsInHand(fakeHand);
+			if (!(fakeRunMelds.isEmpty())) {
+				for (Meld meld : fakeRunMelds) {
+					fakeRunTotal += meld.getValue();
+				}
+			}
+			if (setTotal + fakeRunTotal > 30) {
+				System.out.println("I HAVE A PLAYABLE FIRST HAND");
+
+				for (Meld meld : setMelds) {
+					System.out.println(meld);
+				}
+				for (Meld meld : fakeRunMelds) {
+					System.out.println(meld);
+				}
+
+				// TODO: play the tiles to the board. The correct melds are stored in 
+				// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
+				// show on GUI somehow.
+			} else {
+				game.drawTurn(this.hand);
+				return;
 			}
 		}
 	}
 
-	public ArrayList<Meld> findRunsInHand() {
+	public ArrayList<Meld> findRunsInHand(Hand hand) {
 		ArrayList melds = new ArrayList<Meld>();
 		Meld meld;
 
@@ -71,7 +145,7 @@ public class AIStrategy1 implements AIStrategy {
 		return melds;	
 	}
 
-	public ArrayList<Meld> findSetsInHand() {
+	public ArrayList<Meld> findSetsInHand(Hand hand) {
 		ArrayList melds = new ArrayList<Meld>();
 		Meld meld;
 
