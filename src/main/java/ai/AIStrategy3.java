@@ -81,6 +81,7 @@ public class AIStrategy3 implements AIStrategy {
 
 				playedFirstHand = true;
 				game.endTurn();
+				return;
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -115,6 +116,7 @@ public class AIStrategy3 implements AIStrategy {
 
 				playedFirstHand = true;
 				game.endTurn();
+				return;
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -126,6 +128,7 @@ public class AIStrategy3 implements AIStrategy {
 	public void regularStrategy() {
 		logger.debug("TODO: AIStrategy3 regularStrategy()");
 		game.endTurn();
+		return;
 	}
 
 	public ArrayList<Meld> findRunsInHand(Hand hand) {
