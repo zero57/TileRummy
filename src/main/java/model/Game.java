@@ -48,7 +48,6 @@ public class Game {
 		ai3 = new AIStrategy3(this, player4Hand);
 
 		playerTurn.addListener((observableValue, oldVal, newVal) -> {
-			System.out.println(newVal);
             switch ((int)newVal) {
                 case 1:
                     ai1.doSomething(); break;

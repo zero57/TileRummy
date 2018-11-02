@@ -14,7 +14,6 @@ public class AIStrategy3 implements AIStrategy {
 		playedFirstHand = false;
 	}
 
-
 	@Override
 	public void doSomething() {
 		System.out.println("baka oniisama!! -- AIStrategy3: TURN IS 3");

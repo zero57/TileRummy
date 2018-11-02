@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import java.util.Comparator;
 import java.lang.Integer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AIStrategy1 implements AIStrategy {
 
+	private static final Logger logger = LogManager.getLogger(AIStrategy1.class.getName());
 	private Hand hand;
 	private final Game game;
 	private boolean playedFirstHand;
@@ -44,8 +42,7 @@ public class AIStrategy1 implements AIStrategy {
 			for (Meld meld : runMelds) {
 				runTotal += meld.getValue();
 			}
-		}
-		if (!(setMelds.isEmpty())) {
+		} else if (!(setMelds.isEmpty())) {
 			for (Meld meld : setMelds) {
 				setTotal += meld.getValue();
 			}
@@ -68,15 +65,17 @@ public class AIStrategy1 implements AIStrategy {
 					fakeSetTotal += meld.getValue();
 				}
 			}
-			if (runTotal + fakeSetTotal > 30) {
-				System.out.println("I HAVE A PLAYABLE FIRST HAND");
+			if (runTotal + fakeSetTotal >= 30) {
+				logger.debug("I HAVE A PLAYABLE FIRST HAND");
 
 				for (Meld meld : runMelds) {
-					System.out.println(meld);
+					logger.debug(meld);
 				}
 				for (Meld meld : fakeSetMelds) {
-					System.out.println(meld);
+					logger.debug(meld);
 				}
+
+				playedFirstHand = true;
 
 				// TODO: play the tiles to the board. The correct melds are stored in 
 				// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
@@ -99,19 +98,21 @@ public class AIStrategy1 implements AIStrategy {
 					fakeRunTotal += meld.getValue();
 				}
 			}
-			if (setTotal + fakeRunTotal > 30) {
-				System.out.println("I HAVE A PLAYABLE FIRST HAND");
+			if (setTotal + fakeRunTotal >= 30) {
+				logger.debug("I HAVE A PLAYABLE FIRST HAND");
 
 				for (Meld meld : setMelds) {
-					System.out.println(meld);
+					logger.debug(meld);
 				}
 				for (Meld meld : fakeRunMelds) {
-					System.out.println(meld);
+					logger.debug(meld);
 				}
 
 				// TODO: play the tiles to the board. The correct melds are stored in 
 				// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
 				// show on GUI somehow.
+
+				playedFirstHand = true;
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -178,6 +179,75 @@ public class AIStrategy1 implements AIStrategy {
 
 	@Override
 	public void regularStrategy() {
-		//System.out.println("playedFirstHand is " + playedFirstHand);
+		int runTotal = 0;
+		int setTotal = 0;
+		ArrayList<Meld> runMelds = findRunsInHand(this.hand);
+		ArrayList<Meld> setMelds = findSetsInHand(this.hand);
+
+		if (!(runMelds.isEmpty())) {
+			for (Meld meld : runMelds) {
+				runTotal += meld.getValue();
+			}
+		} else if (!(setMelds.isEmpty())) {
+			for (Meld meld : setMelds) {
+				setTotal += meld.getValue();
+			}
+		} else {
+			game.drawTurn(this.hand);
+			return;
+		}
+
+		if (runTotal > setTotal) {
+			int fakeSetTotal = 0;
+			Hand fakeHand = new Hand(this.hand);
+			for (Meld meld : runMelds) {
+				for (Tile t : meld.getMeld()) {
+					fakeHand.removeTile(t);
+				}
+			}
+			ArrayList<Meld> fakeSetMelds = findSetsInHand(fakeHand);
+			if (!(fakeSetMelds.isEmpty())) {
+				for (Meld meld : fakeSetMelds) {
+					fakeSetTotal += meld.getValue();
+				}
+			}
+			logger.debug("I HAVE A PLAYABLE HAND");
+
+			for (Meld meld : runMelds) {
+				logger.debug(meld);
+			}
+			for (Meld meld : fakeSetMelds) {
+				logger.debug(meld);
+			}
+
+			// TODO: play the tiles to the board. The correct melds are stored in 
+			// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
+			// show on GUI somehow.
+		} else {
+			int fakeRunTotal = 0;
+			Hand fakeHand = new Hand(this.hand);
+			for (Meld meld : setMelds) {
+				for (Tile t : meld.getMeld()) {
+					fakeHand.removeTile(t);
+				}
+			}
+			ArrayList<Meld> fakeRunMelds = findRunsInHand(fakeHand);
+			if (!(fakeRunMelds.isEmpty())) {
+				for (Meld meld : fakeRunMelds) {
+					fakeRunTotal += meld.getValue();
+				}
+			}
+			logger.debug("I HAVE A PLAYABLE HAND");
+
+			for (Meld meld : setMelds) {
+				logger.debug(meld);
+			}
+			for (Meld meld : fakeRunMelds) {
+				logger.debug(meld);
+			}
+			// TODO: play the tiles to the board. The correct melds are stored in 
+			// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
+			// show on GUI somehow.
+		}
 	}
 }
