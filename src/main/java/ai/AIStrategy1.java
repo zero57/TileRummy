@@ -66,7 +66,7 @@ public class AIStrategy1 implements AIStrategy {
 				}
 			}
 			if (runTotal + fakeSetTotal >= 30) {
-				logger.debug("I HAVE A PLAYABLE FIRST HAND");
+				logger.debug("AIStrategy1 HAS A PLAYABLE FIRST HAND");
 
 				for (Meld meld : runMelds) {
 					logger.debug(meld);
@@ -75,11 +75,12 @@ public class AIStrategy1 implements AIStrategy {
 					logger.debug(meld);
 				}
 
-				playedFirstHand = true;
-
 				// TODO: play the tiles to the board. The correct melds are stored in 
 				// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
 				// show on GUI somehow.
+
+				playedFirstHand = true;
+				game.endTurn();
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -99,7 +100,7 @@ public class AIStrategy1 implements AIStrategy {
 				}
 			}
 			if (setTotal + fakeRunTotal >= 30) {
-				logger.debug("I HAVE A PLAYABLE FIRST HAND");
+				logger.debug("AIStrategy1 HAS A PLAYABLE FIRST HAND");
 
 				for (Meld meld : setMelds) {
 					logger.debug(meld);
@@ -113,6 +114,7 @@ public class AIStrategy1 implements AIStrategy {
 				// show on GUI somehow.
 
 				playedFirstHand = true;
+				game.endTurn();
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -211,7 +213,7 @@ public class AIStrategy1 implements AIStrategy {
 					fakeSetTotal += meld.getValue();
 				}
 			}
-			logger.debug("I HAVE A PLAYABLE HAND");
+			logger.debug("AIStrategy1 HAS A PLAYABLE HAND");
 
 			for (Meld meld : runMelds) {
 				logger.debug(meld);
@@ -223,6 +225,8 @@ public class AIStrategy1 implements AIStrategy {
 			// TODO: play the tiles to the board. The correct melds are stored in 
 			// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
 			// show on GUI somehow.
+
+			game.endTurn();
 		} else {
 			int fakeRunTotal = 0;
 			Hand fakeHand = new Hand(this.hand);
@@ -237,7 +241,7 @@ public class AIStrategy1 implements AIStrategy {
 					fakeRunTotal += meld.getValue();
 				}
 			}
-			logger.debug("I HAVE A PLAYABLE HAND");
+			logger.debug("AIStrategy1 HAS A PLAYABLE HAND");
 
 			for (Meld meld : setMelds) {
 				logger.debug(meld);
@@ -248,6 +252,8 @@ public class AIStrategy1 implements AIStrategy {
 			// TODO: play the tiles to the board. The correct melds are stored in 
 			// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
 			// show on GUI somehow.
+			
+			game.endTurn();
 		}
 	}
 }
