@@ -81,6 +81,7 @@ public class AIStrategy1 implements AIStrategy {
 
 				playedFirstHand = true;
 				game.endTurn();
+				return;
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -115,6 +116,7 @@ public class AIStrategy1 implements AIStrategy {
 
 				playedFirstHand = true;
 				game.endTurn();
+				return;
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -227,6 +229,7 @@ public class AIStrategy1 implements AIStrategy {
 			// show on GUI somehow.
 
 			game.endTurn();
+			return;
 		} else {
 			int fakeRunTotal = 0;
 			Hand fakeHand = new Hand(this.hand);
@@ -252,8 +255,9 @@ public class AIStrategy1 implements AIStrategy {
 			// TODO: play the tiles to the board. The correct melds are stored in 
 			// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
 			// show on GUI somehow.
-			
+
 			game.endTurn();
+			return;
 		}
 	}
 }

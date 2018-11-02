@@ -38,6 +38,7 @@ public class AIStrategy2 implements AIStrategy {
 		if (game.getTable().size() == 0) {
 			logger.debug("NO MELDS ON TABLE. AIStrategy2 WON'T PLAY FIRST HAND");
 			game.endTurn();
+			return;
 		}
 
 		int runTotal = 0;
@@ -88,6 +89,7 @@ public class AIStrategy2 implements AIStrategy {
 
 				playedFirstHand = true;
 				game.endTurn();
+				return;
 			} else {
 				game.drawTurn(this.hand);
 				return;
@@ -122,6 +124,7 @@ public class AIStrategy2 implements AIStrategy {
 
 				playedFirstHand = true;
 				game.endTurn();
+				return;
 			} else {
 				game.drawTurn(this.hand);
 				return;
