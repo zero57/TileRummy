@@ -88,6 +88,7 @@ public class MainController {
 
 		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
 		btnDrawTile.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
+		btnEndTurn.disableProperty().bind(game.getNPCTurn());
 		btnDrawTile.disableProperty().bind(game.getNPCTurn());
 
 		game.dealInitialTiles();

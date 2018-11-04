@@ -2,7 +2,9 @@ package ai;
 import model.Meld;
 import model.Tile;
 import model.Game;
+import model.observable.ObservableMeld;
 import model.Hand;
+import java.util.List;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import java.util.Comparator;
@@ -66,14 +68,19 @@ public class AIStrategy1 implements AIStrategy {
 				}
 			}
 			if (runTotal + fakeSetTotal >= 30) {
+				for (Meld meld : fakeSetMelds) {
+					runMelds.add(meld);
+				}
 				logger.debug("AIStrategy1 HAS A PLAYABLE FIRST HAND");
 
 				for (Meld meld : runMelds) {
 					logger.debug(meld);
+					for (Tile t : meld.getMeld()) {
+						this.hand.removeTile(t);
+					}
 				}
-				for (Meld meld : fakeSetMelds) {
-					logger.debug(meld);
-				}
+
+				playMeldsToTable(runMelds);
 
 				// TODO: play the tiles to the board. The correct melds are stored in 
 				// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
@@ -101,14 +108,19 @@ public class AIStrategy1 implements AIStrategy {
 				}
 			}
 			if (setTotal + fakeRunTotal >= 30) {
+				for (Meld meld : fakeRunMelds) {
+					setMelds.add(meld);
+				}
 				logger.debug("AIStrategy1 HAS A PLAYABLE FIRST HAND");
 
 				for (Meld meld : setMelds) {
 					logger.debug(meld);
+					for (Tile t : meld.getMeld()) {
+						this.hand.removeTile(t);
+					}
 				}
-				for (Meld meld : fakeRunMelds) {
-					logger.debug(meld);
-				}
+
+				playMeldsToTable(setMelds);
 
 				// TODO: play the tiles to the board. The correct melds are stored in 
 				// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
@@ -121,6 +133,26 @@ public class AIStrategy1 implements AIStrategy {
 				game.drawTurn(this.hand);
 				return;
 			}
+		}
+	}
+
+	public void playMeldsToTable(List<Meld> melds) {
+
+		int i = 0; 
+		int j = 0;
+		game.getTable().forEach(observableMeld -> melds.add((Meld)observableMeld));
+
+		game.getTable().clear();
+		for(Meld meld : melds) {
+			if (i + meld.getLength() <= 15) {
+				for (Tile tile : meld.getMeld()) {
+					game.addTileToTable(tile, j, i);
+					i++;
+				}
+			} else {
+				j++;
+			}
+			i++;
 		}
 	}
 
@@ -219,10 +251,12 @@ public class AIStrategy1 implements AIStrategy {
 
 			for (Meld meld : runMelds) {
 				logger.debug(meld);
+				for (Tile t : meld.getMeld()) {
+					this.hand.removeTile(t);
+				}
 			}
-			for (Meld meld : fakeSetMelds) {
-				logger.debug(meld);
-			}
+
+			playMeldsToTable(runMelds);
 
 			// TODO: play the tiles to the board. The correct melds are stored in 
 			// runMelds and fakeSetMelds. Must correctly remove from this.hand and 
@@ -248,10 +282,12 @@ public class AIStrategy1 implements AIStrategy {
 
 			for (Meld meld : setMelds) {
 				logger.debug(meld);
+				for (Tile t : meld.getMeld()) {
+					this.hand.removeTile(t);
+				}
 			}
-			for (Meld meld : fakeRunMelds) {
-				logger.debug(meld);
-			}
+
+			playMeldsToTable(setMelds);
 			// TODO: play the tiles to the board. The correct melds are stored in 
 			// setMelds and fakeRunMelds. Must correctly remove from this.hand and 
 			// show on GUI somehow.
