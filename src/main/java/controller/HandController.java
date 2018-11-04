@@ -54,6 +54,7 @@ public class HandController {
 	public void initialize() {
 		logger.info("Initializing Hand for Player " + playerNumber);
 		PseudoClass currentTurn = PseudoClass.getPseudoClass("current-turn");
+		PseudoClass mouseDragEnter = PseudoClass.getPseudoClass("mouse-drag-enter");
 		Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
 		switch (playerNumber) {
 			case 1:
@@ -71,8 +72,8 @@ public class HandController {
 				return;
 		}
 		hand.getTiles().addListener(onTileListChange());
-		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> fpHand.getStyleClass().setAll("hand-on-drag-enter"));
-		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> fpHand.getStyleClass().setAll("hand-on-drag-exit"));
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> Platform.runLater(() -> fpHand.pseudoClassStateChanged(mouseDragEnter, true)));
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> Platform.runLater(() -> fpHand.pseudoClassStateChanged(mouseDragEnter, false)));
 		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> {
 			TileButton btn = (TileButton) e.getGestureSource();
 			Tile tile = btn.getTile();

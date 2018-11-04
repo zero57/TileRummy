@@ -65,21 +65,22 @@
     -fx-background-color: -fx-indigo-color;
 }
 
-.grid-cell-on-drag-exit,.grid-cell-empty {
-    -fx-border-width: 2;
-    -fx-border-color: -fx-bg-dark-color;
-}
-
-.grid-cell-on-drag-enter {
-    -fx-background-color: -fx-bg-color;
-    -fx-border-width: 2;
-    -fx-border-color: -fx-bg-dark-color;
-}
-
-.hand-on-drag-enter {
-    -fx-background-color: -fx-bg-color;
-}
-
-.hand-on-drag-exit {
+.player-hand {
     -fx-background-color: white;
+}
+
+/*noinspection CssInvalidPseudoSelector*/
+.player-hand:mouse-drag-enter {
+    -fx-background-color: -fx-bg-color;
+}
+
+.grid-cell {
+    -fx-background-color: -fx-white-color;
+    -fx-border-width: 2;
+    -fx-border-color: -fx-bg-dark-color;
+}
+
+/*noinspection CssInvalidPseudoSelector*/
+.grid-cell:mouse-drag-enter {
+    -fx-background-color: -fx-bg-color;
 }
