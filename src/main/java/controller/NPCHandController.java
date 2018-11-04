@@ -3,6 +3,7 @@ package controller;
 import factory.TileButtonFactory;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
@@ -57,17 +58,39 @@ public class NPCHandController {
 	@FXML
 	public void initialize() {
 		logger.info("Initializing Hand for Player " + playerNumber);
+		PseudoClass currentTurn = PseudoClass.getPseudoClass("current-turn");
 		switch (playerNumber) {
 			case 2:
+				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
+					if (newVal.equals(1)) {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
+					} else {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, false));
+					}
+				});
 				Platform.runLater(() -> {
 					lblPlayerNumber.setText("Player 2");
 					fpHand.setOrientation(Orientation.VERTICAL);
 				});
 				break;
 			case 3:
+				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
+					if (newVal.equals(2)) {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
+					} else {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, false));
+					}
+				});
 				Platform.runLater(() -> lblPlayerNumber.setText("Player 3"));
 				break;
 			case 4:
+				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
+					if (newVal.equals(3)) {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
+					} else {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, false));
+					}
+				});
 				Platform.runLater(() -> {
 					lblPlayerNumber.setText("Player 4");
 					fpHand.setOrientation(Orientation.VERTICAL);
@@ -87,7 +110,7 @@ public class NPCHandController {
 					logger.debug(MessageFormat.format("Adding {0} to Player {1}s hand", change.getAddedSubList().toString(), playerNumber));
 					for (Tile t : change.getAddedSubList()) {
 						var btn = tileButtonFactory.newTileButton(t, true);
-						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(),btn));
+						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(), btn));
 					}
 				} else if (change.wasRemoved()) {
 					logger.debug(MessageFormat.format("Removing {0} in Player {1}s hand", change.getRemoved().toString(), playerNumber));

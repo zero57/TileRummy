@@ -3,6 +3,7 @@ package controller;
 import factory.TileButtonFactory;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseDragEvent;
@@ -52,8 +53,17 @@ public class HandController {
 	@FXML
 	public void initialize() {
 		logger.info("Initializing Hand for Player " + playerNumber);
+		PseudoClass currentTurn = PseudoClass.getPseudoClass("current-turn");
+		Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
 		switch (playerNumber) {
 			case 1:
+				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
+					if (newVal.equals(0)) {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
+					} else {
+						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, false));
+					}
+				});
 				Platform.runLater(() -> lblPlayerNumber.setText("Player 1"));
 				break;
 			default:
@@ -80,7 +90,7 @@ public class HandController {
 					for (Tile t : change.getAddedSubList()) {
 						var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
 						btn.disableProperty().bind(game.getNPCTurn());
-						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(),btn));
+						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(), btn));
 					}
 				} else if (change.wasRemoved()) {
 					logger.debug(MessageFormat.format("Removing {0} in Player {1}s hand", change.getRemoved().toString(), playerNumber));
