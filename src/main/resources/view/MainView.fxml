@@ -13,9 +13,6 @@
         <center>
             <HBox fx:id="hboxCenter" maxHeight="Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS"
                   BorderPane.alignment="CENTER">
-                <JFXButton fx:id="btnDrawTile" maxHeight="Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS"
-                           VBox.vgrow="ALWAYS"
-                           text="Draw&#10;Tile" textAlignment="CENTER"/>
             </HBox>
         </center>
     </BorderPane>
