@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -40,15 +39,28 @@ public class StockTest {
 
 	@Test
 	public void testStockDraw() {
-		ObservableTile tile = stock.draw();
+		ObservableTile tile = stock.draw().orElseThrow();
 		assertThat(stock.getStock(), hasSize(103));
 		assertThat(stock.getStock(), not(hasItem(tile)));
 	}
 
 	@Test
 	public void testStockDoubleDraw() {
-		ObservableTile tile1 = stock.draw();
-		ObservableTile tile2 = stock.draw();
+		ObservableTile tile1 = stock.draw().orElseThrow();
+		ObservableTile tile2 = stock.draw().orElseThrow();
 		assertThat(tile1, is(not(tile2)));
+		assertThat(stock.getSize(), is(102));
+	}
+
+	@Test
+	public void testEmptyStock() {
+		assertThat(stock.getSize(), is(104));
+		for (int i = stock.getSize(); i > 0; i--) {
+			stock.draw();
+		}
+		assertThat(stock.getSize(), is(0));
+		// Should not throw or cause an error
+		stock.draw();
+		assertThat(stock.getSize(), is(0));
 	}
 }
