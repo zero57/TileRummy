@@ -1,6 +1,8 @@
 package model;
 
 import model.observable.ObservableTile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Optional;
 import java.util.Stack;
 
 public class Stock {
+	private static final Logger logger = LogManager.getLogger(Stock.class.getName());
 	private Stack<ObservableTile> stock;
 
 	Stock() {
@@ -22,6 +25,7 @@ public class Stock {
 
 	public Optional<ObservableTile> draw() {
 		if (stock.empty()) {
+			logger.debug("Stock is empty!");
 			return Optional.empty();
 		}
 		return Optional.of(stock.pop());

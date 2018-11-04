@@ -19,12 +19,6 @@
     -fx-text-fill: white;
 }
 
-#btnDrawTile {
-    -jfx-button-type: RAISED;
-    -fx-background-color: -fx-bg-color;
-    -fx-text-fill: white;
-}
-
 .redTile {
     -jfx-button-type: RAISED;
     -fx-background-color: -fx-red-color;

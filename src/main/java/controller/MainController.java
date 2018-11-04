@@ -31,9 +31,6 @@ public class MainController {
 	@FXML
 	private JFXButton btnEndTurn;
 
-	@FXML
-	private JFXButton btnDrawTile;
-	
 	private Game game;
 
 	public MainController() {

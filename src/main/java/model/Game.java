@@ -67,7 +67,6 @@ public class Game {
 
 	public Optional<ObservableTile> drawTile() {
 		return stock.draw();
-
 	}
 
 	public Hand getCurrentPlayerhand() {
