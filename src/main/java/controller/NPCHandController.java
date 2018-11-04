@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import model.Game;
 import model.Hand;
 import model.Tile;
+import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ui.TileButton;
@@ -103,12 +104,12 @@ public class NPCHandController {
 		hand.getTiles().addListener(onTileListChange());
 	}
 
-	private ListChangeListener<Tile> onTileListChange() {
-		return (ListChangeListener.Change<? extends Tile> change) -> {
+	private ListChangeListener<ObservableTile> onTileListChange() {
+		return (ListChangeListener.Change<? extends ObservableTile> change) -> {
 			while (change.next()) {
 				if (change.wasAdded()) {
 					logger.debug(MessageFormat.format("Adding {0} to Player {1}s hand", change.getAddedSubList().toString(), playerNumber));
-					for (Tile t : change.getAddedSubList()) {
+					for (ObservableTile t : change.getAddedSubList()) {
 						var btn = tileButtonFactory.newTileButton(t, true);
 						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(), btn));
 					}

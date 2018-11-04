@@ -1,10 +1,10 @@
 package model;
 
+import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -29,7 +29,7 @@ public class StockTest {
 
 	@Test
 	public void testStockShuffle() {
-		List<Tile> unshuffledTiles = new ArrayList<>(stock.getStock());
+		var unshuffledTiles = new ArrayList<>(stock.getStock());
 		// Check that unshuffled cards is the same as the base deck
 		assertThat(stock.getStock(), contains(unshuffledTiles.toArray()));
 		stock.shuffle();
@@ -39,15 +39,28 @@ public class StockTest {
 
 	@Test
 	public void testStockDraw() {
-		Tile tile = stock.draw();
+		ObservableTile tile = stock.draw().orElseThrow();
 		assertThat(stock.getStock(), hasSize(103));
 		assertThat(stock.getStock(), not(hasItem(tile)));
 	}
 
 	@Test
 	public void testStockDoubleDraw() {
-		Tile tile1 = stock.draw();
-		Tile tile2 = stock.draw();
+		ObservableTile tile1 = stock.draw().orElseThrow();
+		ObservableTile tile2 = stock.draw().orElseThrow();
 		assertThat(tile1, is(not(tile2)));
+		assertThat(stock.getSize(), is(102));
+	}
+
+	@Test
+	public void testEmptyStock() {
+		assertThat(stock.getSize(), is(104));
+		for (int i = stock.getSize(); i > 0; i--) {
+			stock.draw();
+		}
+		assertThat(stock.getSize(), is(0));
+		// Should not throw or cause an error
+		stock.draw();
+		assertThat(stock.getSize(), is(0));
 	}
 }

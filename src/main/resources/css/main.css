@@ -54,6 +54,14 @@
     -fx-text-fill: #c3c4c4;
 }
 
+.fadeTile {
+    -fx-opacity: 0.6;
+}
+
+.opaqueTile {
+    -fx-opacity: 1;
+}
+
 .label-player-hand {
     -fx-background-color: -fx-alt-color;
     -fx-text-fill: white;

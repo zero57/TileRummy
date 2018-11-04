@@ -1,5 +1,6 @@
 package factory;
 
+import model.observable.ObservableTile;
 import ui.TileButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -12,11 +13,11 @@ public class TileButtonFactory {
 
 	}
 
-	public TileButton newTileButton(Tile tile, boolean hide) {
+	public TileButton newTileButton(ObservableTile tile, boolean hide) {
 		return newTileButton(tile, hide, -1, -1);
 	}
 
-	public TileButton newTileButton(Tile tile, boolean hide, int row, int col) {
+	public TileButton newTileButton(ObservableTile tile, boolean hide, int row, int col) {
 		TileButton btn = new TileButton(tile, hide, row, col);
 		HBox.setHgrow(btn, Priority.ALWAYS);
 		VBox.setVgrow(btn, Priority.ALWAYS);

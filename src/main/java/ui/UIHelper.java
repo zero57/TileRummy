@@ -5,7 +5,7 @@ import javafx.scene.input.MouseEvent;
 
 public class UIHelper {
 	public static Node makeDraggable(final Node node, final Node root) {
-		final DragContext dragContext = new DragContext();
+		final var dragContext = new DragContext();
 
 		node.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			// Make the root node (and children) untargetable for MouseEvents
@@ -25,8 +25,8 @@ public class UIHelper {
 		});
 
 		node.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-			double dx = dragContext.getInitialTranslateX() + e.getSceneX() - dragContext.getMouseX();
-			double dy = dragContext.getInitialTranslateY() + e.getSceneY() - dragContext.getMouseY();
+			var dx = dragContext.getInitialTranslateX() + e.getSceneX() - dragContext.getMouseX();
+			var dy = dragContext.getInitialTranslateY() + e.getSceneY() - dragContext.getMouseY();
 			node.setTranslateX(dx);
 			node.setTranslateY(dy);
 			e.consume();

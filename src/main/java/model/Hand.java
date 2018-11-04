@@ -3,28 +3,29 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
+import model.observable.ObservableTile;
 
 import java.util.Comparator;
 
 public class Hand {
 
-	private ObservableList<Tile> backingTiles;
-	private ObservableList<Tile> tiles;
+	private ObservableList<ObservableTile> unsortedTiles;
+	private ObservableList<ObservableTile> tiles;
 
 	Hand() {
-		backingTiles = FXCollections.observableArrayList();
-		tiles = new SortedList<>(backingTiles, Comparator.naturalOrder());
+		unsortedTiles = FXCollections.observableArrayList();
+		tiles = new SortedList<>(unsortedTiles, Comparator.naturalOrder());
 	}
 
-	public boolean addTile(Tile tile) {
-		return backingTiles.add(tile);
+	public boolean addTile(ObservableTile tile) {
+		return unsortedTiles.add(tile);
 	}
 
-	public boolean removeTile(Tile tile) {
-		return backingTiles.remove(tile);
+	public boolean removeTile(ObservableTile tile) {
+		return unsortedTiles.remove(tile);
 	}
 
-	public ObservableList<Tile> getTiles() {
+	public ObservableList<ObservableTile> getTiles() {
 		return tiles;
 	}
 }

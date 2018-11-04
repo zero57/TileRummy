@@ -2,11 +2,12 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.observable.ObservableTile;
 
 public class Meld {
 	public enum Types {UNDETERMINED, SET, RUN}
 
-	private ObservableList<Tile> tiles;
+	private ObservableList<ObservableTile> tiles;
 	private Types type;
 	private int value;
 
@@ -16,7 +17,7 @@ public class Meld {
 		value = 0;
 	}
 
-	public ObservableList<Tile> getMeld() {
+	public ObservableList<ObservableTile> getMeld() {
 		return tiles;
 	}
 
@@ -36,7 +37,7 @@ public class Meld {
 		return getSize() >= 3;
 	}
 
-	private boolean isValidFirstTile(Tile tile, boolean setType) {
+	private boolean isValidFirstTile(ObservableTile tile, boolean setType) {
 		if (tiles.isEmpty()) {
 			return true;
 		}
@@ -73,11 +74,11 @@ public class Meld {
 		return false;
 	}
 
-	public boolean isValidFirstTile(Tile tile) {
+	public boolean isValidFirstTile(ObservableTile tile) {
 		return isValidFirstTile(tile, false);
 	}
 
-	public boolean addFirstTile(Tile tile) {
+	public boolean addFirstTile(ObservableTile tile) {
 		boolean isValid = isValidFirstTile(tile, true);
 		if (isValid) {
 			value += tile.getRank();
@@ -86,7 +87,7 @@ public class Meld {
 		return isValid;
 	}
 
-	public boolean isValidLastTile(Tile tile, boolean setType) {
+	private boolean isValidLastTile(ObservableTile tile, boolean setType) {
 		if (tiles.isEmpty()) {
 			return true;
 		}
@@ -123,11 +124,11 @@ public class Meld {
 		return false;
 	}
 
-	public boolean isValidLastTile(Tile tile) {
+	public boolean isValidLastTile(ObservableTile tile) {
 		return isValidLastTile(tile, false);
 	}
 
-	public boolean addLastTile(Tile tile) {
+	public boolean addLastTile(ObservableTile tile) {
 		boolean isValid = isValidLastTile(tile, true);
 		if (isValid) {
 			value += tile.getRank();
