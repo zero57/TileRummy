@@ -6,6 +6,7 @@
     -fx-blue-color: #42A5F5;
     -fx-green-color: #66BB6A;
     -fx-orange-color: #FF7043;
+    -fx-indigo-color: #5C6BC0;
 }
 
 .root {
@@ -53,27 +54,33 @@
     -fx-text-fill: #c3c4c4;
 }
 
-.playerHand {
-    -fx-background-color: #6ab7ff;
+.label-player-hand {
+    -fx-background-color: -fx-alt-color;
     -fx-text-fill: white;
     -fx-padding: 4 4 4 4;
 }
 
-.grid-cell-on-drag-exit,.grid-cell-empty {
-    -fx-border-width: 2;
-    -fx-border-color: -fx-bg-dark-color;
+/*noinspection CssInvalidPseudoSelector*/
+.label-player-hand:current-turn {
+    -fx-background-color: -fx-indigo-color;
 }
 
-.grid-cell-on-drag-enter {
-    -fx-background-color: -fx-bg-color;
-    -fx-border-width: 2;
-    -fx-border-color: -fx-bg-dark-color;
-}
-
-.hand-on-drag-enter {
-    -fx-background-color: -fx-bg-color;
-}
-
-.hand-on-drag-exit {
+.player-hand {
     -fx-background-color: white;
+}
+
+/*noinspection CssInvalidPseudoSelector*/
+.player-hand:mouse-drag-enter {
+    -fx-background-color: -fx-bg-color;
+}
+
+.grid-cell {
+    -fx-background-color: -fx-white-color;
+    -fx-border-width: 2;
+    -fx-border-color: -fx-bg-dark-color;
+}
+
+/*noinspection CssInvalidPseudoSelector*/
+.grid-cell:mouse-drag-enter {
+    -fx-background-color: -fx-bg-color;
 }

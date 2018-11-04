@@ -4,6 +4,7 @@ import factory.TileButtonFactory;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseDragEvent;
@@ -40,9 +41,10 @@ public class TableController {
 	@FXML
 	public void initialize() {
 		logger.info("Initializing Table");
+		PseudoClass mouseDragEnter = PseudoClass.getPseudoClass("mouse-drag-enter");
 		gpTable.getChildren().forEach(item -> {
-			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> item.getStyleClass().setAll("grid-cell-on-drag-enter"));
-			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> item.getStyleClass().setAll("grid-cell-on-drag-exit"));
+			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> Platform.runLater(() -> item.pseudoClassStateChanged(mouseDragEnter, true)));
+			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> Platform.runLater(() -> item.pseudoClassStateChanged(mouseDragEnter, false)));
 			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> {
 				int row = GridPane.getRowIndex(item);
 				int col = GridPane.getColumnIndex(item);
