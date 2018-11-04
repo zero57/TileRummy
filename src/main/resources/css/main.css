@@ -75,7 +75,7 @@
 }
 
 .grid-cell {
-    -fx-background-color: -fx-white-color;
+    -fx-background-color: white;
     -fx-border-width: 2;
     -fx-border-color: -fx-bg-dark-color;
 }
