@@ -135,7 +135,6 @@ public class AIStrategy3 implements AIStrategy {
 		ArrayList melds = new ArrayList<Meld>();
 		Meld meld;
 
-		FXCollections.sort(hand.getTiles());
 		for (int i = 0; i < hand.getTiles().size() - 2; i++) {
 			if ((hand.getTiles().get(i+1).getRank() == hand.getTiles().get(i).getRank()+1) && 
 			(hand.getTiles().get(i+2).getRank() == hand.getTiles().get(i+1).getRank()+1)) {
@@ -161,7 +160,7 @@ public class AIStrategy3 implements AIStrategy {
 		ArrayList melds = new ArrayList<Meld>();
 		Meld meld;
 
-		hand.getTiles().sort((ObservableTile t1, ObservableTile t2)->Integer.compare(t1.getRank(), t2.getRank()));
+		hand.getUnsortedTiles().sort((ObservableTile t1, ObservableTile t2)->Integer.compare(t1.getRank(), t2.getRank()));
 
 		for (int i = 0; i < hand.getTiles().size() - 2; i++) {
 			if ((hand.getTiles().get(i+1).getRank() == hand.getTiles().get(i).getRank()) && 

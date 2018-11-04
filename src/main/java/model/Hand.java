@@ -16,8 +16,10 @@ public class Hand {
 		unsortedTiles = FXCollections.observableArrayList();
 		tiles = new SortedList<>(unsortedTiles, Comparator.naturalOrder());
 	}
-	public Hand(Hand another) { 
-		this.tiles = FXCollections.observableArrayList(another.tiles);
+
+	public Hand(Hand tile) {
+		unsortedTiles = FXCollections.observableArrayList(tile.getTiles());
+		tiles = new SortedList<>(unsortedTiles, Comparator.naturalOrder());
 	}
 
 	public boolean addTile(ObservableTile tile) {
@@ -30,5 +32,9 @@ public class Hand {
 
 	public ObservableList<ObservableTile> getTiles() {
 		return tiles;
+	}
+
+	public ObservableList<ObservableTile> getUnsortedTiles() {
+		return unsortedTiles;
 	}
 }
