@@ -1,6 +1,6 @@
 package ai;
 import model.Meld;
-import model.Tile;
+import model.observable.ObservableTile;
 import model.Game;
 import model.Hand;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class AIStrategy2 implements AIStrategy {
 
 		if (game.getTable().size() == 0) {
 			logger.debug("NO MELDS ON TABLE. AIStrategy2 WON'T PLAY FIRST HAND");
-			game.endTurn();
+			game.endTurn(this.hand);
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class AIStrategy2 implements AIStrategy {
 				setTotal += meld.getValue();
 			}
 		} else {
-			game.drawTurn(this.hand);
+			game.endTurn(this.hand);
 			return;
 		}
 
@@ -63,7 +63,7 @@ public class AIStrategy2 implements AIStrategy {
 			int fakeSetTotal = 0;
 			Hand fakeHand = new Hand(this.hand);
 			for (Meld meld : runMelds) {
-				for (Tile t : meld.getMeld()) {
+				for (ObservableTile t : meld.getMeld()) {
 					fakeHand.removeTile(t);
 				}
 			}
@@ -88,17 +88,17 @@ public class AIStrategy2 implements AIStrategy {
 				// show on GUI somehow.
 
 				playedFirstHand = true;
-				game.endTurn();
+				game.endTurn(this.hand);
 				return;
 			} else {
-				game.drawTurn(this.hand);
+				game.endTurn(this.hand);
 				return;
 			}
 		} else {
 			int fakeRunTotal = 0;
 			Hand fakeHand = new Hand(this.hand);
 			for (Meld meld : setMelds) {
-				for (Tile t : meld.getMeld()) {
+				for (ObservableTile t : meld.getMeld()) {
 					fakeHand.removeTile(t);
 				}
 			}
@@ -123,10 +123,10 @@ public class AIStrategy2 implements AIStrategy {
 				// show on GUI somehow.
 
 				playedFirstHand = true;
-				game.endTurn();
+				game.endTurn(this.hand);
 				return;
 			} else {
-				game.drawTurn(this.hand);
+				game.endTurn(this.hand);
 				return;
 			}
 		}
@@ -135,7 +135,7 @@ public class AIStrategy2 implements AIStrategy {
 	@Override
 	public void regularStrategy() {
 		logger.debug("TODO: AIStrategy2 regularStrategy()");
-		game.endTurn();
+		game.endTurn(this.hand);
 	}
 
 		public ArrayList<Meld> findRunsInHand(Hand hand) {
@@ -168,7 +168,7 @@ public class AIStrategy2 implements AIStrategy {
 		ArrayList melds = new ArrayList<Meld>();
 		Meld meld;
 
-		hand.getTiles().sort((Tile t1, Tile t2)->Integer.compare(t1.getRank(), t2.getRank()));
+		hand.getTiles().sort((ObservableTile t1, ObservableTile t2)->Integer.compare(t1.getRank(), t2.getRank()));
 
 		for (int i = 0; i < hand.getTiles().size() - 2; i++) {
 			if ((hand.getTiles().get(i+1).getRank() == hand.getTiles().get(i).getRank()) && 
