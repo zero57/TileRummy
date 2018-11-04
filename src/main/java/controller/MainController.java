@@ -31,9 +31,6 @@ public class MainController {
 	@FXML
 	private JFXButton btnEndTurn;
 
-	@FXML
-	private JFXButton btnDrawTile;
-	
 	private Game game;
 
 	public MainController() {
@@ -87,8 +84,7 @@ public class MainController {
 		});
 
 		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
-		btnDrawTile.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
-		btnDrawTile.disableProperty().bind(game.getNPCTurn());
+		btnEndTurn.disableProperty().bind(game.getNPCTurn());
 
 		game.dealInitialTiles();
 	}
