@@ -8,6 +8,8 @@ import javafx.collections.ObservableList;
 import model.observable.ObservableMeld;
 import model.observable.ObservableTile;
 
+import java.util.Optional;
+
 public class Game {
 	private Stock stock;
 	private Hand player1Hand;
@@ -35,15 +37,16 @@ public class Game {
 
 	public void dealInitialTiles() {
 		for (int i = 0; i < 14; i++) {
-			player1Hand.addTile(drawTile());
-			player2Hand.addTile(drawTile());
-			player3Hand.addTile(drawTile());
-			player4Hand.addTile(drawTile());
+			drawTile().ifPresent(t -> player1Hand.addTile(t));
+			drawTile().ifPresent(t -> player2Hand.addTile(t));
+			drawTile().ifPresent(t -> player3Hand.addTile(t));
+			drawTile().ifPresent(t -> player4Hand.addTile(t));
 		}
 	}
 
-	public ObservableTile drawTile() {
+	public Optional<ObservableTile> drawTile() {
 		return stock.draw();
+
 	}
 
 	public Hand getCurrentPlayerhand() {
@@ -86,7 +89,7 @@ public class Game {
 		}
 
 		if (noTilesAddedThisTurn()) {
-			hand.addTile(drawTile());
+			drawTile().ifPresent(hand::addTile);
 		}
 		playAllTiles();
 		playerTurn.set((playerTurn.getValue() + 1) % 4);
