@@ -9,6 +9,7 @@ import model.Game;
 
 import ai.AIStrategy1;
 
+import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,24 +20,24 @@ import static org.hamcrest.Matchers.contains;
 
 public class AIStrategy1Test {
 
-	private AIStrategy1 ai1;
+	private AIPlayer ai1;
 	private Hand hand;
 	private ArrayList<Meld> melds;
 
 	@BeforeEach
 	public void setUp() {
 		hand = new Hand();
-		hand.addTile(new Tile(3, Tile.Colours.RED));
-		hand.addTile(new Tile(5, Tile.Colours.RED));
-		hand.addTile(new Tile(4, Tile.Colours.RED));
-		hand.addTile(new Tile(3, Tile.Colours.BLUE));
-		hand.addTile(new Tile(3, Tile.Colours.GREEN));
+		hand.addTile(new ObservableTile(3, Tile.Colours.RED));
+		hand.addTile(new ObservableTile(5, Tile.Colours.RED));
+		hand.addTile(new ObservableTile(4, Tile.Colours.RED));
+		hand.addTile(new ObservableTile(3, Tile.Colours.BLUE));
+		hand.addTile(new ObservableTile(3, Tile.Colours.GREEN));
 		melds = new ArrayList<Meld>();
-		ai1 = new AIStrategy1(new Game(), hand);
+		ai1 = new AIPlayer(1,new Game(), hand);
 	}
 
 	@Test
 	public void testFindRunsInHand() {
-		melds = ai1.findRunsInHand();
+		melds = ((AIStrategy1)ai1.getAiStrategy()).findRunsInHand(ai1.getHand());
 	}
 }
