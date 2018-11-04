@@ -11,6 +11,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 
 public class TileTest {
 	private ObservableList<Tile> tiles;
@@ -41,15 +43,15 @@ public class TileTest {
 
 	@Test
 	public void testComparableSameRankDifferentColours() {
-		assertThat(t1.compareTo(t4), is(-1));
-		assertThat(t3.compareTo(t5), is(1));
+		assertThat(t1.compareTo(t4), is(lessThan(0)));
+		assertThat(t3.compareTo(t5), is(greaterThan(0)));
 	}
 
 	@Test
 	public void testComparableDifferentRankDifferentColours() {
-		assertThat(t1.compareTo(t5), is(-1));
-		assertThat(t5.compareTo(t3), is(-1));
-		assertThat(t3.compareTo(t2), is(1));
+		assertThat(t1.compareTo(t5), is(lessThan(0)));
+		assertThat(t5.compareTo(t3), is(lessThan(0)));
+		assertThat(t3.compareTo(t2), is(greaterThan(0)));
 	}
 
 	@Test
