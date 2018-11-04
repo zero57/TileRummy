@@ -5,9 +5,8 @@ import model.Tile;
 public class ObservableTile extends Tile {
 	private boolean beenPlayed;
 
-	public ObservableTile(Tile tile) {
-		super(tile.getRank(), tile.getColour());
-		beenPlayed = false;
+	public ObservableTile(int rank, Colours colour) {
+		super(rank, colour);
 	}
 
 	public void play() {

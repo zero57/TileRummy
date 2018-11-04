@@ -6,15 +6,16 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import model.Tile;
+import model.observable.ObservableTile;
 
 public class TileButton extends JFXButton {
 
-	private final Tile tile;
+	private final ObservableTile tile;
 	private IntegerProperty row;
 	private IntegerProperty col;
 	private BooleanProperty originatesFromTable;
 
-	public TileButton(Tile tile, boolean hide, int row, int col) {
+	public TileButton(ObservableTile tile, boolean hide, int row, int col) {
 		super(Integer.toString(tile.getRank()));
 		this.tile = tile;
 		switch (tile.getColour()) {
@@ -40,7 +41,7 @@ public class TileButton extends JFXButton {
 		this.originatesFromTable.bind(this.row.greaterThanOrEqualTo(0).and(this.col.greaterThanOrEqualTo(0)));
 	}
 
-	public Tile getTile() {
+	public ObservableTile getTile() {
 		return tile;
 	}
 

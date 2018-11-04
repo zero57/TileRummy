@@ -1,5 +1,6 @@
 package model;
 
+import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ public class StockTest {
 
 	@Test
 	public void testStockShuffle() {
-		List<Tile> unshuffledTiles = new ArrayList<>(stock.getStock());
+		var unshuffledTiles = new ArrayList<>(stock.getStock());
 		// Check that unshuffled cards is the same as the base deck
 		assertThat(stock.getStock(), contains(unshuffledTiles.toArray()));
 		stock.shuffle();
@@ -39,15 +40,15 @@ public class StockTest {
 
 	@Test
 	public void testStockDraw() {
-		Tile tile = stock.draw();
+		ObservableTile tile = stock.draw();
 		assertThat(stock.getStock(), hasSize(103));
 		assertThat(stock.getStock(), not(hasItem(tile)));
 	}
 
 	@Test
 	public void testStockDoubleDraw() {
-		Tile tile1 = stock.draw();
-		Tile tile2 = stock.draw();
+		ObservableTile tile1 = stock.draw();
+		ObservableTile tile2 = stock.draw();
 		assertThat(tile1, is(not(tile2)));
 	}
 }

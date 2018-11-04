@@ -15,12 +15,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		logger.info("Creating window and stage for Tile Rummy");
-		final int width = 640;
-		final int height = 480;
+		final var width = 640;
+		final var height = 480;
 
-		JFXDecorator decorator = new JFXDecorator(stage, FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/MainView.fxml"))));
+		var decorator = new JFXDecorator(stage, FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/MainView.fxml"))));
 		decorator.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource("css/window.css")).toExternalForm());
-		Scene scene = new Scene(decorator, width, height);
+		var scene = new Scene(decorator, width, height);
 		stage.setTitle("Tile Rummy");
 		stage.setScene(scene);
 		stage.show();

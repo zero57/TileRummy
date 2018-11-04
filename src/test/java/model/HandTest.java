@@ -1,9 +1,8 @@
 package model;
 
+import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -18,19 +17,19 @@ public class HandTest {
 
 	@Test
 	public void testHandAddAndRemove() {
-		Tile t1 = new Tile(7, Tile.Colours.GREEN);
-		Tile t2 = new Tile(12, Tile.Colours.ORANGE);
-		Tile t3 = new Tile(3, Tile.Colours.RED);
-		Tile t4 = new Tile(2, Tile.Colours.BLUE);
-		Tile t5 = new Tile(9, Tile.Colours.RED);
-		Tile t6 = new Tile(10, Tile.Colours.ORANGE);
-		Tile t7 = new Tile(5, Tile.Colours.GREEN);
-		Tile t8 = new Tile(11, Tile.Colours.GREEN);
-		Tile t9 = new Tile(6, Tile.Colours.RED);
-		Tile t10 = new Tile(1, Tile.Colours.BLUE);
-		Tile t11 = new Tile(4, Tile.Colours.ORANGE);
-		Tile t12 = new Tile(13, Tile.Colours.BLUE);
-		Tile t13 = new Tile(8, Tile.Colours.RED);
+		var t1 = new ObservableTile(7, Tile.Colours.GREEN);
+		var t2 = new ObservableTile(12, Tile.Colours.ORANGE);
+		var t3 = new ObservableTile(3, Tile.Colours.RED);
+		var t4 = new ObservableTile(2, Tile.Colours.BLUE);
+		var t5 = new ObservableTile(9, Tile.Colours.RED);
+		var t6 = new ObservableTile(10, Tile.Colours.ORANGE);
+		var t7 = new ObservableTile(5, Tile.Colours.GREEN);
+		var t8 = new ObservableTile(11, Tile.Colours.GREEN);
+		var t9 = new ObservableTile(6, Tile.Colours.RED);
+		var t10 = new ObservableTile(1, Tile.Colours.BLUE);
+		var t11 = new ObservableTile(4, Tile.Colours.ORANGE);
+		var t12 = new ObservableTile(13, Tile.Colours.BLUE);
+		var t13 = new ObservableTile(8, Tile.Colours.RED);
 		hand.addTile(t1);
 		hand.addTile(t2);
 		hand.addTile(t3);

@@ -42,7 +42,7 @@ public class Game {
 		}
 	}
 
-	public Tile drawTile() {
+	public ObservableTile drawTile() {
 		return stock.draw();
 	}
 
@@ -81,29 +81,31 @@ public class Game {
 	}
 
 	public void endTurn(Hand hand) {
-		if(allMeldsValid()){
-			if(noTilesAddedThisTurn()){
-				hand.addTile(drawTile());
-			}
-			playAllTiles();
-			playerTurn.set((playerTurn.getValue() + 1) % 4);
+		if (!allMeldsValid()) {
+			return;
 		}
+
+		if (noTilesAddedThisTurn()) {
+			hand.addTile(drawTile());
+		}
+		playAllTiles();
+		playerTurn.set((playerTurn.getValue() + 1) % 4);
 	}
 
-	private boolean allMeldsValid(){
-		for (Meld meld:table) {
-			if(!meld.isValidLength()){
+	private boolean allMeldsValid() {
+		for (Meld meld : table) {
+			if (!meld.isValidLength()) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private boolean noTilesAddedThisTurn(){
-		for (Meld meld:table) {
-			for (Tile tile:meld.getMeld()) {
+	private boolean noTilesAddedThisTurn() {
+		for (Meld meld : table) {
+			for (ObservableTile tile : meld.getMeld()) {
 				//if a tile is unplayed, that means tiles have been added to the table this turn
-				if(!((ObservableTile)tile).hasBeenPlayed()){
+				if (!tile.hasBeenPlayed()) {
 					return false;
 				}
 			}
@@ -112,7 +114,7 @@ public class Game {
 	}
 
 	private void playAllTiles() {
-		table.forEach(meld-> meld.getMeld().forEach(tile -> ((ObservableTile)tile).play()));
+		table.forEach(meld -> meld.getMeld().forEach(ObservableTile::play));
 	}
 
 	public BooleanBinding getNPCTurn() {
@@ -131,11 +133,11 @@ public class Game {
 		return table;
 	}
 
-	public boolean removeTileFromTable(Tile tile, int row, int col) {
+	public boolean removeTileFromTable(ObservableTile tile, int row, int col) {
 		for (ObservableMeld meld : table) {
 			// Assume that there exists at least one tile in the Meld, as we do not allow empty melds to exist on the table
-			Tile firstTile = meld.getMeld().get(0);
-			Tile lastTile = meld.getMeld().get(meld.getSize() - 1);
+			ObservableTile firstTile = meld.getMeld().get(0);
+			ObservableTile lastTile = meld.getMeld().get(meld.getSize() - 1);
 
 			// In the same row
 			if (row == meld.getRow()) {
@@ -185,7 +187,7 @@ public class Game {
 		return meldOnLeft && meldOnRight;
 	}
 
-	public boolean addTileToTable(Tile tile, int row, int col) {
+	public boolean addTileToTable(ObservableTile tile, int row, int col) {
 		boolean success = false;
 
 		if (meldExistsOnTheLeftAndRightOfCell(row, col)) {
