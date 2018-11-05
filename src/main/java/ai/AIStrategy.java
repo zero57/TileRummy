@@ -6,6 +6,7 @@ import model.Meld;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.Comparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,22 +214,21 @@ public abstract class AIStrategy {
 		ArrayList melds = new ArrayList<Meld>();
 		Meld meld;
 
-		hand.getUnsortedTiles().sort((ObservableTile t1, ObservableTile t2) -> Integer.compare(t1.getRank(), t2.getRank()));
-
-		for (int i = 0; i < hand.getTiles().size() - 2; i++) {
-			if ((hand.getTiles().get(i + 1).getRank() == hand.getTiles().get(i).getRank()) &&
-					(hand.getTiles().get(i + 2).getRank() == hand.getTiles().get(i + 1).getRank())) {
-				if ((hand.getTiles().get(i + 1).getColour() != hand.getTiles().get(i).getColour()) &&
-						(hand.getTiles().get(i + 1).getColour() != hand.getTiles().get(i + 2).getColour()) &&
-						(hand.getTiles().get(i).getColour() != hand.getTiles().get(i + 2).getColour())) {
+		hand.getUnsortedTiles().sort(Comparator.comparing(ObservableTile::getRank).thenComparing(ObservableTile::getColour));
+		for (int i = 0; i < hand.getUnsortedTiles().size() - 2; i++) {
+			if ((hand.getUnsortedTiles().get(i + 1).getRank() == hand.getUnsortedTiles().get(i).getRank()) &&
+					(hand.getUnsortedTiles().get(i + 2).getRank() == hand.getUnsortedTiles().get(i + 1).getRank())) {
+				if ((hand.getUnsortedTiles().get(i + 1).getColour() != hand.getUnsortedTiles().get(i).getColour()) &&
+						(hand.getUnsortedTiles().get(i + 1).getColour() != hand.getUnsortedTiles().get(i + 2).getColour()) &&
+						(hand.getUnsortedTiles().get(i).getColour() != hand.getUnsortedTiles().get(i + 2).getColour())) {
 					meld = new Meld();
-					meld.addLastTile(hand.getTiles().get(i));
-					meld.addLastTile(hand.getTiles().get(i + 1));
-					meld.addLastTile(hand.getTiles().get(i + 2));
+					meld.addLastTile(hand.getUnsortedTiles().get(i));
+					meld.addLastTile(hand.getUnsortedTiles().get(i + 1));
+					meld.addLastTile(hand.getUnsortedTiles().get(i + 2));
 
-					if ((i < hand.getTiles().size() - 1)) {
-						if (meld.isValidLastTile(hand.getTiles().get(i + 1))) {
-							meld.addLastTile(hand.getTiles().get(i + 1));
+					if ((i < hand.getUnsortedTiles().size() - 1)) {
+						if (meld.isValidLastTile(hand.getUnsortedTiles().get(i + 1))) {
+							meld.addLastTile(hand.getUnsortedTiles().get(i + 1));
 							i++;
 						}
 					}
