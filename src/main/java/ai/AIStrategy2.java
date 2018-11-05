@@ -25,9 +25,14 @@ public class AIStrategy2 extends AIStrategy {
 
 	@Override
 	void regularStrategy() {
-		boolean success = attemptRegularStrategy();
-		if (success) {
-			logger.debug("AIStrategy2 PLAYED A HAND");
+		if(attemptToPlayAllTiles()){
+			logger.debug("AIStrategy2 PLAYED ALL ITS TILES");
+			return;
 		}
+		if(playConservative()){
+			logger.debug("AIStrategy2 PLAYED A HAND");
+			return;
+		}
+		logger.debug("AIStrategy2 DRAWS A TILE");
 	}
 }
