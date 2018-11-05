@@ -17,6 +17,7 @@ public class GameTest {
 	@BeforeEach
 	public void setUp() {
 		game = new Game();
+		game.setStock(new Stock().shuffle());
 	}
 
 	@Test

@@ -37,4 +37,8 @@ public class Hand {
 	public ObservableList<ObservableTile> getUnsortedTiles() {
 		return unsortedTiles;
 	}
+
+	public void clear() {
+		unsortedTiles.clear();
+	}
 }
