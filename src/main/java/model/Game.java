@@ -1,5 +1,8 @@
 package model;
 
+import ai.AIPlayer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -20,6 +23,9 @@ public class Game {
 
 	private BooleanBinding isNPCTurn;
 	private IntegerProperty playerTurn;
+	private AIPlayer ai1;
+	private AIPlayer ai2;
+	private AIPlayer ai3;
 
 	public Game() {
 		table = FXCollections.observableArrayList();
@@ -33,6 +39,21 @@ public class Game {
 
 		playerTurn = new SimpleIntegerProperty(0);
 		isNPCTurn = playerTurn.greaterThanOrEqualTo(1);
+
+		ai1 = new AIPlayer(1,this, player2Hand);
+		ai2 = new AIPlayer(2,this, player3Hand);
+		ai3 = new AIPlayer(3,this, player4Hand);
+
+		playerTurn.addListener((observableValue, oldVal, newVal) -> {
+            switch ((int)newVal) {
+                case 1:
+                    ai1.playTurn(); break;
+                case 2:
+                    ai2.playTurn(); break;
+                case 3:
+                    ai3.playTurn(); break;
+                }
+            });
 	}
 
 	public void dealInitialTiles() {

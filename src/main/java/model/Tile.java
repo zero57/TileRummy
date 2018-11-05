@@ -17,6 +17,11 @@ public class Tile implements Comparable<Tile> {
 		return rank;
 	}
 
+	public Tile(Tile another) {
+		this.rank = another.rank;
+		this.colour = another.colour;
+	}
+
 	public Colours getColour() {
 		return colour;
 	}
