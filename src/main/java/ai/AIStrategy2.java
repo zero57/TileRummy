@@ -1,18 +1,7 @@
 package ai;
 
-import model.Meld;
-import model.observable.ObservableTile;
 import model.Game;
 import model.Hand;
-
-import java.util.ArrayList;
-
-import javafx.collections.FXCollections;
-
-import java.util.Comparator;
-import java.lang.Integer;
-
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class AIStrategy2 extends AIStrategy {
@@ -36,6 +25,14 @@ public class AIStrategy2 extends AIStrategy {
 
 	@Override
 	void regularStrategy() {
-		logger.debug("TODO: AIStrategy2 regularStrategy()");
+		if(attemptToPlayAllTiles()){
+			logger.debug("AIStrategy2 PLAYED ALL ITS TILES");
+			return;
+		}
+		if(playConservative()){
+			logger.debug("AIStrategy2 PLAYED A HAND");
+			return;
+		}
+		logger.debug("AIStrategy2 DRAWS A TILE");
 	}
 }

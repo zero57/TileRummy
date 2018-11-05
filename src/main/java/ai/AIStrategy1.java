@@ -1,20 +1,7 @@
 package ai;
 
-import model.Meld;
-import model.observable.ObservableTile;
 import model.Game;
-import model.observable.ObservableMeld;
 import model.Hand;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import javafx.collections.FXCollections;
-
-import java.util.Comparator;
-import java.lang.Integer;
-
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class AIStrategy1 extends AIStrategy {
@@ -32,8 +19,9 @@ public class AIStrategy1 extends AIStrategy {
 		return success;
 	}
 
+	@Override
 	void regularStrategy() {
-		boolean success = attemptRegularStrategy();
+		boolean success = playLiberal();
 		if (success) {
 			logger.debug("AIStrategy1 PLAYED A HAND");
 		}
