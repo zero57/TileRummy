@@ -1,18 +1,7 @@
 package ai;
 
-import model.Meld;
-import model.observable.ObservableTile;
 import model.Game;
 import model.Hand;
-
-import java.util.ArrayList;
-
-import javafx.collections.FXCollections;
-
-import java.util.Comparator;
-import java.lang.Integer;
-
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class AIStrategy3 extends AIStrategy {
