@@ -33,7 +33,7 @@ public class AIStrategy1 extends AIStrategy {
 	}
 
 	void regularStrategy() {
-		boolean success = attemptRegularStrategy();
+		boolean success = playLiberal();
 		if (success) {
 			logger.debug("AIStrategy1 PLAYED A HAND");
 		}
