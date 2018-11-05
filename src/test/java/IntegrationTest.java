@@ -792,6 +792,159 @@ class IntegrationTest {
 		assertThat(game.getTable().get(3).getType(), is(Meld.Types.RUN));
 	}
 
+	@Test
+	void testPlayerWinsOnFirstTurn(FxRobot robot) {
+		var t1 = new ObservableTile(1, Tile.Colours.RED);
+		var t2 = new ObservableTile(2, Tile.Colours.RED);
+		var t3 = new ObservableTile(3, Tile.Colours.RED);
+		var t4 = new ObservableTile(4, Tile.Colours.RED);
+		var t5 = new ObservableTile(5, Tile.Colours.RED);
+		var t6 = new ObservableTile(6, Tile.Colours.RED);
+		var t7 = new ObservableTile(7, Tile.Colours.RED);
+		var t8 = new ObservableTile(1, Tile.Colours.BLUE);
+		var t9 = new ObservableTile(2, Tile.Colours.BLUE);
+		var t10 = new ObservableTile(3, Tile.Colours.BLUE);
+		var t11 = new ObservableTile(4, Tile.Colours.BLUE);
+		var t12 = new ObservableTile(5, Tile.Colours.BLUE);
+		var t13 = new ObservableTile(6, Tile.Colours.BLUE);
+		var t14 = new ObservableTile(7, Tile.Colours.BLUE);
+		robot.interact(() -> {
+			game.setStock(new Stock().shuffle());
+			game.setStock(new Stock(new ArrayList<>(List.of(
+					// Player 1
+					t1, t2, t3, t4, t5, t6, t7,
+					t8, t9, t10, t11, t12, t13, t14,
+					// Todo: clean this up
+					// Player 2
+					new ObservableTile(1, Tile.Colours.RED),
+					new ObservableTile(2, Tile.Colours.RED),
+					new ObservableTile(3, Tile.Colours.RED),
+					new ObservableTile(4, Tile.Colours.RED),
+					new ObservableTile(5, Tile.Colours.RED),
+					new ObservableTile(6, Tile.Colours.RED),
+					new ObservableTile(7, Tile.Colours.RED),
+					new ObservableTile(8, Tile.Colours.RED),
+					new ObservableTile(9, Tile.Colours.RED),
+					new ObservableTile(10, Tile.Colours.RED),
+					new ObservableTile(11, Tile.Colours.RED),
+					new ObservableTile(12, Tile.Colours.RED),
+					new ObservableTile(13, Tile.Colours.RED),
+					new ObservableTile(8, Tile.Colours.RED),
+					// Player 3
+					new ObservableTile(9, Tile.Colours.RED),
+					new ObservableTile(10, Tile.Colours.RED),
+					new ObservableTile(11, Tile.Colours.RED),
+					new ObservableTile(12, Tile.Colours.RED),
+					new ObservableTile(13, Tile.Colours.RED),
+					new ObservableTile(1, Tile.Colours.BLUE),
+					new ObservableTile(2, Tile.Colours.BLUE),
+					new ObservableTile(3, Tile.Colours.BLUE),
+					new ObservableTile(4, Tile.Colours.BLUE),
+					new ObservableTile(5, Tile.Colours.BLUE),
+					new ObservableTile(6, Tile.Colours.BLUE),
+					new ObservableTile(7, Tile.Colours.BLUE),
+					new ObservableTile(8, Tile.Colours.BLUE),
+					new ObservableTile(9, Tile.Colours.BLUE),
+					// Player 4
+					new ObservableTile(10, Tile.Colours.BLUE),
+					new ObservableTile(11, Tile.Colours.BLUE),
+					new ObservableTile(12, Tile.Colours.BLUE),
+					new ObservableTile(13, Tile.Colours.BLUE),
+					new ObservableTile(8, Tile.Colours.BLUE),
+					new ObservableTile(9, Tile.Colours.BLUE),
+					new ObservableTile(10, Tile.Colours.BLUE),
+					new ObservableTile(11, Tile.Colours.BLUE),
+					new ObservableTile(12, Tile.Colours.BLUE),
+					new ObservableTile(13, Tile.Colours.BLUE),
+					new ObservableTile(1, Tile.Colours.GREEN),
+					new ObservableTile(2, Tile.Colours.GREEN),
+					new ObservableTile(3, Tile.Colours.GREEN),
+					// Remaining tiles
+					new ObservableTile(4, Tile.Colours.GREEN),
+					new ObservableTile(5, Tile.Colours.GREEN),
+					new ObservableTile(6, Tile.Colours.GREEN),
+					new ObservableTile(7, Tile.Colours.GREEN),
+					new ObservableTile(8, Tile.Colours.GREEN),
+					new ObservableTile(9, Tile.Colours.GREEN),
+					new ObservableTile(10, Tile.Colours.GREEN),
+					new ObservableTile(11, Tile.Colours.GREEN),
+					new ObservableTile(12, Tile.Colours.GREEN),
+					new ObservableTile(13, Tile.Colours.GREEN),
+					new ObservableTile(1, Tile.Colours.GREEN),
+					new ObservableTile(2, Tile.Colours.GREEN),
+					new ObservableTile(3, Tile.Colours.GREEN),
+					new ObservableTile(4, Tile.Colours.GREEN),
+					new ObservableTile(5, Tile.Colours.GREEN),
+					new ObservableTile(6, Tile.Colours.GREEN),
+					new ObservableTile(7, Tile.Colours.GREEN),
+					new ObservableTile(8, Tile.Colours.GREEN),
+					new ObservableTile(9, Tile.Colours.GREEN),
+					new ObservableTile(10, Tile.Colours.GREEN),
+					new ObservableTile(11, Tile.Colours.GREEN),
+					new ObservableTile(12, Tile.Colours.GREEN),
+					new ObservableTile(13, Tile.Colours.GREEN),
+					new ObservableTile(1, Tile.Colours.ORANGE),
+					new ObservableTile(2, Tile.Colours.ORANGE),
+					new ObservableTile(3, Tile.Colours.ORANGE),
+					new ObservableTile(4, Tile.Colours.ORANGE),
+					new ObservableTile(5, Tile.Colours.ORANGE),
+					new ObservableTile(6, Tile.Colours.ORANGE),
+					new ObservableTile(7, Tile.Colours.ORANGE),
+					new ObservableTile(8, Tile.Colours.ORANGE),
+					new ObservableTile(9, Tile.Colours.ORANGE),
+					new ObservableTile(10, Tile.Colours.ORANGE),
+					new ObservableTile(11, Tile.Colours.ORANGE),
+					new ObservableTile(12, Tile.Colours.ORANGE),
+					new ObservableTile(13, Tile.Colours.ORANGE),
+					new ObservableTile(1, Tile.Colours.ORANGE),
+					new ObservableTile(2, Tile.Colours.ORANGE),
+					new ObservableTile(3, Tile.Colours.ORANGE),
+					new ObservableTile(4, Tile.Colours.ORANGE),
+					new ObservableTile(5, Tile.Colours.ORANGE),
+					new ObservableTile(6, Tile.Colours.ORANGE),
+					new ObservableTile(7, Tile.Colours.ORANGE),
+					new ObservableTile(8, Tile.Colours.ORANGE),
+					new ObservableTile(9, Tile.Colours.ORANGE),
+					new ObservableTile(10, Tile.Colours.ORANGE),
+					new ObservableTile(11, Tile.Colours.ORANGE),
+					new ObservableTile(12, Tile.Colours.ORANGE),
+					new ObservableTile(13, Tile.Colours.ORANGE)
+			))));
+			game.dealInitialTiles();
+		});
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t1))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 0));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t2))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 1));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t3))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 2));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t4))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 3));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t5))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 4));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t6))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 5));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t7))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 6));
+
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t8))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 0));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t9))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 1));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t10))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 2));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t11))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 3));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t12))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 4));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t13))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 5));
+		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t14))
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 6));
+
+		assertThat(game.getWinnerProperty().get(), is(1));
+	}
+
 	TileButton findTileButtonInPane(Pane pane, ObservableTile tile) {
 		return pane.getChildren()
 				.stream()
