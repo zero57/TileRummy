@@ -14,3 +14,5 @@ addons:
   apt:
     packages:
       - openjdk-11-jdk
+
+script: mvn test
