@@ -2,8 +2,6 @@ package model;
 
 import ai.AIPlayer;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -11,11 +9,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.observable.ObservableMeld;
 import model.observable.ObservableTile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.reactfx.value.Var;
 
 import java.util.Optional;
 
 public class Game {
+	private static final Logger logger = LogManager.getLogger(Game.class.getName());
+
 	private Stock stock;
 	private Hand player1Hand;
 	private Hand player2Hand;
@@ -25,6 +27,7 @@ public class Game {
 
 	private BooleanBinding isNPCTurn;
 	private Var<Integer> playerTurn;
+	private IntegerProperty winner;
 	private AIPlayer ai1;
 	private AIPlayer ai2;
 	private AIPlayer ai3;
@@ -33,7 +36,7 @@ public class Game {
 	// This is because we need to be able to set up the game for integration testing
 	public Game() {
 		table = FXCollections.observableArrayList();
-
+		winner = new SimpleIntegerProperty(-1);
 		player1Hand = new Hand();
 		player2Hand = new Hand();
 		player3Hand = new Hand();
@@ -47,20 +50,47 @@ public class Game {
 			return false;
 		}, playerTurn);
 
-		ai1 = new AIPlayer(1,this, player2Hand);
-		ai2 = new AIPlayer(2,this, player3Hand);
-		ai3 = new AIPlayer(3,this, player4Hand);
+		ai1 = new AIPlayer(1, this, player2Hand);
+		ai2 = new AIPlayer(2, this, player3Hand);
+		ai3 = new AIPlayer(3, this, player4Hand);
 
+		player1Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
+			if (newVal.intValue() == 0 && allMeldsValid()) {
+				logger.info("Player 1 is the winner!");
+				winner.setValue(1);
+			}
+		});
+		player2Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
+			if (newVal.intValue() == 0 && allMeldsValid()) {
+				logger.info("Player 2 is the winner!");
+				winner.setValue(2);
+			}
+		});
+		player3Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
+			if (newVal.intValue() == 0 && allMeldsValid()) {
+				logger.info("Player 3 is the winner!");
+				winner.setValue(3);
+			}
+		});
+		player4Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
+			if (newVal.intValue() == 0 && allMeldsValid()) {
+				logger.info("Player 4 is the winner!");
+				winner.setValue(4);
+			}
+		});
 		playerTurn.addListener((observableValue, oldVal, newVal) -> {
-            switch ((int)newVal) {
-                case 1:
-                    ai1.playTurn(); break;
-                case 2:
-                    ai2.playTurn(); break;
-                case 3:
-                    ai3.playTurn(); break;
-                }
-            });
+			switch ((int) newVal) {
+				case 1:
+					ai1.playTurn();
+					break;
+				case 2:
+					ai2.playTurn();
+					break;
+				case 3:
+					ai3.playTurn();
+					break;
+			}
+		});
 	}
 
 	public void setStock(Stock stock) {
@@ -69,6 +99,7 @@ public class Game {
 
 	public void resetGame() {
 		table.clear();
+		winner.setValue(-1);
 		playerTurn.setValue(0);
 		player1Hand.clear();
 		player2Hand.clear();
@@ -89,6 +120,10 @@ public class Game {
 		for (int i = 0; i < 14; i++) {
 			drawTile().ifPresent(t -> player4Hand.addTile(t));
 		}
+	}
+
+	public IntegerProperty getWinnerProperty() {
+		return winner;
 	}
 
 	public Optional<ObservableTile> drawTile() {

@@ -1,0 +1,18 @@
+language: java
+sudo: false   # Linux OS: run in container
+
+matrix:
+  include:
+    # Ubuntu Linux (trusty) / Oracle JDK 11 / Headed (AWT Robot)
+    - os: linux
+      dist: trusty
+      jdk: openjdk11
+      env:
+        - _JAVA_OPTIONS="-Dtestfx.robot=awt"
+
+addons:
+  apt:
+    packages:
+      - openjdk-11-jdk
+
+script: mvn test
