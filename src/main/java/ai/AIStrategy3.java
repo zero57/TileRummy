@@ -21,6 +21,9 @@ public class AIStrategy3 extends AIStrategy {
 
 	@Override
 	void regularStrategy() {
-		logger.debug("TODO: AIStrategy3 regularStrategy()");
+		boolean success = attemptRegularStrategy();
+		if (success) {
+			logger.debug("AIStrategy3 PLAYED A HAND");
+		}
 	}
 }
