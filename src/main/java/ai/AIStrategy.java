@@ -241,7 +241,6 @@ public abstract class AIStrategy {
 	}
 
 	void playMeldsToTable(List<Meld> melds) {
-
 		int i = 0;
 		int j = 0;
 		game.getTable().forEach(observableMeld -> melds.add((Meld) observableMeld));
