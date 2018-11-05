@@ -19,6 +19,7 @@ public class AIStrategy1 extends AIStrategy {
 		return success;
 	}
 
+	@Override
 	void regularStrategy() {
 		boolean success = attemptRegularStrategy();
 		if (success) {
