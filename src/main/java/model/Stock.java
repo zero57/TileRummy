@@ -4,17 +4,16 @@ import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 
 public class Stock {
 	private static final Logger logger = LogManager.getLogger(Stock.class.getName());
-	private Stack<ObservableTile> stock;
+	private ArrayList<ObservableTile> stock;
 
-	Stock() {
-		stock = new Stack<>();
+	public Stock() {
+		stock = new ArrayList<>();
 		for (Tile.Colours colour : Tile.Colours.values()) {
 			for (int rank = 1; rank <= 13; rank++) {
 				stock.add(new ObservableTile(rank, colour));
@@ -23,20 +22,25 @@ public class Stock {
 		}
 	}
 
+	public Stock(ArrayList<ObservableTile> tiles) {
+		stock = tiles;
+	}
+
 	public Optional<ObservableTile> draw() {
-		if (stock.empty()) {
+		if (stock.isEmpty()) {
 			logger.debug("Stock is empty!");
 			return Optional.empty();
 		}
-		return Optional.of(stock.pop());
+		return Optional.of(stock.remove(0));
 	}
 
-	public void shuffle() {
+	public Stock shuffle() {
 		Collections.shuffle(stock);
+		return this;
 	}
 
-	public List<ObservableTile> getStock() {
-		return Collections.unmodifiableList(stock);
+	public ArrayList<ObservableTile> getStock() {
+		return stock;
 	}
 
 	public int getSize() {

@@ -1,6 +1,7 @@
 package model;
 
 import ai.AIPlayer;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.binding.BooleanBinding;
@@ -10,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.observable.ObservableMeld;
 import model.observable.ObservableTile;
+import org.reactfx.value.Var;
 
 import java.util.Optional;
 
@@ -22,23 +24,28 @@ public class Game {
 	private ObservableList<ObservableMeld> table;
 
 	private BooleanBinding isNPCTurn;
-	private IntegerProperty playerTurn;
+	private Var<Integer> playerTurn;
 	private AIPlayer ai1;
 	private AIPlayer ai2;
 	private AIPlayer ai3;
 
+	// Note: you must call setStock since we do not do it automatically here
+	// This is because we need to be able to set up the game for integration testing
 	public Game() {
 		table = FXCollections.observableArrayList();
-		stock = new Stock();
-		stock.shuffle();
 
 		player1Hand = new Hand();
 		player2Hand = new Hand();
 		player3Hand = new Hand();
 		player4Hand = new Hand();
 
-		playerTurn = new SimpleIntegerProperty(0);
-		isNPCTurn = playerTurn.greaterThanOrEqualTo(1);
+		playerTurn = Var.newSimpleVar(0);
+		isNPCTurn = Bindings.createBooleanBinding(() -> {
+			if (playerTurn.getValue() >= 1) {
+				return true;
+			}
+			return false;
+		}, playerTurn);
 
 		ai1 = new AIPlayer(1,this, player2Hand);
 		ai2 = new AIPlayer(2,this, player3Hand);
@@ -56,11 +63,30 @@ public class Game {
             });
 	}
 
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
+	public void resetGame() {
+		table.clear();
+		playerTurn.setValue(0);
+		player1Hand.clear();
+		player2Hand.clear();
+		player3Hand.clear();
+		player4Hand.clear();
+	}
+
 	public void dealInitialTiles() {
 		for (int i = 0; i < 14; i++) {
 			drawTile().ifPresent(t -> player1Hand.addTile(t));
+		}
+		for (int i = 0; i < 14; i++) {
 			drawTile().ifPresent(t -> player2Hand.addTile(t));
+		}
+		for (int i = 0; i < 14; i++) {
 			drawTile().ifPresent(t -> player3Hand.addTile(t));
+		}
+		for (int i = 0; i < 14; i++) {
 			drawTile().ifPresent(t -> player4Hand.addTile(t));
 		}
 	}
@@ -112,7 +138,7 @@ public class Game {
 			drawTile().ifPresent(hand::addTile);
 		}
 		playAllTiles();
-		playerTurn.set((playerTurn.getValue() + 1) % 4);
+		playerTurn.setValue((playerTurn.getValue() + 1) % 4);
 	}
 
 	private boolean allMeldsValid() {
@@ -145,10 +171,10 @@ public class Game {
 	}
 
 	public int getPlayerTurn() {
-		return playerTurn.get();
+		return playerTurn.getValue();
 	}
 
-	public IntegerProperty getPlayerTurnProperty() {
+	public Var<Integer> getPlayerTurnProperty() {
 		return playerTurn;
 	}
 

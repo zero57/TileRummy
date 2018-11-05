@@ -8,10 +8,10 @@ import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Game;
 import model.Hand;
-import model.Tile;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -126,4 +126,7 @@ public class NPCHandController {
 		};
 	}
 
+	public Pane getHandPane() {
+		return fpHand;
+	}
 }

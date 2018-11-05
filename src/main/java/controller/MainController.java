@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Game;
@@ -33,6 +34,11 @@ public class MainController {
 
 	private Game game;
 
+	private HandController player1HandController;
+	private NPCHandController player2HandController;
+	private NPCHandController player3HandController;
+	private NPCHandController player4HandController;
+
 	public MainController() {
 		game = new Game();
 	}
@@ -55,19 +61,23 @@ public class MainController {
 			tableView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new HandController(game, 1));
+			player1HandController = new HandController(game, 1);
+			loader.setControllerFactory(c -> player1HandController);
 			player1HandView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new NPCHandController(game, 2));
+			player2HandController = new NPCHandController(game, 2);
+			loader.setControllerFactory(c -> player2HandController);
 			player2HandView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new NPCHandController(game, 3));
+			player3HandController = new NPCHandController(game, 3);
+			loader.setControllerFactory(c -> player3HandController);
 			player3HandView = loader.load();
 
 			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			loader.setControllerFactory(c -> new NPCHandController(game, 4));
+			player4HandController = new NPCHandController(game, 4);
+			loader.setControllerFactory(c -> player4HandController);
 			player4HandView = loader.load();
 		} catch (IOException e) {
 			logger.error("Failed to load fxml files", e);
@@ -85,7 +95,25 @@ public class MainController {
 
 		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
 		btnEndTurn.disableProperty().bind(game.getNPCTurn());
+	}
 
-		game.dealInitialTiles();
+	public Game getGame() {
+		return game;
+	}
+
+	public Pane getPlayer1HandPane() {
+		return player1HandController.getHandPane();
+	}
+
+	public Pane getPlayer2HandPane() {
+		return player2HandController.getHandPane();
+	}
+
+	public Pane getPlayer3HandPane() {
+		return player3HandController.getHandPane();
+	}
+
+	public Pane getPlayer4HandPane() {
+		return player4HandController.getHandPane();
 	}
 }
