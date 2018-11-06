@@ -138,10 +138,8 @@ class IntegrationTest {
 		game.getPlayerTurnProperty().addListener(new ChangeListener<Integer>() {
 			@Override
 			public void changed(ObservableValue<? extends Integer> observableValue, Integer oldVal, Integer newVal) {
-
 				// Verify correct player order and UI display whose turn it is
 				var lblCurrentPlayer = robot.lookup(".label-player-hand:current-turn").queryAs(Label.class);
-				assertThat(newVal, is(oldVal + 1));
 				assertThat(lblCurrentPlayer, is(not(nullValue())));
 				assertThat(lblCurrentPlayer.getText(), is("Player " + newVal));
 

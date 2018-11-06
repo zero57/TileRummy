@@ -79,7 +79,7 @@ public class Game {
 			}
 		});
 		playerTurn.addListener((observableValue, oldVal, newVal) -> {
-			switch ((int) newVal) {
+			switch (newVal) {
 				case 1:
 					ai1.playTurn();
 					break;
