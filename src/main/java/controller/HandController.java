@@ -1,7 +1,6 @@
 package controller;
 
 import factory.TileButtonFactory;
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -56,25 +55,25 @@ public class HandController {
 		logger.info("Initializing Hand for Player " + playerNumber);
 		PseudoClass currentTurn = PseudoClass.getPseudoClass("current-turn");
 		PseudoClass mouseDragEnter = PseudoClass.getPseudoClass("mouse-drag-enter");
-		Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
+		lblPlayerNumber.pseudoClassStateChanged(currentTurn, true);
 		switch (playerNumber) {
 			case 1:
 				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
 					if (newVal.equals(0)) {
-						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, true));
+						lblPlayerNumber.pseudoClassStateChanged(currentTurn, true);
 					} else {
-						Platform.runLater(() -> lblPlayerNumber.pseudoClassStateChanged(currentTurn, false));
+						lblPlayerNumber.pseudoClassStateChanged(currentTurn, false);
 					}
 				});
-				Platform.runLater(() -> lblPlayerNumber.setText("Player 1"));
+				lblPlayerNumber.setText("Player 1");
 				break;
 			default:
 				logger.error("Can't create a HandController for Player " + playerNumber);
 				return;
 		}
 		hand.getTiles().addListener(onTileListChange());
-		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> Platform.runLater(() -> fpHand.pseudoClassStateChanged(mouseDragEnter, true)));
-		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> Platform.runLater(() -> fpHand.pseudoClassStateChanged(mouseDragEnter, false)));
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> fpHand.pseudoClassStateChanged(mouseDragEnter, true));
+		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> fpHand.pseudoClassStateChanged(mouseDragEnter, false));
 		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> {
 			TileButton btn = (TileButton) e.getGestureSource();
 			ObservableTile tile = btn.getTile();
@@ -92,16 +91,15 @@ public class HandController {
 					for (ObservableTile t : change.getAddedSubList()) {
 						var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
 						btn.disableProperty().bind(game.getNPCTurn());
-						Platform.runLater(() -> fpHand.getChildren().add(change.getFrom(), btn));
+						fpHand.getChildren().add(change.getFrom(), btn);
 					}
 				} else if (change.wasRemoved()) {
 					logger.debug(MessageFormat.format("Removing {0} in Player {1}s hand", change.getRemoved().toString(), playerNumber));
-					change.getRemoved().forEach(tile -> {
-						fpHand.getChildren().stream()
-								.filter(b -> ((TileButton) b).getTile().equals(tile))
-								.findAny()
-								.ifPresent(btn -> Platform.runLater(() -> fpHand.getChildren().remove(btn)));
-					});
+					change.getRemoved().forEach(tile -> fpHand.getChildren().removeIf(node -> ((TileButton) node).getTile().equals(tile)));
+					// Must set back to false since when we drag tiles, the root pane stops listening for mouse events
+					// The call for root.setMouseTransparent(false) in the UIHelper's mouse released event does not fire
+					// since we remove the node as soon as we release the mouse
+					root.setMouseTransparent(false);
 				}
 			}
 		};
