@@ -913,34 +913,34 @@ class IntegrationTest {
 			game.dealInitialTiles();
 		});
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t1))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 0));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 0));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t2))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 1));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 1));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t3))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 2));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 2));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t4))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 3));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 3));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t5))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 4));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 4));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t6))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 5));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 5));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t7))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 0, 6));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 6));
 
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t8))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 0));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 0));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t9))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 1));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 1));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t10))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 2));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 2));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t11))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 3));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 3));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t12))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 4));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 4));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t13))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 5));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 5));
 		robot.drag(findTileButtonInPane(controller.getPlayer1HandPane(), t14))
-				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 1, 6));
+				.dropTo(getCellFromGridPane(robot.lookup("#gpTable").queryAs(GridPane.class), 2, 6));
 
 		assertThat(game.getWinnerProperty().get(), is(1));
 	}
