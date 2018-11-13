@@ -11,7 +11,6 @@ import model.observable.ObservableMeld;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.reactfx.value.Var;
 
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public class Game {
 	private ObservableList<ObservableMeld> table;
 
 	private BooleanBinding isNPCTurn;
-	private Var<Integer> playerTurn;
+	private IntegerProperty playerTurn;
 	private IntegerProperty winner;
 	private AIPlayer ai1;
 	private AIPlayer ai2;
@@ -42,13 +41,8 @@ public class Game {
 		player3Hand = new Hand();
 		player4Hand = new Hand();
 
-		playerTurn = Var.newSimpleVar(0);
-		isNPCTurn = Bindings.createBooleanBinding(() -> {
-			if (playerTurn.getValue() >= 1) {
-				return true;
-			}
-			return false;
-		}, playerTurn);
+		playerTurn = new SimpleIntegerProperty(0);
+		isNPCTurn = Bindings.createBooleanBinding(() -> playerTurn.getValue() >= 1, playerTurn);
 
 		ai1 = new AIPlayer(1, this, player2Hand);
 		ai2 = new AIPlayer(2, this, player3Hand);
@@ -79,7 +73,7 @@ public class Game {
 			}
 		});
 		playerTurn.addListener((observableValue, oldVal, newVal) -> {
-			switch ((int) newVal) {
+			switch (newVal.intValue()) {
 				case 1:
 					ai1.playTurn();
 					break;
@@ -209,7 +203,7 @@ public class Game {
 		return playerTurn.getValue();
 	}
 
-	public Var<Integer> getPlayerTurnProperty() {
+	public IntegerProperty getPlayerTurnProperty() {
 		return playerTurn;
 	}
 
