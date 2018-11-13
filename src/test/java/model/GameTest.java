@@ -545,8 +545,11 @@ public class GameTest {
 	public void testPlayerDrawsOneTileIfTheyChooseNotToPlay() {
 		game.endTurn(game.getPlayer1Hand());
 		assertThat(game.getPlayer1Hand().getTiles().size(), is(1));
+		game.endTurn(game.getPlayer2Hand());
 		assertThat(game.getPlayer2Hand().getTiles().size(), is(1));
+		game.endTurn(game.getPlayer3Hand());
 		assertThat(game.getPlayer3Hand().getTiles().size(), is(1));
+		game.endTurn(game.getPlayer4Hand());
 		assertThat(game.getPlayer4Hand().getTiles().size(), is(1));
 	}
 
@@ -670,5 +673,18 @@ public class GameTest {
 		assertThat(game.getTable().get(2).getType(), is(Meld.Types.SET));
 		assertThat(game.getTable().get(3).isValidLength(), is(true));
 		assertThat(game.getTable().get(3).getType(), is(Meld.Types.RUN));
+	}
+
+	@Test
+	public void testCorrectPlayerOrder() {
+		assertThat(game.getPlayerTurn(), is(0));
+		game.endTurn(game.getPlayer1Hand());
+		assertThat(game.getPlayerTurn(), is(1));
+		game.endTurn(game.getPlayer2Hand());
+		assertThat(game.getPlayerTurn(), is(2));
+		game.endTurn(game.getPlayer3Hand());
+		assertThat(game.getPlayerTurn(), is(3));
+		game.endTurn(game.getPlayer4Hand());
+		assertThat(game.getPlayerTurn(), is(0));
 	}
 }

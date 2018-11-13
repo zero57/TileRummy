@@ -1,10 +1,7 @@
 import controller.MainController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -31,8 +28,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
@@ -127,31 +122,6 @@ class IntegrationTest {
 						equalTo(findTileButtonInPane(controller.getPlayer1HandPane(), t13)),
 						equalTo(findTileButtonInPane(controller.getPlayer1HandPane(), t14))
 				)));
-	}
-
-	@Test
-	void testCorrectPlayerOrder(FxRobot robot) {
-		robot.interact(() -> {
-			game.setStock(new Stock().shuffle());
-			game.dealInitialTiles();
-		});
-		game.getPlayerTurnProperty().addListener(new ChangeListener<Integer>() {
-			@Override
-			public void changed(ObservableValue<? extends Integer> observableValue, Integer oldVal, Integer newVal) {
-
-				// Verify correct player order and UI display whose turn it is
-				var lblCurrentPlayer = robot.lookup(".label-player-hand:current-turn").queryAs(Label.class);
-				assertThat(newVal, is(oldVal + 1));
-				assertThat(lblCurrentPlayer, is(not(nullValue())));
-				assertThat(lblCurrentPlayer.getText(), is("Player " + newVal));
-
-				// Remove listener after we finish cycling through player 1 to 4
-				if (newVal.equals(0)) {
-					game.getPlayerTurnProperty().removeListener(this);
-				}
-			}
-		});
-		robot.clickOn("#btnEndTurn");
 	}
 
 	@Test
