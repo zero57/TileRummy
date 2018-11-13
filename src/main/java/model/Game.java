@@ -72,19 +72,6 @@ public class Game {
 				winner.setValue(4);
 			}
 		});
-		playerTurn.addListener((observableValue, oldVal, newVal) -> {
-			switch (newVal.intValue()) {
-				case 1:
-					ai1.playTurn();
-					break;
-				case 2:
-					ai2.playTurn();
-					break;
-				case 3:
-					ai3.playTurn();
-					break;
-			}
-		});
 	}
 
 	public void setStock(Stock stock) {
@@ -156,6 +143,18 @@ public class Game {
 
 	public int getStockSize() {
 		return stock.getSize();
+	}
+
+	public AIPlayer getAI1() {
+		return ai1;
+	}
+
+	public AIPlayer getAI2() {
+		return ai2;
+	}
+
+	public AIPlayer getAI3() {
+		return ai3;
 	}
 
 	public void endTurn(Hand hand) {

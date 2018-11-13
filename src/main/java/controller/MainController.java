@@ -1,6 +1,10 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -90,7 +94,23 @@ public class MainController {
 		bpPlayScreen.setRight(player4HandView);
 		hboxCenter.getChildren().add(0, tableView);
 
-		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerhand()));
+		btnEndTurn.setOnMouseClicked(b -> {
+			Task<Void> sleepTask = new Task<>() {
+				@Override
+				protected Void call() throws Exception {
+					Platform.runLater(() -> game.endTurn(game.getCurrentPlayerhand()));
+					Thread.sleep(1000);
+					Platform.runLater(() -> game.getAI1().playTurn());
+					Thread.sleep(1000);
+					Platform.runLater(() -> game.getAI2().playTurn());
+					Thread.sleep(1000);
+					Platform.runLater(() -> game.getAI3().playTurn());
+					Thread.sleep(1000);
+					return null;
+				}
+			};
+			new Thread(sleepTask).start();
+		});
 		btnEndTurn.disableProperty().bind(game.getNPCTurn());
 	}
 
