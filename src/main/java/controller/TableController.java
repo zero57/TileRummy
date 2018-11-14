@@ -43,8 +43,8 @@ public class TableController {
 		logger.info("Initializing Table");
 		PseudoClass mouseDragEnter = PseudoClass.getPseudoClass("mouse-drag-enter");
 		gpTable.getChildren().forEach(item -> {
-			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> Platform.runLater(() -> item.pseudoClassStateChanged(mouseDragEnter, true)));
-			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> Platform.runLater(() -> item.pseudoClassStateChanged(mouseDragEnter, false)));
+			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> item.pseudoClassStateChanged(mouseDragEnter, true));
+			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, e -> item.pseudoClassStateChanged(mouseDragEnter, false));
 			item.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> {
 				int row = GridPane.getRowIndex(item);
 				int col = GridPane.getColumnIndex(item);
@@ -95,25 +95,25 @@ public class TableController {
 	}
 
 	private void updateTable() {
-		Platform.runLater(() -> {
-			clearTable();
-			table.forEach(this::addMeldToTable);
-		});
+		clearTable();
+		table.forEach(this::addMeldToTable);
 	}
 
 	private void clearTable() {
-		// Note, when calling this function, you should wrap it with Platform.runLater. It is not done here as having
-		// too many runnables can cause issues such as flickering
 		for (int row = 0; row < gpTable.getRowCount(); row++) {
 			for (int col = 0; col < gpTable.getColumnCount(); col++) {
-				getCellFromGridPane(row, col).ifPresent(hbox -> hbox.getChildren().clear());
+				getCellFromGridPane(row, col).ifPresent(hbox -> {
+					hbox.getChildren().clear();
+					// Must set back to false since when we drag tiles, the root pane stops listening for mouse events
+					// The call for root.setMouseTransparent(false) in the UIHelper's mouse released event does not fire
+					// since we remove the node as soon as we release the mouse
+					hbox.setMouseTransparent(false);
+				});
 			}
 		}
 	}
 
 	private void addMeldToTable(ObservableMeld meld) {
-		// Note, when calling this function, you should wrap it with Platform.runLater. It is not done here as having
-		// too many runnables can cause issues such as flickering
 		for (int i = 0; i < meld.getSize(); i++) {
 			// Ignore the cell containing the tile
 			var ignoreRootNode = getCellFromGridPane(meld.getRow(), meld.getCol() + i).orElseThrow(); // We throw, but this should never happen as there will always be an HBox in the GridCell
@@ -130,8 +130,6 @@ public class TableController {
 	}
 
 	private void addOrReplaceNodeAtCell(Node node, int row, int col) {
-		// Note, when calling this function, you should wrap it with Platform.runLater. It is not done here as having
-		// too many runnables can cause issues such as flickering
 		getCellFromGridPane(row, col).ifPresent(cell -> {
 			if (cell.getChildren().size() > 0) {
 				cell.getChildren().setAll(node);
