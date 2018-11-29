@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import model.Stock;
 import java.util.Objects;
 import java.io.IOException;
+import model.OptionChoices;
 
 public class MenuController {
 
@@ -40,6 +41,7 @@ public class MenuController {
 	@FXML
 	private Scene gameScene;
 
+	private OptionChoices options;
 	private boolean isPlayable;
 	MainController controller;
 	final int width = 640;
@@ -47,8 +49,9 @@ public class MenuController {
 
 	public MenuController(Stage stage) throws Exception {
 		this.stage = stage;
+		options = new OptionChoices();
 
-		controller = new MainController();
+		controller = new MainController(options);
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/MainView.fxml"));
 		loader.setControllerFactory(c -> controller);
 		VBox root = loader.load();
@@ -81,6 +84,28 @@ public class MenuController {
 			}
 
 			if (isPlayable) {
+				options.setNumPlayers((Integer)numPlayerBox.getValue());
+				options.setPlayer1((OptionChoices.Type)player1Box.getValue());
+				options.setPlayer2((OptionChoices.Type)player2Box.getValue());
+				if (!(player3Box.isDisabled())) {
+					options.setPlayer3((OptionChoices.Type)player3Box.getValue());
+				} else {
+					options.setPlayer3(OptionChoices.Type.NULL);
+				}
+
+				if (!(player4Box.isDisabled())) {
+					options.setPlayer4((OptionChoices.Type)player4Box.getValue());
+				} else {
+					options.setPlayer4(OptionChoices.Type.NULL);
+				}
+
+				logger.debug("OUTPUTTING OPTIONS STRUCTURE");
+				logger.debug("NUM OF PLAYERS IS " + options.getNumPlayers());
+				logger.debug("PLAYER 1 IS " + options.getPlayer1());
+				logger.debug("PLAYER 2 IS " + options.getPlayer2());
+				logger.debug("PLAYER 3 IS " + options.getPlayer3());
+				logger.debug("PLAYER 4 IS " + options.getPlayer4());
+
 				stage.setScene(gameScene);
 				logger.info("Game Scene loaded");
 				controller.getGame().setStock(new Stock().shuffle());

@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Game;
+import model.OptionChoices;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,13 +37,15 @@ public class MainController {
 	private JFXButton btnEndTurn;
 
 	private Game game;
+	private OptionChoices options;
 
 	private HandController player1HandController;
 	private NPCHandController player2HandController;
 	private NPCHandController player3HandController;
 	private NPCHandController player4HandController;
 
-	public MainController() {
+	public MainController(OptionChoices options) {
+		this.options = options;
 		game = new Game();
 	}
 
