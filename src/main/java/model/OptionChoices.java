@@ -17,6 +17,11 @@ public class OptionChoices {
 	private Type player3;
 	private Type player4;
 
+	private boolean timerChecked;
+	private boolean rigHandChecked;
+	private boolean rigTileDrawChecked;
+	private boolean showHandsChecked;
+
 	public void setNumPlayers(int num) {
 		numPlayers = num;
 	}
@@ -39,6 +44,38 @@ public class OptionChoices {
 
 	public void setPlayer4(int index) {
 		player4 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
+	}
+
+	public void setTimerChecked(boolean value) {
+		timerChecked = value;
+	}
+
+	public boolean getTimerChecked() {
+		return timerChecked;
+	}
+
+	public void setRigHandChecked(boolean value) {
+		rigHandChecked = value;
+	}
+
+	public boolean getRigHandChecked() {
+		return rigHandChecked;
+	}
+
+	public void setRigTileDrawChecked(boolean value) {
+		rigTileDrawChecked = value;
+	}
+
+	public boolean getRigTileDrawChecked() {
+		return rigTileDrawChecked;
+	}
+
+	public void setShowHandsChecked(boolean value) {
+		showHandsChecked = value;
+	}
+
+	public boolean getShowHandsChecked() {
+		return showHandsChecked;
 	}
 
 	public Type getPlayer1() {

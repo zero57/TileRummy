@@ -2,6 +2,7 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,16 @@ public class MenuController {
 	private JFXComboBox player3Box;
 	@FXML
 	private JFXComboBox player4Box;
+
+	@FXML 
+	private JFXCheckBox timerCheck;
+	@FXML 
+	private JFXCheckBox rigTileCheck;
+	@FXML 
+	private JFXCheckBox rigHandCheck;
+	@FXML 
+	private JFXCheckBox showHandCheck;
+
 
 	@FXML
 	private Stage stage;
@@ -95,12 +106,22 @@ public class MenuController {
 					options.setPlayer4(player4Box.getSelectionModel().getSelectedIndex());
 				}
 
+				options.setTimerChecked(timerCheck.isSelected());
+				options.setRigHandChecked(rigHandCheck.isSelected());
+				options.setRigTileDrawChecked(rigTileCheck.isSelected());
+				options.setShowHandsChecked(showHandCheck.isSelected());
+
 				logger.debug("OUTPUTTING OPTIONS STRUCTURE");
 				logger.debug("NUM OF PLAYERS IS " + options.getNumPlayers());
 				logger.debug("PLAYER 1 IS " + options.getPlayer1());
 				logger.debug("PLAYER 2 IS " + options.getPlayer2());
 				logger.debug("PLAYER 3 IS " + options.getPlayer3());
 				logger.debug("PLAYER 4 IS " + options.getPlayer4());
+
+				logger.debug("TIMERBOX CHECKED IS " + options.getTimerChecked());
+				logger.debug("RIGTILES CHECKED IS " + options.getRigTileDrawChecked());
+				logger.debug("RIGHANDS CHECKED IS " + options.getRigHandChecked());
+				logger.debug("SHOWHANDS CHECKED IS " + options.getShowHandsChecked());
 
 				stage.setScene(gameScene);
 				logger.info("Game Scene loaded");
