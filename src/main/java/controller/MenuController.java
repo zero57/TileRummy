@@ -80,23 +80,19 @@ public class MenuController {
 			if (player4Box.isDisabled()) {
 				player4Box.getSelectionModel().clearSelection();
 			} else {
-				isPlayable = isPlayable && player4Box.validate();				
+				isPlayable = isPlayable && player4Box.validate();
 			}
 
 			if (isPlayable) {
 				options.setNumPlayers((Integer)numPlayerBox.getValue());
-				options.setPlayer1((OptionChoices.Type)player1Box.getValue());
-				options.setPlayer2((OptionChoices.Type)player2Box.getValue());
+				options.setPlayer1(player1Box.getSelectionModel().getSelectedIndex());
+				options.setPlayer2(player2Box.getSelectionModel().getSelectedIndex());
 				if (!(player3Box.isDisabled())) {
-					options.setPlayer3((OptionChoices.Type)player3Box.getValue());
-				} else {
-					options.setPlayer3(OptionChoices.Type.NULL);
+					options.setPlayer3(player3Box.getSelectionModel().getSelectedIndex());
 				}
 
 				if (!(player4Box.isDisabled())) {
-					options.setPlayer4((OptionChoices.Type)player4Box.getValue());
-				} else {
-					options.setPlayer4(OptionChoices.Type.NULL);
+					options.setPlayer4(player4Box.getSelectionModel().getSelectedIndex());
 				}
 
 				logger.debug("OUTPUTTING OPTIONS STRUCTURE");

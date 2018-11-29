@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import java.lang.Integer?>
 <?import java.lang.String?>
-<?import model.OptionChoices.Type?>
 <?import javafx.collections.FXCollections?>
 <?import com.jfoenix.validation.RequiredFieldValidator?>
 
@@ -42,11 +41,11 @@
 				<JFXComboBox promptText="Player 1" visibleRowCount="5" fx:id="player1Box">
 					<items>
 						<FXCollections fx:factory="observableArrayList">
-							<OptionChoices.Type fx:value="HUMAN" />
-							<OptionChoices.Type fx:value="AI1" />
-							<OptionChoices.Type fx:value="AI2" />
-							<OptionChoices.Type fx:value="AI3" />
-							<OptionChoices.Type fx:value="AI4" />
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
 						</FXCollections>
 					</items>
 					<validators>
@@ -56,11 +55,11 @@
 				<JFXComboBox promptText="Player 2" visibleRowCount="5" fx:id="player2Box">
 					<items>
 						<FXCollections fx:factory="observableArrayList">
-							<OptionChoices.Type fx:value="HUMAN" />
-							<OptionChoices.Type fx:value="AI1" />
-							<OptionChoices.Type fx:value="AI2" />
-							<OptionChoices.Type fx:value="AI3" />
-							<OptionChoices.Type fx:value="AI4" />
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
 						</FXCollections>
 					</items>
 					<validators>
@@ -70,11 +69,11 @@
 				<JFXComboBox promptText="Player 3" visibleRowCount="5" fx:id="player3Box">
 					<items>
 						<FXCollections fx:factory="observableArrayList">
-							<OptionChoices.Type fx:value="HUMAN" />
-							<OptionChoices.Type fx:value="AI1" />
-							<OptionChoices.Type fx:value="AI2" />
-							<OptionChoices.Type fx:value="AI3" />
-							<OptionChoices.Type fx:value="AI4" />
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
 						</FXCollections>
 					</items>
 					<validators>
@@ -84,11 +83,11 @@
 				<JFXComboBox promptText="Player 4" visibleRowCount="5" fx:id="player4Box">
 					<items>
 						<FXCollections fx:factory="observableArrayList">
-							<OptionChoices.Type fx:value="HUMAN" />
-							<OptionChoices.Type fx:value="AI1" />
-							<OptionChoices.Type fx:value="AI2" />
-							<OptionChoices.Type fx:value="AI3" />
-							<OptionChoices.Type fx:value="AI4" />
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
 						</FXCollections>
 					</items>
 					<validators>

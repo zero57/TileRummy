@@ -1,16 +1,15 @@
 package model;
 
+import java.util.Arrays;
+
 public class OptionChoices {
 	public enum Type {
-
-	    HUMAN("Human"), AI1("AI1"), AI2("AI2"), AI3("AI3"), AI4("AI4"), NULL("NULL");
-
-	    private String name;
-
-	    private Type(String theType) {
-	        this.name = theType;
-		}
-	}	
+		HUMAN,
+		AI1,
+		AI2,
+		AI3,
+		AI4,
+	}
 
 	private int numPlayers;
 	private Type player1;
@@ -26,17 +25,20 @@ public class OptionChoices {
 		return numPlayers;
 	}
 
-	public void setPlayer1(Type type) {
-		player1 = type;
+	public void setPlayer1(int index) {
+		player1 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
 	}
-	public void setPlayer2(Type type) {
-		player2 = type;
+
+	public void setPlayer2(int index) {
+		player2 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
 	}
-	public void setPlayer3(Type type) {
-		player3 = type;
+
+	public void setPlayer3(int index) {
+		player3 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
 	}
-	public void setPlayer4(Type type) {
-		player4 = type;
+
+	public void setPlayer4(int index) {
+		player4 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
 	}
 
 	public Type getPlayer1() {
