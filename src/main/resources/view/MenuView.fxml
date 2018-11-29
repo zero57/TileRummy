@@ -1,16 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import java.lang.Integer?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import com.jfoenix.validation.RequiredFieldValidator?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuController">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <JFXButton id="playBtn" fx:id="exitBtn" layoutX="284.0" layoutY="62.0" text="Play Game" />
-            <JFXButton id="exitBtn" fx:id="exitBtn" layoutX="284.0" layoutY="110.0" text="Exit Game" />
-      </children>
-    </AnchorPane>
-  </children>
-</VBox>
+
+<HBox prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuController">
+	<children>
+		<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="440.0" spacing="35.0">
+			<children>
+				<JFXButton fx:id="playBtn" text="Play Game" />
+				<JFXComboBox promptText="# Of Players" visibleRowCount="5" fx:id="numPlayerBox">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<Integer fx:value="2" />
+							<Integer fx:value="3" />
+							<Integer fx:value="4" />
+						</FXCollections>
+					</items>
+					<validators>
+						<RequiredFieldValidator message="Input Required!"/>
+					</validators>
+				</JFXComboBox>
+      
+				<JFXCheckBox text="2 Minute Timer" fx:id="timerCheck"/>
+				<JFXCheckBox text="Set Tile To Draw" fx:id="rigTileCheck"/>
+				<JFXCheckBox text="Set Initial Hands" fx:id="rigHandCheck"/>
+				<JFXCheckBox text="Show All Players' Hand" fx:id="showHandCheck"/>
+				<JFXButton fx:id="exitBtn" text="Exit Game" />
+			</children>
+		</VBox>
+		<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="180.0" spacing="35.0">
+			<children>
+				<JFXComboBox promptText="Player 1" visibleRowCount="5" fx:id="player1Box">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
+						</FXCollections>
+					</items>
+					<validators>
+						<RequiredFieldValidator message="Input Required!"/>
+					</validators>
+				</JFXComboBox>
+				<JFXComboBox promptText="Player 2" visibleRowCount="5" fx:id="player2Box">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
+						</FXCollections>
+					</items>
+					<validators>
+						<RequiredFieldValidator message="Input Required!"/>
+					</validators>
+				</JFXComboBox>
+				<JFXComboBox promptText="Player 3" visibleRowCount="5" fx:id="player3Box">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
+						</FXCollections>
+					</items>
+					<validators>
+						<RequiredFieldValidator message="Input Required!"/>
+					</validators>
+				</JFXComboBox>
+				<JFXComboBox promptText="Player 4" visibleRowCount="5" fx:id="player4Box">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="Human" />
+							<String fx:value="AI Strategy 1" />
+							<String fx:value="AI Strategy 2" />
+							<String fx:value="AI Strategy 3" />
+							<String fx:value="AI Strategy 4" />
+						</FXCollections>
+					</items>
+					<validators>
+						<RequiredFieldValidator message="Input Required!"/>
+					</validators>
+				</JFXComboBox>
+			</children>
+		</VBox>
+	</children>
+</HBox>
