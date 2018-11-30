@@ -21,6 +21,7 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import ui.TileButton;
+import model.OptionChoices;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ class IntegrationTest {
 		final var width = 640;
 		final var height = 480;
 
-		controller = new MainController();
+		controller = new MainController(new OptionChoices());
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/MainView.fxml"));
 		loader.setControllerFactory(c -> controller);
 		VBox root = loader.load();
