@@ -687,4 +687,50 @@ public class GameTest {
 		game.endTurn(game.getPlayer4Hand());
 		assertThat(game.getPlayerTurn(), is(0));
 	}
+
+	@Test
+	public void test2PlayerCorrectOrder() {
+		int numPlayers = 2;
+		game = new Game(numPlayers);
+		game.setStock(new Stock().shuffle());
+		assertThat(game.getNumPlayers(), is(numPlayers));
+		assertThat(game.getPlayerTurn(), is(0));
+		game.endTurn(game.getPlayer1Hand());
+		assertThat(game.getPlayerTurn(), is(1));
+		game.endTurn(game.getPlayer2Hand());
+		assertThat(game.getPlayerTurn(), is(0));
+	}
+
+	@Test
+	public void test3PlayerCorrectOrder() {
+		int numPlayers = 3;
+		game = new Game(numPlayers);
+		game.setStock(new Stock().shuffle());
+		assertThat(game.getNumPlayers(), is(numPlayers));
+		assertThat(game.getPlayerTurn(), is(0));
+		game.endTurn(game.getPlayer1Hand());
+		assertThat(game.getPlayerTurn(), is(1));
+		game.endTurn(game.getPlayer2Hand());
+		assertThat(game.getPlayerTurn(), is(2));
+		game.endTurn(game.getPlayer3Hand());
+		assertThat(game.getPlayerTurn(), is(0));
+	}
+
+	@Test
+	public void test4PlayerCorrectOrder() {
+		int numPlayers = 4;
+		game = new Game(numPlayers);
+		game.setStock(new Stock().shuffle());
+		assertThat(game.getNumPlayers(), is(numPlayers));
+
+		assertThat(game.getPlayerTurn(), is(0));
+		game.endTurn(game.getPlayer1Hand());
+		assertThat(game.getPlayerTurn(), is(1));
+		game.endTurn(game.getPlayer2Hand());
+		assertThat(game.getPlayerTurn(), is(2));
+		game.endTurn(game.getPlayer3Hand());
+		assertThat(game.getPlayerTurn(), is(3));
+		game.endTurn(game.getPlayer4Hand());
+		assertThat(game.getPlayerTurn(), is(0));
+	}
 }
