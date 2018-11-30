@@ -30,16 +30,23 @@ public class Game {
 	private AIPlayer ai1;
 	private AIPlayer ai2;
 	private AIPlayer ai3;
+	private int numPlayers;
 
 	// Note: you must call setStock since we do not do it automatically here
 	// This is because we need to be able to set up the game for integration testing
 	public Game() {
+		// If no num of players are passed in, we default to 4 players
+		this(4);
+	}
+
+	public Game(int numPlayers) {
 		table = FXCollections.observableArrayList();
 		winner = new SimpleIntegerProperty(-1);
 		player1Hand = new Hand();
 		player2Hand = new Hand();
 		player3Hand = new Hand();
 		player4Hand = new Hand();
+		this.numPlayers = numPlayers;
 
 		playerTurn = new SimpleIntegerProperty(0);
 		isNPCTurn = Bindings.createBooleanBinding(() -> playerTurn.getValue() >= 1, playerTurn);
@@ -95,16 +102,24 @@ public class Game {
 		for (int i = 0; i < 14; i++) {
 			drawTile().ifPresent(t -> player2Hand.addTile(t));
 		}
-		for (int i = 0; i < 14; i++) {
-			drawTile().ifPresent(t -> player3Hand.addTile(t));
+		if (numPlayers >= 3) {
+			for (int i = 0; i < 14; i++) {
+				drawTile().ifPresent(t -> player3Hand.addTile(t));
+			}
 		}
-		for (int i = 0; i < 14; i++) {
-			drawTile().ifPresent(t -> player4Hand.addTile(t));
+		if (numPlayers >= 4) {
+			for (int i = 0; i < 14; i++) {
+				drawTile().ifPresent(t -> player4Hand.addTile(t));
+			}
 		}
 	}
 
 	public IntegerProperty getWinnerProperty() {
 		return winner;
+	}
+
+	public int getNumPlayers() {
+		return numPlayers;
 	}
 
 	public Optional<ObservableTile> drawTile() {
@@ -166,7 +181,7 @@ public class Game {
 			drawTile().ifPresent(hand::addTile);
 		}
 		playAllTiles();
-		playerTurn.setValue((playerTurn.getValue() + 1) % 4);
+		playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
 	}
 
 	private boolean allMeldsValid() {

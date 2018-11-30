@@ -43,7 +43,17 @@ class IntegrationTest {
 		final var width = 640;
 		final var height = 480;
 
-		controller = new MainController(new OptionChoices());
+		OptionChoices optionChoices = new OptionChoices();
+		optionChoices.setNumPlayers(4);
+		optionChoices.setPlayer1(0);
+		optionChoices.setPlayer2(1);
+		optionChoices.setPlayer3(2);
+		optionChoices.setPlayer4(3);
+		optionChoices.setRigHandChecked(false);
+		optionChoices.setRigTileDrawChecked(false);
+		optionChoices.setShowHandsChecked(false);
+		optionChoices.setTimerChecked(false);
+		controller = new MainController(optionChoices);
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/MainView.fxml"));
 		loader.setControllerFactory(c -> controller);
 		VBox root = loader.load();

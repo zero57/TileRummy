@@ -46,7 +46,7 @@ public class MainController {
 
 	public MainController(OptionChoices options) {
 		this.options = options;
-		game = new Game();
+		game = new Game(options.getNumPlayers());
 	}
 
 	@FXML
@@ -56,8 +56,8 @@ public class MainController {
 		GridPane tableView;
 		VBox player1HandView;
 		VBox player2HandView;
-		VBox player3HandView;
-		VBox player4HandView;
+		VBox player3HandView = null;
+		VBox player4HandView = null;
 
 		FXMLLoader loader;
 
@@ -76,15 +76,20 @@ public class MainController {
 			loader.setControllerFactory(c -> player2HandController);
 			player2HandView = loader.load();
 
-			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			player3HandController = new NPCHandController(game, 3);
-			loader.setControllerFactory(c -> player3HandController);
-			player3HandView = loader.load();
+			if (options.getNumPlayers() >= 3) {
+				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+				player3HandController = new NPCHandController(game, 3);
+				loader.setControllerFactory(c -> player3HandController);
+				player3HandView = loader.load();
+			}
 
-			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			player4HandController = new NPCHandController(game, 4);
-			loader.setControllerFactory(c -> player4HandController);
-			player4HandView = loader.load();
+			if (options.getNumPlayers() >= 4) {
+				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+				player4HandController = new NPCHandController(game, 4);
+				loader.setControllerFactory(c -> player4HandController);
+				player4HandView = loader.load();
+			}
+
 		} catch (IOException e) {
 			logger.error("Failed to load fxml files", e);
 			return;
@@ -93,8 +98,12 @@ public class MainController {
 		HBox.setHgrow(tableView, Priority.ALWAYS);
 		bpPlayScreen.setBottom(player1HandView);
 		bpPlayScreen.setLeft(player2HandView);
-		bpPlayScreen.setTop(player3HandView);
-		bpPlayScreen.setRight(player4HandView);
+		if (options.getNumPlayers() >= 3) {
+			bpPlayScreen.setTop(player3HandView);
+		}
+		if (options.getNumPlayers() >= 4) {
+			bpPlayScreen.setRight(player4HandView);
+		}
 		hboxCenter.getChildren().add(0, tableView);
 
 		btnEndTurn.setOnMouseClicked(b -> {
@@ -105,10 +114,14 @@ public class MainController {
 					Thread.sleep(1000);
 					Platform.runLater(() -> game.getAI1().playTurn());
 					Thread.sleep(1000);
-					Platform.runLater(() -> game.getAI2().playTurn());
-					Thread.sleep(1000);
-					Platform.runLater(() -> game.getAI3().playTurn());
-					Thread.sleep(1000);
+					if (options.getNumPlayers() >= 3) {
+						Platform.runLater(() -> game.getAI2().playTurn());
+						Thread.sleep(1000);
+					}
+					if (options.getNumPlayers() >= 4) {
+						Platform.runLater(() -> game.getAI3().playTurn());
+						Thread.sleep(1000);
+					}
 					return null;
 				}
 			};
