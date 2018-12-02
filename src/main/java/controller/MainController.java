@@ -65,7 +65,7 @@ public class MainController {
 
 			if (options.getPlayer1() == OptionChoices.Type.HUMAN) {
 				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-				player1HandController = new HumanHandController(game, 1);
+				player1HandController = new HumanHandController(game, 1, options.getTimerChecked());
 				loader.setControllerFactory(c -> player1HandController);
 				player1HandView = loader.load();
 			} else {
@@ -77,7 +77,7 @@ public class MainController {
 
 			if (options.getPlayer2() == OptionChoices.Type.HUMAN) {
 				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-				player2HandController = new HumanHandController(game, 2);
+				player2HandController = new HumanHandController(game, 2, options.getTimerChecked());
 				loader.setControllerFactory(c -> player2HandController);
 				player2HandView = loader.load();
 			} else {
@@ -90,7 +90,7 @@ public class MainController {
 			if (options.getNumPlayers() >= 3) {
 				if (options.getPlayer3() == OptionChoices.Type.HUMAN) {
 					loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-					player3HandController = new HumanHandController(game, 3);
+					player3HandController = new HumanHandController(game, 3, options.getTimerChecked());
 					loader.setControllerFactory(c -> player3HandController);
 					player3HandView = loader.load();
 				} else {
@@ -104,7 +104,7 @@ public class MainController {
 			if (options.getNumPlayers() >= 4) {
 				if (options.getPlayer4() == OptionChoices.Type.HUMAN) {
 					loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-					player4HandController = new HumanHandController(game, 4);
+					player4HandController = new HumanHandController(game, 4, options.getTimerChecked());
 					loader.setControllerFactory(c -> player4HandController);
 					player4HandView = loader.load();
 				} else {
