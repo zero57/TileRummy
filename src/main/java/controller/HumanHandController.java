@@ -76,10 +76,15 @@ public class HumanHandController extends HandController {
 				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
 					if (newVal.equals(0)) {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, true);
-						if (shouldTime) timeSeconds.set(120); timer.playFromStart();
+						if (shouldTime) {
+							timeSeconds.set(120);
+							timer.playFromStart();
+						}
 					} else {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, false);
-						if (shouldTime) timer.stop();
+						if (shouldTime) {
+							timer.stop();
+						}
 					}
 				});
 				lblPlayerNumber.setText("Player 1");
@@ -89,10 +94,15 @@ public class HumanHandController extends HandController {
 				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
 					if (newVal.equals(1)) {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, true);
-						if (shouldTime) timeSeconds.set(120); timer.playFromStart();
+						if (shouldTime) {
+							timeSeconds.set(120);
+							timer.playFromStart();
+						}
 					} else {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, false);
-						if (shouldTime) timer.stop();
+						if (shouldTime) {
+							timer.stop();
+						}
 					}
 				});
 				lblPlayerNumber.setText("Player 2");
@@ -102,10 +112,15 @@ public class HumanHandController extends HandController {
 				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
 					if (newVal.equals(2)) {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, true);
-						if (shouldTime) timeSeconds.set(120); timer.playFromStart();
+						if (shouldTime) {
+							timeSeconds.set(120);
+							timer.playFromStart();
+						}
 					} else {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, false);
-						if (shouldTime) timer.stop();
+						if (shouldTime) {
+							timer.stop();
+						}
 					}
 				});
 				lblPlayerNumber.setText("Player 3");
@@ -114,10 +129,15 @@ public class HumanHandController extends HandController {
 				game.getPlayerTurnProperty().addListener((observableValue, oldVal, newVal) -> {
 					if (newVal.equals(3)) {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, true);
-						if (shouldTime) timeSeconds.set(120); timer.playFromStart();
+						if (shouldTime) {
+							timeSeconds.set(120);
+							timer.playFromStart();
+						}
 					} else {
 						lblPlayerNumber.pseudoClassStateChanged(currentTurn, false);
-						if (shouldTime) timer.stop();
+						if (shouldTime) {
+							timer.stop();
+						}
 					}
 				});
 				lblPlayerNumber.setText("Player 4");
@@ -127,7 +147,9 @@ public class HumanHandController extends HandController {
 				logger.error("Can't create a HandController for Player " + playerNumber);
 				return;
 		}
-		if (playerNumber == 1 && shouldTime) timer.playFromStart();
+		if (playerNumber == 1 && shouldTime) {
+			timer.playFromStart();
+		}
 		hand.getTiles().addListener(onTileListChange());
 		fpHand.addEventFilter(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> {
 			boolean isMyTurn = game.getPlayerTurn() == (playerNumber - 1);
