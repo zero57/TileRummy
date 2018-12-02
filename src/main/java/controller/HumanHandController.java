@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Game;
 import model.Hand;
+import javafx.scene.Node;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,10 +41,12 @@ public class HumanHandController extends HandController {
 
 	private Timeline timer;
 	private boolean shouldTime;
+	private boolean shouldHide;
 
-	public HumanHandController(Game game, int playerNumber, boolean shouldTime) {
+	public HumanHandController(Game game, int playerNumber, boolean shouldTime, boolean shouldHide) {
 		super(game, playerNumber);
 		this.shouldTime = shouldTime;
+		this.shouldHide = shouldHide;
 	}
 
 	@FXML
@@ -55,7 +58,7 @@ public class HumanHandController extends HandController {
 		if (shouldTime) {
 			timer = new Timeline(new KeyFrame(
 			Duration.millis(120000),
-			ae -> System.out.println("IVE BEEN TRIGGERED"))); // TODO: end turn and return to valid board state if turn is not valid
+			ae -> logger.debug("PLAYER " + playerNumber + "TIME HAS RAN OUT")));
 		}
 
 		switch (playerNumber) {
@@ -150,7 +153,12 @@ public class HumanHandController extends HandController {
 		root.setMouseTransparent(false);
 
 		for (ObservableTile t : hand.getTiles()) {
-			var btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, hide), root);
+			Node btn;
+			if (shouldHide) {
+				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
+			} else {
+				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, hide), root);
+			}
 			btn.disableProperty().bind(game.getPlayerTurnProperty().isNotEqualTo(playerNumber - 1));
 			fpHand.getChildren().add(btn);
 		}

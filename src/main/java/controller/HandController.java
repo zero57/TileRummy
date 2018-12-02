@@ -51,11 +51,6 @@ public class HandController {
 		}
 	}
 
-	@FXML
-	public void initialize() {
-
-	}
-
 	public Pane getHandPane() {
 		return fpHand;
 	}

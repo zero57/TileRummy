@@ -31,8 +31,11 @@ public class NPCHandController extends HandController {
 	@FXML
 	private FlowPane fpHand;
 
-	public NPCHandController(Game game, int playerNumber) {
+	private boolean shouldHide;
+
+	public NPCHandController(Game game, int playerNumber, boolean shouldHide) {
 		super(game, playerNumber);
+		this.shouldHide = shouldHide;
 	}
 
 	@FXML
@@ -95,7 +98,7 @@ public class NPCHandController extends HandController {
 				if (change.wasAdded()) {
 					logger.debug(MessageFormat.format("Adding {0} to Player {1}s hand", change.getAddedSubList().toString(), playerNumber));
 					for (ObservableTile t : change.getAddedSubList()) {
-						var btn = tileButtonFactory.newTileButton(t, true);
+						var btn = tileButtonFactory.newTileButton(t, !shouldHide);
 						fpHand.getChildren().add(change.getFrom(), btn);
 					}
 				} else if (change.wasRemoved()) {
