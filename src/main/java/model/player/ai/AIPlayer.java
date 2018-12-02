@@ -1,34 +1,19 @@
-package ai;
+package model.player.ai;
 
 import model.Game;
 import model.Hand;
+import model.player.Player;
 
-public class AIPlayer {
+public class AIPlayer extends Player {
 	private AIStrategy aiStrategy;
 	private boolean playedFirstHand;
-	private Game game;
-	private Hand hand;
-
 
 	AIStrategy getAiStrategy() {
 		return aiStrategy;
 	}
 
-	boolean isPlayedFirstHand() {
-		return playedFirstHand;
-	}
-
-	Game getGame() {
-		return game;
-	}
-
-	Hand getHand() {
-		return hand;
-	}
-
 	public AIPlayer(int stratNum, Game game, Hand hand) {
-		this.game = game;
-		this.hand = hand;
+		super(game, hand);
 		switch (stratNum) {
 			case 1:
 				aiStrategy = new AIStrategy1(game, hand);
@@ -42,6 +27,7 @@ public class AIPlayer {
 		}
 	}
 
+	@Override
 	public void playTurn() {
 		if (playedFirstHand) {
 			performRegularStrategy();

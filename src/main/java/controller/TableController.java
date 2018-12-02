@@ -1,7 +1,6 @@
 package controller;
 
 import factory.TileButtonFactory;
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
@@ -62,7 +61,7 @@ public class TableController {
 				} else {
 					// Click and drag tile from hand to table
 					if (game.addTileToTable(tile, row, col)) {
-						game.getPlayer1Hand().removeTile(tile);
+						game.getCurrentPlayerHand().removeTile(tile);
 					}
 				}
 			});

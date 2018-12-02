@@ -1,4 +1,4 @@
-package ai;
+package model.player.ai;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -6,10 +6,6 @@ import model.Meld;
 import model.Hand;
 import model.Tile;
 import model.Game;
-
-import ai.AIStrategy1;
-import ai.AIStrategy2;
-import ai.AIStrategy3;
 
 import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,7 @@
-package ai;
+package model.player.ai;
 
 import model.Game;
 import model.Hand;
-import org.apache.logging.log4j.Logger;
 
 public class AIStrategy3 extends AIStrategy {
 

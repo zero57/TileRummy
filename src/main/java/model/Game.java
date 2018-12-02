@@ -1,6 +1,8 @@
 package model;
 
-import ai.AIPlayer;
+import model.player.HumanPlayer;
+import model.player.Player;
+import model.player.ai.AIPlayer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.IntegerProperty;
@@ -12,17 +14,16 @@ import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Game {
 	private static final Logger logger = LogManager.getLogger(Game.class.getName());
 
 	private Stock stock;
-	private Hand player1Hand;
-	private Hand player2Hand;
-	private Hand player3Hand;
-	private Hand player4Hand;
 	private ObservableList<ObservableMeld> table;
+	private ArrayList<Player> players;
+	private ArrayList<Hand> hands;
 
 	private BooleanBinding isNPCTurn;
 	private IntegerProperty playerTurn;
@@ -36,49 +37,75 @@ public class Game {
 	// This is because we need to be able to set up the game for integration testing
 	public Game() {
 		// If no num of players are passed in, we default to 4 players
-		this(4);
+		this(new OptionChoices()
+				.setNumPlayers(4)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI1.ordinal())
+				.setPlayer3(OptionChoices.Type.AI2.ordinal())
+				.setPlayer4(OptionChoices.Type.AI3.ordinal()));
 	}
 
-	public Game(int numPlayers) {
+	public Game(OptionChoices optionChoices) {
 		table = FXCollections.observableArrayList();
 		winner = new SimpleIntegerProperty(-1);
-		player1Hand = new Hand();
-		player2Hand = new Hand();
-		player3Hand = new Hand();
-		player4Hand = new Hand();
-		this.numPlayers = numPlayers;
+		numPlayers = optionChoices.getNumPlayers();
+		players = new ArrayList<>();
+
+		hands = new ArrayList<>();
+		for (int i = 0; i < numPlayers; i++) {
+			final int finalI = i;
+			Hand hand = new Hand();
+			hands.add(hand);
+			hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
+				if (newVal.intValue() == 0 && allMeldsValid()) {
+					logger.info("Player " + (finalI + 1) + " is the winner!");
+					winner.setValue(finalI + 1);
+				}
+			});
+			if (i == 0) {
+				if (optionChoices.getPlayer1() == OptionChoices.Type.HUMAN) {
+					Player player = new HumanPlayer(this, hand);
+					players.add(player);
+				} else {
+					Player player = new AIPlayer(optionChoices.getPlayer1().ordinal(), this, hand);
+					players.add(player);
+				}
+			}
+			if (i == 1) {
+				if (optionChoices.getPlayer2() == OptionChoices.Type.HUMAN) {
+					Player player = new HumanPlayer(this, hand);
+					players.add(player);
+				} else {
+					Player player = new AIPlayer(optionChoices.getPlayer2().ordinal(), this, hand);
+					players.add(player);
+				}
+			}
+			if (i == 2) {
+				if (optionChoices.getPlayer3() == OptionChoices.Type.HUMAN) {
+					Player player = new HumanPlayer(this, hand);
+					players.add(player);
+				} else {
+					Player player = new AIPlayer(optionChoices.getPlayer3().ordinal(), this, hand);
+					players.add(player);
+				}
+			}
+			if (i == 3) {
+				if (optionChoices.getPlayer4() == OptionChoices.Type.HUMAN) {
+					Player player = new HumanPlayer(this, hand);
+					players.add(player);
+				} else {
+					Player player = new AIPlayer(optionChoices.getPlayer4().ordinal(), this, hand);
+					players.add(player);
+				}
+			}
+		}
 
 		playerTurn = new SimpleIntegerProperty(0);
-		isNPCTurn = Bindings.createBooleanBinding(() -> playerTurn.getValue() >= 1, playerTurn);
+		isNPCTurn = Bindings.createBooleanBinding(() -> players.get(getPlayerTurn()) instanceof AIPlayer, playerTurn);
+	}
 
-		ai1 = new AIPlayer(1, this, player2Hand);
-		ai2 = new AIPlayer(2, this, player3Hand);
-		ai3 = new AIPlayer(3, this, player4Hand);
-
-		player1Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
-			if (newVal.intValue() == 0 && allMeldsValid()) {
-				logger.info("Player 1 is the winner!");
-				winner.setValue(1);
-			}
-		});
-		player2Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
-			if (newVal.intValue() == 0 && allMeldsValid()) {
-				logger.info("Player 2 is the winner!");
-				winner.setValue(2);
-			}
-		});
-		player3Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
-			if (newVal.intValue() == 0 && allMeldsValid()) {
-				logger.info("Player 3 is the winner!");
-				winner.setValue(3);
-			}
-		});
-		player4Hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
-			if (newVal.intValue() == 0 && allMeldsValid()) {
-				logger.info("Player 4 is the winner!");
-				winner.setValue(4);
-			}
-		});
+	public void update() {
+		players.get(playerTurn.get()).playTurn();
 	}
 
 	public void setStock(Stock stock) {
@@ -89,27 +116,15 @@ public class Game {
 		table.clear();
 		winner.setValue(-1);
 		playerTurn.setValue(0);
-		player1Hand.clear();
-		player2Hand.clear();
-		player3Hand.clear();
-		player4Hand.clear();
+		for (Hand hand : hands) {
+			hand.clear();
+		}
 	}
 
 	public void dealInitialTiles() {
-		for (int i = 0; i < 14; i++) {
-			drawTile().ifPresent(t -> player1Hand.addTile(t));
-		}
-		for (int i = 0; i < 14; i++) {
-			drawTile().ifPresent(t -> player2Hand.addTile(t));
-		}
-		if (numPlayers >= 3) {
+		for (Hand hand : hands) {
 			for (int i = 0; i < 14; i++) {
-				drawTile().ifPresent(t -> player3Hand.addTile(t));
-			}
-		}
-		if (numPlayers >= 4) {
-			for (int i = 0; i < 14; i++) {
-				drawTile().ifPresent(t -> player4Hand.addTile(t));
+				drawTile().ifPresent(hand::addTile);
 			}
 		}
 	}
@@ -126,50 +141,28 @@ public class Game {
 		return stock.draw();
 	}
 
-	public Hand getCurrentPlayerhand() {
-		switch (getPlayerTurn()) {
-			case 0:
-				return player1Hand;
-			case 1:
-				return player2Hand;
-			case 2:
-				return player3Hand;
-			case 3:
-				return player4Hand;
-		}
-		return null;
+	public Hand getCurrentPlayerHand() {
+		return hands.get(getPlayerTurn());
 	}
 
 	public Hand getPlayer1Hand() {
-		return player1Hand;
+		return hands.get(0);
 	}
 
 	public Hand getPlayer2Hand() {
-		return player2Hand;
+		return hands.get(1);
 	}
 
 	public Hand getPlayer3Hand() {
-		return player3Hand;
+		return hands.get(2);
 	}
 
 	public Hand getPlayer4Hand() {
-		return player4Hand;
+		return hands.get(3);
 	}
 
 	public int getStockSize() {
 		return stock.getSize();
-	}
-
-	public AIPlayer getAI1() {
-		return ai1;
-	}
-
-	public AIPlayer getAI2() {
-		return ai2;
-	}
-
-	public AIPlayer getAI3() {
-		return ai3;
 	}
 
 	public void endTurn(Hand hand) {
