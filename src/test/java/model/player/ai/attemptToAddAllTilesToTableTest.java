@@ -1,11 +1,10 @@
-package ai;
+package model.player.ai;
 
 import model.Game;
 import model.Hand;
 import model.Meld;
 import model.Tile;
 import model.observable.ObservableTile;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

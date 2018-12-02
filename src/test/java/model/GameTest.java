@@ -691,7 +691,10 @@ public class GameTest {
 	@Test
 	public void test2PlayerCorrectOrder() {
 		int numPlayers = 2;
-		game = new Game(numPlayers);
+		game = new Game(new OptionChoices()
+				.setNumPlayers(numPlayers)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI1.ordinal()));
 		game.setStock(new Stock().shuffle());
 		assertThat(game.getNumPlayers(), is(numPlayers));
 		assertThat(game.getPlayerTurn(), is(0));
@@ -704,7 +707,11 @@ public class GameTest {
 	@Test
 	public void test3PlayerCorrectOrder() {
 		int numPlayers = 3;
-		game = new Game(numPlayers);
+		game = new Game(new OptionChoices()
+				.setNumPlayers(numPlayers)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI1.ordinal())
+				.setPlayer3(OptionChoices.Type.AI2.ordinal()));
 		game.setStock(new Stock().shuffle());
 		assertThat(game.getNumPlayers(), is(numPlayers));
 		assertThat(game.getPlayerTurn(), is(0));
@@ -719,7 +726,12 @@ public class GameTest {
 	@Test
 	public void test4PlayerCorrectOrder() {
 		int numPlayers = 4;
-		game = new Game(numPlayers);
+		game = new Game(new OptionChoices()
+				.setNumPlayers(numPlayers)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI1.ordinal())
+				.setPlayer3(OptionChoices.Type.AI2.ordinal())
+				.setPlayer4(OptionChoices.Type.AI3.ordinal()));
 		game.setStock(new Stock().shuffle());
 		assertThat(game.getNumPlayers(), is(numPlayers));
 

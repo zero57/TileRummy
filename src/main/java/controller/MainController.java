@@ -1,10 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -40,13 +37,13 @@ public class MainController {
 	private OptionChoices options;
 
 	private HandController player1HandController;
-	private NPCHandController player2HandController;
-	private NPCHandController player3HandController;
-	private NPCHandController player4HandController;
+	private HandController player2HandController;
+	private HandController player3HandController;
+	private HandController player4HandController;
 
 	public MainController(OptionChoices options) {
 		this.options = options;
-		game = new Game(options.getNumPlayers());
+		game = new Game(options);
 	}
 
 	@FXML
@@ -66,28 +63,56 @@ public class MainController {
 			loader.setControllerFactory(c -> new TableController(game));
 			tableView = loader.load();
 
-			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			player1HandController = new HandController(game, 1);
-			loader.setControllerFactory(c -> player1HandController);
-			player1HandView = loader.load();
+			if (options.getPlayer1() == OptionChoices.Type.HUMAN) {
+				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+				player1HandController = new HumanHandController(game, 1);
+				loader.setControllerFactory(c -> player1HandController);
+				player1HandView = loader.load();
+			} else {
+				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+				player1HandController = new NPCHandController(game, 1);
+				loader.setControllerFactory(c -> player1HandController);
+				player1HandView = loader.load();
+			}
 
-			loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-			player2HandController = new NPCHandController(game, 2);
-			loader.setControllerFactory(c -> player2HandController);
-			player2HandView = loader.load();
+			if (options.getPlayer2() == OptionChoices.Type.HUMAN) {
+				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+				player2HandController = new HumanHandController(game, 2);
+				loader.setControllerFactory(c -> player2HandController);
+				player2HandView = loader.load();
+			} else {
+				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+				player2HandController = new NPCHandController(game, 2);
+				loader.setControllerFactory(c -> player2HandController);
+				player2HandView = loader.load();
+			}
 
 			if (options.getNumPlayers() >= 3) {
-				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-				player3HandController = new NPCHandController(game, 3);
-				loader.setControllerFactory(c -> player3HandController);
-				player3HandView = loader.load();
+				if (options.getPlayer3() == OptionChoices.Type.HUMAN) {
+					loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+					player3HandController = new HumanHandController(game, 3);
+					loader.setControllerFactory(c -> player3HandController);
+					player3HandView = loader.load();
+				} else {
+					loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+					player3HandController = new NPCHandController(game, 3);
+					loader.setControllerFactory(c -> player3HandController);
+					player3HandView = loader.load();
+				}
 			}
 
 			if (options.getNumPlayers() >= 4) {
-				loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
-				player4HandController = new NPCHandController(game, 4);
-				loader.setControllerFactory(c -> player4HandController);
-				player4HandView = loader.load();
+				if (options.getPlayer4() == OptionChoices.Type.HUMAN) {
+					loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+					player4HandController = new HumanHandController(game, 4);
+					loader.setControllerFactory(c -> player4HandController);
+					player4HandView = loader.load();
+				} else {
+					loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandView.fxml"));
+					player4HandController = new NPCHandController(game, 4);
+					loader.setControllerFactory(c -> player4HandController);
+					player4HandView = loader.load();
+				}
 			}
 
 		} catch (IOException e) {
@@ -106,28 +131,16 @@ public class MainController {
 		}
 		hboxCenter.getChildren().add(0, tableView);
 
-		btnEndTurn.setOnMouseClicked(b -> {
-			Task<Void> sleepTask = new Task<>() {
-				@Override
-				protected Void call() throws Exception {
-					Platform.runLater(() -> game.endTurn(game.getCurrentPlayerhand()));
-					Thread.sleep(1000);
-					Platform.runLater(() -> game.getAI1().playTurn());
-					Thread.sleep(1000);
-					if (options.getNumPlayers() >= 3) {
-						Platform.runLater(() -> game.getAI2().playTurn());
-						Thread.sleep(1000);
-					}
-					if (options.getNumPlayers() >= 4) {
-						Platform.runLater(() -> game.getAI3().playTurn());
-						Thread.sleep(1000);
-					}
-					return null;
-				}
-			};
-			new Thread(sleepTask).start();
-		});
+		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerHand()));
 		btnEndTurn.disableProperty().bind(game.getNPCTurn());
+
+		AnimationTimer gameLoop = new AnimationTimer() {
+			@Override
+			public void handle(long l) {
+				game.update();
+			}
+		};
+		gameLoop.start();
 	}
 
 	public Game getGame() {

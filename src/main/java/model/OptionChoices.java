@@ -22,56 +22,65 @@ public class OptionChoices {
 	private boolean rigTileDrawChecked;
 	private boolean showHandsChecked;
 
-	public void setNumPlayers(int num) {
+	public OptionChoices setNumPlayers(int num) {
 		numPlayers = num;
+		return this;
 	}
 
 	public int getNumPlayers() {
 		return numPlayers;
 	}
 
-	public void setPlayer1(int index) {
+	public OptionChoices setPlayer1(int index) {
 		player1 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
+		return this;
 	}
 
-	public void setPlayer2(int index) {
+	public OptionChoices setPlayer2(int index) {
 		player2 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
+		return this;
 	}
 
-	public void setPlayer3(int index) {
+	public OptionChoices setPlayer3(int index) {
 		player3 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
+		return this;
 	}
 
-	public void setPlayer4(int index) {
+	public OptionChoices setPlayer4(int index) {
 		player4 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
+		return this;
 	}
 
-	public void setTimerChecked(boolean value) {
+	public OptionChoices setTimerChecked(boolean value) {
 		timerChecked = value;
+		return this;
 	}
 
 	public boolean getTimerChecked() {
 		return timerChecked;
 	}
 
-	public void setRigHandChecked(boolean value) {
+	public OptionChoices setRigHandChecked(boolean value) {
 		rigHandChecked = value;
+		return this;
 	}
 
 	public boolean getRigHandChecked() {
 		return rigHandChecked;
 	}
 
-	public void setRigTileDrawChecked(boolean value) {
+	public OptionChoices setRigTileDrawChecked(boolean value) {
 		rigTileDrawChecked = value;
+		return this;
 	}
 
 	public boolean getRigTileDrawChecked() {
 		return rigTileDrawChecked;
 	}
 
-	public void setShowHandsChecked(boolean value) {
+	public OptionChoices setShowHandsChecked(boolean value) {
 		showHandsChecked = value;
+		return this;
 	}
 
 	public boolean getShowHandsChecked() {

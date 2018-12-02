@@ -1,9 +1,8 @@
-package ai;
+package model.player.ai;
 
 import model.Game;
 import model.Hand;
 import model.Meld;
-import model.Tile;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
