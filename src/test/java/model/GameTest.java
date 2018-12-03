@@ -1,12 +1,12 @@
 package model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
-import javafx.animation.Animation;
+import parser.FileParser;
 
 import java.util.Arrays;
 
@@ -925,5 +925,349 @@ public class GameTest {
 		assertThat(game.getPlayerTurn(), is(3));
 		game.endTurn(game.getPlayer4Hand());
 		assertThat(game.getPlayerTurn(), is(0));
+	}
+
+	@Test
+	public void testHandRigging2Players() {
+		int numPlayers = 2;
+		game = new Game(new OptionChoices()
+				.setNumPlayers(numPlayers)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI2.ordinal())
+				.setHandRigFilePath("src/main/resources/handRiggingExampleFiles/twoPlayerHandRigging")
+		);
+		assertThat(game.getNumPlayers(), is(numPlayers));
+		assertThat(game.getStockSize(), is(76));
+		assertThat(game.getPlayer1Hand().getSizeProperty().getValue(), is(14));
+		assertThat(game.getPlayer2Hand().getSizeProperty().getValue(), is(14));
+
+		assertThat(game.getPlayer1Hand().getTiles().get(0).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(0).getRank(), is(1));
+		assertThat(game.getPlayer1Hand().getTiles().get(1).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(1).getRank(), is(2));
+		assertThat(game.getPlayer1Hand().getTiles().get(2).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(2).getRank(), is(3));
+		assertThat(game.getPlayer1Hand().getTiles().get(3).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(3).getRank(), is(4));
+		assertThat(game.getPlayer1Hand().getTiles().get(4).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(4).getRank(), is(5));
+		assertThat(game.getPlayer1Hand().getTiles().get(5).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(5).getRank(), is(6));
+		assertThat(game.getPlayer1Hand().getTiles().get(6).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(6).getRank(), is(7));
+		assertThat(game.getPlayer1Hand().getTiles().get(7).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(7).getRank(), is(8));
+		assertThat(game.getPlayer1Hand().getTiles().get(8).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(8).getRank(), is(9));
+		assertThat(game.getPlayer1Hand().getTiles().get(9).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(9).getRank(), is(10));
+		assertThat(game.getPlayer1Hand().getTiles().get(10).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(10).getRank(), is(11));
+		assertThat(game.getPlayer1Hand().getTiles().get(11).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(11).getRank(), is(12));
+		assertThat(game.getPlayer1Hand().getTiles().get(12).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(12).getRank(), is(13));
+		assertThat(game.getPlayer1Hand().getTiles().get(13).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer1Hand().getTiles().get(13).getRank(), is(1));
+
+		assertThat(game.getPlayer2Hand().getTiles().get(0).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(0).getRank(), is(1));
+		assertThat(game.getPlayer2Hand().getTiles().get(1).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(1).getRank(), is(2));
+		assertThat(game.getPlayer2Hand().getTiles().get(2).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(2).getRank(), is(3));
+		assertThat(game.getPlayer2Hand().getTiles().get(3).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(3).getRank(), is(4));
+		assertThat(game.getPlayer2Hand().getTiles().get(4).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(4).getRank(), is(5));
+		assertThat(game.getPlayer2Hand().getTiles().get(5).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(5).getRank(), is(6));
+		assertThat(game.getPlayer2Hand().getTiles().get(6).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(6).getRank(), is(7));
+		assertThat(game.getPlayer2Hand().getTiles().get(7).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(7).getRank(), is(8));
+		assertThat(game.getPlayer2Hand().getTiles().get(8).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(8).getRank(), is(9));
+		assertThat(game.getPlayer2Hand().getTiles().get(9).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(9).getRank(), is(10));
+		assertThat(game.getPlayer2Hand().getTiles().get(10).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(10).getRank(), is(11));
+		assertThat(game.getPlayer2Hand().getTiles().get(11).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(11).getRank(), is(12));
+		assertThat(game.getPlayer2Hand().getTiles().get(12).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(12).getRank(), is(13));
+		assertThat(game.getPlayer2Hand().getTiles().get(13).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer2Hand().getTiles().get(13).getRank(), is(1));
+	}
+
+	@Test
+	public void testHandRigging3Players() {
+		int numPlayers = 3;
+		game = new Game(new OptionChoices()
+				.setNumPlayers(numPlayers)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI2.ordinal())
+				.setPlayer3(OptionChoices.Type.AI3.ordinal())
+				.setHandRigFilePath("src/main/resources/handRiggingExampleFiles/threePlayerHandRigging")
+		);
+		assertThat(game.getNumPlayers(), is(numPlayers));
+		assertThat(game.getStockSize(), is(62));
+		assertThat(game.getPlayer1Hand().getSizeProperty().getValue(), is(14));
+		assertThat(game.getPlayer2Hand().getSizeProperty().getValue(), is(14));
+		assertThat(game.getPlayer3Hand().getSizeProperty().getValue(), is(14));
+
+		assertThat(game.getPlayer1Hand().getTiles().get(0).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(0).getRank(), is(1));
+		assertThat(game.getPlayer1Hand().getTiles().get(1).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(1).getRank(), is(2));
+		assertThat(game.getPlayer1Hand().getTiles().get(2).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(2).getRank(), is(3));
+		assertThat(game.getPlayer1Hand().getTiles().get(3).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(3).getRank(), is(4));
+		assertThat(game.getPlayer1Hand().getTiles().get(4).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(4).getRank(), is(5));
+		assertThat(game.getPlayer1Hand().getTiles().get(5).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(5).getRank(), is(6));
+		assertThat(game.getPlayer1Hand().getTiles().get(6).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(6).getRank(), is(7));
+		assertThat(game.getPlayer1Hand().getTiles().get(7).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(7).getRank(), is(8));
+		assertThat(game.getPlayer1Hand().getTiles().get(8).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(8).getRank(), is(9));
+		assertThat(game.getPlayer1Hand().getTiles().get(9).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(9).getRank(), is(10));
+		assertThat(game.getPlayer1Hand().getTiles().get(10).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(10).getRank(), is(11));
+		assertThat(game.getPlayer1Hand().getTiles().get(11).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(11).getRank(), is(12));
+		assertThat(game.getPlayer1Hand().getTiles().get(12).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(12).getRank(), is(13));
+		assertThat(game.getPlayer1Hand().getTiles().get(13).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer1Hand().getTiles().get(13).getRank(), is(1));
+
+		assertThat(game.getPlayer2Hand().getTiles().get(0).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(0).getRank(), is(1));
+		assertThat(game.getPlayer2Hand().getTiles().get(1).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(1).getRank(), is(2));
+		assertThat(game.getPlayer2Hand().getTiles().get(2).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(2).getRank(), is(3));
+		assertThat(game.getPlayer2Hand().getTiles().get(3).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(3).getRank(), is(4));
+		assertThat(game.getPlayer2Hand().getTiles().get(4).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(4).getRank(), is(5));
+		assertThat(game.getPlayer2Hand().getTiles().get(5).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(5).getRank(), is(6));
+		assertThat(game.getPlayer2Hand().getTiles().get(6).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(6).getRank(), is(7));
+		assertThat(game.getPlayer2Hand().getTiles().get(7).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(7).getRank(), is(8));
+		assertThat(game.getPlayer2Hand().getTiles().get(8).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(8).getRank(), is(9));
+		assertThat(game.getPlayer2Hand().getTiles().get(9).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(9).getRank(), is(10));
+		assertThat(game.getPlayer2Hand().getTiles().get(10).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(10).getRank(), is(11));
+		assertThat(game.getPlayer2Hand().getTiles().get(11).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(11).getRank(), is(12));
+		assertThat(game.getPlayer2Hand().getTiles().get(12).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(12).getRank(), is(13));
+		assertThat(game.getPlayer2Hand().getTiles().get(13).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer2Hand().getTiles().get(13).getRank(), is(1));
+
+		assertThat(game.getPlayer3Hand().getTiles().get(0).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer3Hand().getTiles().get(0).getRank(), is(2));
+		assertThat(game.getPlayer3Hand().getTiles().get(1).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(1).getRank(), is(1));
+		assertThat(game.getPlayer3Hand().getTiles().get(2).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(2).getRank(), is(2));
+		assertThat(game.getPlayer3Hand().getTiles().get(3).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(3).getRank(), is(3));
+		assertThat(game.getPlayer3Hand().getTiles().get(4).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(4).getRank(), is(4));
+		assertThat(game.getPlayer3Hand().getTiles().get(5).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(5).getRank(), is(5));
+		assertThat(game.getPlayer3Hand().getTiles().get(6).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(6).getRank(), is(6));
+		assertThat(game.getPlayer3Hand().getTiles().get(7).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(7).getRank(), is(7));
+		assertThat(game.getPlayer3Hand().getTiles().get(8).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(8).getRank(), is(8));
+		assertThat(game.getPlayer3Hand().getTiles().get(9).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(9).getRank(), is(9));
+		assertThat(game.getPlayer3Hand().getTiles().get(10).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(10).getRank(), is(10));
+		assertThat(game.getPlayer3Hand().getTiles().get(11).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(11).getRank(), is(11));
+		assertThat(game.getPlayer3Hand().getTiles().get(12).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(12).getRank(), is(12));
+		assertThat(game.getPlayer3Hand().getTiles().get(13).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(13).getRank(), is(13));
+	}
+
+	@Test
+	public void testHandRigging4Players() {
+		int numPlayers = 4;
+		game = new Game(new OptionChoices()
+				.setNumPlayers(numPlayers)
+				.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+				.setPlayer2(OptionChoices.Type.AI2.ordinal())
+				.setPlayer3(OptionChoices.Type.AI3.ordinal())
+				.setPlayer4(OptionChoices.Type.HUMAN.ordinal())
+				.setHandRigFilePath("src/main/resources/handRiggingExampleFiles/fourPlayerHandRigging")
+		);
+		assertThat(game.getNumPlayers(), is(numPlayers));
+		assertThat(game.getStockSize(), is(48));
+		assertThat(game.getPlayer1Hand().getSizeProperty().getValue(), is(14));
+		assertThat(game.getPlayer2Hand().getSizeProperty().getValue(), is(14));
+		assertThat(game.getPlayer3Hand().getSizeProperty().getValue(), is(14));
+		assertThat(game.getPlayer4Hand().getSizeProperty().getValue(), is(14));
+
+		assertThat(game.getPlayer1Hand().getTiles().get(0).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(0).getRank(), is(1));
+		assertThat(game.getPlayer1Hand().getTiles().get(1).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(1).getRank(), is(2));
+		assertThat(game.getPlayer1Hand().getTiles().get(2).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(2).getRank(), is(3));
+		assertThat(game.getPlayer1Hand().getTiles().get(3).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(3).getRank(), is(4));
+		assertThat(game.getPlayer1Hand().getTiles().get(4).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(4).getRank(), is(5));
+		assertThat(game.getPlayer1Hand().getTiles().get(5).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(5).getRank(), is(6));
+		assertThat(game.getPlayer1Hand().getTiles().get(6).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(6).getRank(), is(7));
+		assertThat(game.getPlayer1Hand().getTiles().get(7).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(7).getRank(), is(8));
+		assertThat(game.getPlayer1Hand().getTiles().get(8).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(8).getRank(), is(9));
+		assertThat(game.getPlayer1Hand().getTiles().get(9).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(9).getRank(), is(10));
+		assertThat(game.getPlayer1Hand().getTiles().get(10).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(10).getRank(), is(11));
+		assertThat(game.getPlayer1Hand().getTiles().get(11).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(11).getRank(), is(12));
+		assertThat(game.getPlayer1Hand().getTiles().get(12).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer1Hand().getTiles().get(12).getRank(), is(13));
+		assertThat(game.getPlayer1Hand().getTiles().get(13).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer1Hand().getTiles().get(13).getRank(), is(1));
+
+		assertThat(game.getPlayer2Hand().getTiles().get(0).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(0).getRank(), is(1));
+		assertThat(game.getPlayer2Hand().getTiles().get(1).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(1).getRank(), is(2));
+		assertThat(game.getPlayer2Hand().getTiles().get(2).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(2).getRank(), is(3));
+		assertThat(game.getPlayer2Hand().getTiles().get(3).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(3).getRank(), is(4));
+		assertThat(game.getPlayer2Hand().getTiles().get(4).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(4).getRank(), is(5));
+		assertThat(game.getPlayer2Hand().getTiles().get(5).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(5).getRank(), is(6));
+		assertThat(game.getPlayer2Hand().getTiles().get(6).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(6).getRank(), is(7));
+		assertThat(game.getPlayer2Hand().getTiles().get(7).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(7).getRank(), is(8));
+		assertThat(game.getPlayer2Hand().getTiles().get(8).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(8).getRank(), is(9));
+		assertThat(game.getPlayer2Hand().getTiles().get(9).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(9).getRank(), is(10));
+		assertThat(game.getPlayer2Hand().getTiles().get(10).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(10).getRank(), is(11));
+		assertThat(game.getPlayer2Hand().getTiles().get(11).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(11).getRank(), is(12));
+		assertThat(game.getPlayer2Hand().getTiles().get(12).getColour(), is(Tile.Colours.RED));
+		assertThat(game.getPlayer2Hand().getTiles().get(12).getRank(), is(13));
+		assertThat(game.getPlayer2Hand().getTiles().get(13).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer2Hand().getTiles().get(13).getRank(), is(1));
+
+		assertThat(game.getPlayer3Hand().getTiles().get(0).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer3Hand().getTiles().get(0).getRank(), is(2));
+		assertThat(game.getPlayer3Hand().getTiles().get(1).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(1).getRank(), is(1));
+		assertThat(game.getPlayer3Hand().getTiles().get(2).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(2).getRank(), is(2));
+		assertThat(game.getPlayer3Hand().getTiles().get(3).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(3).getRank(), is(3));
+		assertThat(game.getPlayer3Hand().getTiles().get(4).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(4).getRank(), is(4));
+		assertThat(game.getPlayer3Hand().getTiles().get(5).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(5).getRank(), is(5));
+		assertThat(game.getPlayer3Hand().getTiles().get(6).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(6).getRank(), is(6));
+		assertThat(game.getPlayer3Hand().getTiles().get(7).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(7).getRank(), is(7));
+		assertThat(game.getPlayer3Hand().getTiles().get(8).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(8).getRank(), is(8));
+		assertThat(game.getPlayer3Hand().getTiles().get(9).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(9).getRank(), is(9));
+		assertThat(game.getPlayer3Hand().getTiles().get(10).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(10).getRank(), is(10));
+		assertThat(game.getPlayer3Hand().getTiles().get(11).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(11).getRank(), is(11));
+		assertThat(game.getPlayer3Hand().getTiles().get(12).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(12).getRank(), is(12));
+		assertThat(game.getPlayer3Hand().getTiles().get(13).getColour(), is(Tile.Colours.ORANGE));
+		assertThat(game.getPlayer3Hand().getTiles().get(13).getRank(), is(13));
+
+		assertThat(game.getPlayer4Hand().getTiles().get(0).getColour(), is(Tile.Colours.BLUE));
+		assertThat(game.getPlayer4Hand().getTiles().get(0).getRank(), is(2));
+		assertThat(game.getPlayer4Hand().getTiles().get(1).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(1).getRank(), is(1));
+		assertThat(game.getPlayer4Hand().getTiles().get(2).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(2).getRank(), is(2));
+		assertThat(game.getPlayer4Hand().getTiles().get(3).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(3).getRank(), is(3));
+		assertThat(game.getPlayer4Hand().getTiles().get(4).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(4).getRank(), is(4));
+		assertThat(game.getPlayer4Hand().getTiles().get(5).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(5).getRank(), is(5));
+		assertThat(game.getPlayer4Hand().getTiles().get(6).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(6).getRank(), is(6));
+		assertThat(game.getPlayer4Hand().getTiles().get(7).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(7).getRank(), is(7));
+		assertThat(game.getPlayer4Hand().getTiles().get(8).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(8).getRank(), is(8));
+		assertThat(game.getPlayer4Hand().getTiles().get(9).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(9).getRank(), is(9));
+		assertThat(game.getPlayer4Hand().getTiles().get(10).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(10).getRank(), is(10));
+		assertThat(game.getPlayer4Hand().getTiles().get(11).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(11).getRank(), is(11));
+		assertThat(game.getPlayer4Hand().getTiles().get(12).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(12).getRank(), is(12));
+		assertThat(game.getPlayer4Hand().getTiles().get(13).getColour(), is(Tile.Colours.GREEN));
+		assertThat(game.getPlayer4Hand().getTiles().get(13).getRank(), is(13));
+	}
+
+	@Test
+	public void testHandRigging2PlayersButUsing4PlayerRiggedFile() {
+		int numPlayers = 2;
+		String filePath = "src/main/resources/handRiggingExampleFiles/fourPlayerHandRigging";
+		FileParser fileParser = new FileParser();
+		assertThat(fileParser.isValidFile(filePath, numPlayers), is(false));
+	}
+
+	@Test
+	public void testHandRigging3PlayersButUsing4PlayerRiggedFile() {
+		int numPlayers = 3;
+		String filePath = "src/main/resources/handRiggingExampleFiles/fourPlayerHandRigging";
+		FileParser fileParser = new FileParser();
+		assertThat(fileParser.isValidFile(filePath, numPlayers), is(false));
+	}
+
+	@Test
+	public void testHandRigging4PlayersButUsing2PlayerRiggedFile() {
+		int numPlayers = 4;
+		String filePath = "src/main/resources/handRiggingExampleFiles/twoPlayerHandRigging";
+		FileParser fileParser = new FileParser();
+		assertThat(fileParser.isValidFile(filePath, numPlayers), is(false));
+	}
+
+	@Test
+	public void testHandRigging4PlayersButUsing3PlayerRiggedFile() {
+		int numPlayers = 4;
+		String filePath = "src/main/resources/handRiggingExampleFiles/threePlayerHandRigging";
+		FileParser fileParser = new FileParser();
+		assertThat(fileParser.isValidFile(filePath, numPlayers), is(false));
 	}
 }
