@@ -48,12 +48,12 @@ public class HumanHandController extends HandController {
 
 	private Timeline timer;
 	private boolean shouldTime;
-	private boolean shouldHide;
+	private boolean shouldShow;
 
-	public HumanHandController(Game game, int playerNumber, boolean shouldTime, boolean shouldHide) {
+	public HumanHandController(Game game, int playerNumber, boolean shouldTime, boolean shouldShow) {
 		super(game, playerNumber);
 		this.shouldTime = shouldTime;
-		this.shouldHide = shouldHide;
+		this.shouldShow = shouldShow;
 	}
 
 	@FXML
@@ -69,6 +69,10 @@ public class HumanHandController extends HandController {
 			timer.getKeyFrames().add(
 				new KeyFrame(Duration.seconds(121),
 				new KeyValue(timeSeconds, 0)));
+			timer.setOnFinished(event -> { 
+				game.endTurn(game.getCurrentPlayerHand());
+				logger.debug("PLAYER " + playerNumber + " HAS RAN OUT OF TIME");
+				});
 		}
 
 		switch (playerNumber) {
@@ -186,7 +190,7 @@ public class HumanHandController extends HandController {
 
 		for (ObservableTile t : hand.getTiles()) {
 			Node btn;
-			if (shouldHide) {
+			if (shouldShow) {
 				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
 			} else {
 				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, hide), root);
