@@ -33,6 +33,9 @@ public class Game {
 	private AIPlayer ai3;
 	private int numPlayers;
 
+	private Originator originator = new Originator();
+	private CareTaker careTaker = new CareTaker();
+
 	// Note: you must call setStock since we do not do it automatically here
 	// This is because we need to be able to set up the game for integration testing
 	public Game() {
@@ -102,6 +105,11 @@ public class Game {
 
 		playerTurn = new SimpleIntegerProperty(0);
 		isNPCTurn = Bindings.createBooleanBinding(() -> players.get(getPlayerTurn()) instanceof AIPlayer, playerTurn);
+
+		playerTurn.addListener((observableValue, oldVal, newVal) -> {
+				originator.setState(FXCollections.observableArrayList(table), new Hand(getCurrentPlayerHand()));
+				careTaker.add(originator.saveStateToMemento());
+			});
 	}
 
 	public void update() {
@@ -127,6 +135,8 @@ public class Game {
 				drawTile().ifPresent(hand::addTile);
 			}
 		}
+		originator.setState(FXCollections.observableArrayList(table), new Hand(getCurrentPlayerHand()));
+		careTaker.add(originator.saveStateToMemento());
 	}
 
 	public IntegerProperty getWinnerProperty() {
@@ -167,14 +177,32 @@ public class Game {
 
 	public void endTurn(Hand hand) {
 		if (!allMeldsValid()) {
-			return;
+			originator.getStateFromMemento(careTaker.get());
+			restoreTableFromSave(originator.getTableState());
+			hand.restoreHandFromSave(originator.getHandState());
+			for (int i=0; i<3; i++) {
+				drawTile().ifPresent(hand::addTile);
+			}
+			playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+		} else {
+			if (noTilesAddedThisTurn()) {
+				drawTile().ifPresent(hand::addTile);
+			}
+			playAllTiles();
+			playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
 		}
+	}
 
-		if (noTilesAddedThisTurn()) {
-			drawTile().ifPresent(hand::addTile);
+	private void restoreTableFromSave(ObservableList<ObservableMeld> otherTable) {
+		table.clear();
+		int i;
+		for (ObservableMeld meld : otherTable) {
+			i = 0;
+			for (ObservableTile tile : meld.getMeld()) {
+				addTileToTable(tile, meld.getRow(), meld.getCol()+i);
+				i++;
+			}
 		}
-		playAllTiles();
-		playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
 	}
 
 	private boolean allMeldsValid() {
