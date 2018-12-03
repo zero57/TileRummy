@@ -3,6 +3,10 @@ package model;
 import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
+import javafx.animation.Animation;
 
 import java.util.Arrays;
 
@@ -25,6 +29,14 @@ public class GameTest {
 		assertThat(game.getStockSize(), is(104));
 		game.dealInitialTiles();
 		assertThat(game.getStockSize(), is(48));
+	}
+	
+	@Test
+	public void testTimerWorks() {
+		Timeline timer = new Timeline(new KeyFrame(
+		Duration.millis(3000),
+		ae -> {}));
+		assertThat(timer.getCurrentTime(), is(equalTo(new Duration(0))));
 	}
 
 	@Test
