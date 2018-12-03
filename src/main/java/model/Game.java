@@ -33,6 +33,9 @@ public class Game {
 	private AIPlayer ai3;
 	private int numPlayers;
 
+	private Originator originator = new Originator();
+	private CareTaker careTaker = new CareTaker();
+
 	// Note: you must call setStock since we do not do it automatically here
 	// This is because we need to be able to set up the game for integration testing
 	public Game() {
@@ -102,6 +105,11 @@ public class Game {
 
 		playerTurn = new SimpleIntegerProperty(0);
 		isNPCTurn = Bindings.createBooleanBinding(() -> players.get(getPlayerTurn()) instanceof AIPlayer, playerTurn);
+
+		playerTurn.addListener((observableValue, oldVal, newVal) -> {
+				originator.setState(FXCollections.observableArrayList(table), new Hand(getCurrentPlayerHand()));
+				careTaker.add(originator.saveStateToMemento());
+			});
 	}
 
 	public void update() {
@@ -127,6 +135,8 @@ public class Game {
 				drawTile().ifPresent(hand::addTile);
 			}
 		}
+		originator.setState(FXCollections.observableArrayList(table), new Hand(getCurrentPlayerHand()));
+		careTaker.add(originator.saveStateToMemento());
 	}
 
 	public IntegerProperty getWinnerProperty() {
@@ -166,15 +176,51 @@ public class Game {
 	}
 
 	public void endTurn(Hand hand) {
-		if (!allMeldsValid()) {
-			return;
+		if (allMeldsValid()) {
+			if (noTilesAddedThisTurn()) {
+				drawTile().ifPresent(hand::addTile);
+				playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+				return;
+			}
+			if (hasInitial30Points()) {
+				playAllTiles();
+				playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+				return;
+			}
 		}
-
-		if (noTilesAddedThisTurn()) {
+		originator.getStateFromMemento(careTaker.get());
+		/* MUST restore Hand before Table otherwise the listener will trigger on the winner propery 
+		and because the table is in a valid state after being restored, the game will prematurely end. */
+		hand.restoreHandFromSave(originator.getHandState());
+		restoreTableFromSave(originator.getTableState());
+		for (int i=0; i<3; i++) {
 			drawTile().ifPresent(hand::addTile);
 		}
-		playAllTiles();
 		playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+	}
+
+	private void restoreTableFromSave(ObservableList<ObservableMeld> otherTable) {
+		table.clear();
+		int i;
+		for (ObservableMeld meld : otherTable) {
+			i = 0;
+			for (ObservableTile tile : meld.getMeld()) {
+				addTileToTable(tile, meld.getRow(), meld.getCol()+i);
+				i++;
+			}
+		}
+	}
+
+	private boolean hasInitial30Points() {
+		Player currPlayer = players.get(getPlayerTurn());
+		for (ObservableMeld meld : table) {
+			for (ObservableTile t : meld.getMeld()) {
+				if (!t.hasBeenPlayed()) {
+					currPlayer.addScore(t.getRank()); 
+				}
+			}
+		}
+		return (currPlayer.getScore() >= 30) ? true : false;
 	}
 
 	private boolean allMeldsValid() {

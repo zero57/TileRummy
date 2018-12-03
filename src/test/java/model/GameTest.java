@@ -56,6 +56,32 @@ public class GameTest {
 	}
 
 	@Test
+	public void testPenalizePlayerAndReturnToValidState() {
+		int numPlayers = 4;
+		game = new Game(new OptionChoices()
+			.setNumPlayers(numPlayers)
+			.setPlayer1(OptionChoices.Type.HUMAN.ordinal())
+			.setPlayer2(OptionChoices.Type.HUMAN.ordinal())
+			.setPlayer3(OptionChoices.Type.HUMAN.ordinal())
+			.setPlayer4(OptionChoices.Type.HUMAN.ordinal()));
+		game.setStock(new Stock().shuffle());
+		game.dealInitialTiles();
+		assertThat(game.getNumPlayers(), is(numPlayers));
+		assertThat(game.getPlayerTurn(), is(0));
+		assertThat(game.getPlayer1Hand().getTiles().size(), is(14));
+		game.addTileToTable(game.getPlayer1Hand().getTiles().get(0), 0, 0);
+		game.addTileToTable(game.getPlayer1Hand().getTiles().get(1), 0, 2);
+		assertThat(game.getTable().size(), is(2));
+		game.getPlayer1Hand().removeTile(game.getPlayer1Hand().getTiles().get(0));
+		game.getPlayer1Hand().removeTile(game.getPlayer1Hand().getTiles().get(1));
+		assertThat(game.getPlayer1Hand().getTiles().size(), is(12));
+		game.endTurn(game.getPlayer1Hand()); // INVALID! Penalize and revert board.
+		assertThat(game.getTable().size(), is(0));
+		assertThat(game.getPlayer1Hand().getTiles().size(), is(17)); // Penalty of 3 tiles.
+		assertThat(game.getPlayerTurn(), is(1));
+	}
+
+	@Test
 	public void testAddTileToTableAllAtFrontOfRunMeld() {
 		var t1 = new ObservableTile(1, Tile.Colours.RED);
 		var t2 = new ObservableTile(2, Tile.Colours.RED);

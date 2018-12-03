@@ -34,6 +34,13 @@ public class Hand {
 		return unsortedTiles.add(tile);
 	}
 
+	public void restoreHandFromSave(Hand otherHand) {
+		unsortedTiles.clear();
+		for (ObservableTile t : otherHand.getTiles()) {
+			unsortedTiles.add(t);
+		}
+	}
+
 	public boolean removeTile(ObservableTile tile) {
 		return unsortedTiles.remove(tile);
 	}
