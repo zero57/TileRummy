@@ -1,7 +1,5 @@
 package controller;
 
-import factory.TileButtonFactory;
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -11,7 +9,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Game;
-import model.Hand;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,11 +28,8 @@ public class NPCHandController extends HandController {
 	@FXML
 	private FlowPane fpHand;
 
-	private boolean shouldShow;
-
 	public NPCHandController(Game game, int playerNumber, boolean shouldShow) {
-		super(game, playerNumber);
-		this.shouldShow = shouldShow;
+		super(game, playerNumber, shouldShow);
 	}
 
 	@FXML
@@ -90,6 +84,8 @@ public class NPCHandController extends HandController {
 				return;
 		}
 		hand.getTiles().addListener(onTileListChange());
+		boolean isMyTurn = game.getPlayerTurn() == (playerNumber - 1);
+		updateHand(!isMyTurn);
 	}
 
 	private ListChangeListener<ObservableTile> onTileListChange() {
