@@ -10,7 +10,7 @@ public class CareTaker {
       mementoList.add(state);
    }
 
-   public Memento get() {
-      return mementoList.get(mementoList.size()-1);
-   }
+	public Memento get() {
+	  return mementoList.get(mementoList.size()-1);
+	}
 }

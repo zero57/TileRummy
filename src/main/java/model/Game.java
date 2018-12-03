@@ -176,21 +176,27 @@ public class Game {
 	}
 
 	public void endTurn(Hand hand) {
-		if (!allMeldsValid()) {
-			originator.getStateFromMemento(careTaker.get());
-			restoreTableFromSave(originator.getTableState());
-			hand.restoreHandFromSave(originator.getHandState());
-			for (int i=0; i<3; i++) {
-				drawTile().ifPresent(hand::addTile);
-			}
-			playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
-		} else {
+		if (allMeldsValid()) {
 			if (noTilesAddedThisTurn()) {
 				drawTile().ifPresent(hand::addTile);
+				playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+				return;
 			}
-			playAllTiles();
-			playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+			if (hasInitial30Points()) {
+				playAllTiles();
+				playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
+				return;
+			}
 		}
+		originator.getStateFromMemento(careTaker.get());
+		/* MUST restore Hand before Table otherwise the listener will trigger on the winner propery 
+		and because the table is in a valid state after being restored, the game will prematurely end. */
+		hand.restoreHandFromSave(originator.getHandState());
+		restoreTableFromSave(originator.getTableState());
+		for (int i=0; i<3; i++) {
+			drawTile().ifPresent(hand::addTile);
+		}
+		playerTurn.setValue((playerTurn.getValue() + 1) % numPlayers);
 	}
 
 	private void restoreTableFromSave(ObservableList<ObservableMeld> otherTable) {
@@ -203,6 +209,18 @@ public class Game {
 				i++;
 			}
 		}
+	}
+
+	private boolean hasInitial30Points() {
+		Player currPlayer = players.get(getPlayerTurn());
+		for (ObservableMeld meld : table) {
+			for (ObservableTile t : meld.getMeld()) {
+				if (!t.hasBeenPlayed()) {
+					currPlayer.addScore(t.getRank()); 
+				}
+			}
+		}
+		return (currPlayer.getScore() >= 30) ? true : false;
 	}
 
 	private boolean allMeldsValid() {
