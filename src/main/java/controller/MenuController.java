@@ -9,12 +9,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.OptionChoices;
 import model.Stock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import parser.FileParser;
 
+import java.io.File;
 import java.util.Objects;
 
 public class MenuController {
@@ -23,28 +26,39 @@ public class MenuController {
 
 	@FXML
 	private JFXButton playBtn;
+
+	@FXML
+	private JFXButton btnFileHandRig;
+
 	@FXML
 	private JFXButton exitBtn;
+
 	@FXML
 	private JFXComboBox numPlayerBox;
+
 	@FXML
 	private JFXComboBox player1Box;
+
 	@FXML
 	private JFXComboBox player2Box;
+
 	@FXML
 	private JFXComboBox player3Box;
+
 	@FXML
 	private JFXComboBox player4Box;
 
 	@FXML
 	private JFXCheckBox timerCheck;
+
 	@FXML
 	private JFXCheckBox rigTileCheck;
+
 	@FXML
 	private JFXCheckBox rigHandCheck;
+
 	@FXML
 	private JFXCheckBox showHandCheck;
-
 
 	@FXML
 	private Stage stage;
@@ -111,15 +125,28 @@ public class MenuController {
 				logger.debug("SHOWHANDS CHECKED IS " + options.getShowHandsChecked());
 
 				try {
+					FileParser fileParser = new FileParser();
+					if (!fileParser.isValidFile(options.getHandRigFilePath(), options.getNumPlayers())) {
+						logger.error("Invalid file input. Try again");
+						return;
+					}
 					showMainStage();
-				} catch (Exception ignore) {
-
+				} catch (Exception e) {
+					logger.error(e);
 				}
 			}
 		});
 
 		exitBtn.setOnMouseClicked(b -> {
 			System.exit(0);
+		});
+
+		btnFileHandRig.setOnMouseClicked(e -> {
+			FileChooser fileChooser = new FileChooser();
+			File file = fileChooser.showOpenDialog(stage);
+			if (file != null) {
+				options.setHandRigFilePath(file.getAbsolutePath());
+			}
 		});
 	}
 
@@ -141,7 +168,10 @@ public class MenuController {
 		mainStage.show();
 
 		logger.info("Game Scene loaded");
-		mainController.getGame().setStock(new Stock().shuffle());
+		// If we choose to rig the hands using file, then the game internally sets the stock for us
+		if (options.getHandRigFilePath().isEmpty()) {
+			mainController.getGame().setStock(new Stock().shuffle());
+		}
 		mainController.getGame().dealInitialTiles();
 		logger.info("Game started.");
 	}

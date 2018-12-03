@@ -22,6 +22,8 @@ public class OptionChoices {
 	private boolean rigTileDrawChecked;
 	private boolean showHandsChecked;
 
+	private String handRigFilePath = "";
+
 	public OptionChoices setNumPlayers(int num) {
 		numPlayers = num;
 		return this;
@@ -87,6 +89,21 @@ public class OptionChoices {
 		return showHandsChecked;
 	}
 
+	public Type getPlayer(int playerNum) {
+		switch (playerNum) {
+			case 1:
+				return player1;
+			case 2:
+				return player2;
+			case 3:
+				return player3;
+			case 4:
+				return player4;
+			default:
+				throw new Error("Invalid player number: " + playerNum);
+		}
+	}
+
 	public Type getPlayer1() {
 		return player1;
 	}
@@ -101,5 +118,14 @@ public class OptionChoices {
 
 	public Type getPlayer4() {
 		return player4;
+	}
+
+	public OptionChoices setHandRigFilePath(String path) {
+		handRigFilePath = path;
+		return this;
+	}
+
+	public String getHandRigFilePath() {
+		return handRigFilePath;
 	}
 }
