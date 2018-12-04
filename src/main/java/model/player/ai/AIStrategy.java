@@ -212,21 +212,53 @@ public abstract class AIStrategy {
 
 	//play conservative && playLiberal
 	boolean playConservative() {
-		return false;
+		List<Meld> highestValueMelds = highestValueMelds(hand);
+		List<ObservableTile> tilesNotInMelds = new ArrayList<ObservableTile>(hand.getTiles());
+		highestValueMelds.forEach(meld -> meld.getMeld().forEach(tilesNotInMelds::remove));
+		return useBoardMelds(tilesNotInMelds);
 	}
 
 	boolean playLiberal() {
 		List<Meld> highestValueMelds = highestValueMelds(hand);
 		playMeldsToTable(highestValueMelds, true);
-		highestValueMelds.forEach(meld -> meld.getMeld().forEach(tile -> hand.removeTile(tile)));
-		return !highestValueMelds.isEmpty();
+		highestValueMelds.forEach(meld -> meld.getMeld().forEach(hand::removeTile));
+		return useBoardMelds(new ArrayList<ObservableTile>(hand.getTiles())) || !highestValueMelds.isEmpty();
 	}
 
 	//TODO: helper method useBoardMelds for playConservative and playLiberal
-	private void useBoardMelds() {
+	//playableTiles is a list of tiles from the players hand that may be used for board reuse
+	//note playableTiles is not the same as the players hands list of tiles, so removing
+	//from playableTiles doesn't change the hand. Tiles must be removed from hand manually
+	private boolean useBoardMelds(List<ObservableTile> playableTiles) {
+		List<Meld> tableMelds = new ArrayList<Meld>();
+		for (Meld meld : game.getTable()) {
+			Meld copy = new Meld();
+			meld.getMeld().forEach(copy::addLastTile);
+			tableMelds.add(copy);
+		}
+		List<ObservableTile> tilesToRemove = new ArrayList<ObservableTile>();
 
+		for (Meld meld : tableMelds) {
+			boolean tilesHaveBeenRemoved = true;
+			while (tilesHaveBeenRemoved) {
+				tilesHaveBeenRemoved = false;
+				for (ObservableTile tile : playableTiles) {
+					if (meld.addLastTile(tile) || meld.addFirstTile(tile)) {
+						tilesToRemove.add(tile);
+						tilesHaveBeenRemoved = true;
+					}
+				}
+				playableTiles.removeAll(tilesToRemove);
+			}
+		}
+
+		if(!tilesToRemove.isEmpty()){
+			playMeldsToTable(tableMelds,false);
+			tilesToRemove.forEach(hand::removeTile);
+		}
+
+		return !tilesToRemove.isEmpty();
 	}
-
 
 	//finds a combination of melds in a hand with maximal total value
 	List<Meld> highestValueMelds(Hand hand) {
