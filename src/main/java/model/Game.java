@@ -1,8 +1,5 @@
 package model;
 
-import model.player.HumanPlayer;
-import model.player.Player;
-import model.player.ai.AIPlayer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.IntegerProperty;
@@ -11,8 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.observable.ObservableMeld;
 import model.observable.ObservableTile;
+import model.player.HumanPlayer;
+import model.player.Player;
+import model.player.ai.AIPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import parser.FileParser;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -28,9 +29,6 @@ public class Game {
 	private BooleanBinding isNPCTurn;
 	private IntegerProperty playerTurn;
 	private IntegerProperty winner;
-	private AIPlayer ai1;
-	private AIPlayer ai2;
-	private AIPlayer ai3;
 	private int numPlayers;
 
 	private Originator originator = new Originator();
@@ -55,51 +53,38 @@ public class Game {
 		players = new ArrayList<>();
 
 		hands = new ArrayList<>();
-		for (int i = 0; i < numPlayers; i++) {
+		// Set up hands, either by file rigging or no file rigging
+		if (!optionChoices.getHandRigFilePath().isEmpty()) {
+			FileParser fileParser = new FileParser();
+			ArrayList<Hand> tmpHands = fileParser.getHandsFromFile(optionChoices.getHandRigFilePath());
+			setStock(fileParser.getStock());
+			for (int i = 0; i < numPlayers; i++) {
+				hands.add(tmpHands.remove(0));
+			}
+		} else {
+			for (int i = 0; i < numPlayers; i++) {
+				hands.add(new Hand());
+			}
+		}
+		for (int i = 0; i < hands.size(); i++) {
 			final int finalI = i;
-			Hand hand = new Hand();
-			hands.add(hand);
+			Hand hand = hands.get(i);
 			hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
 				if (newVal.intValue() == 0 && allMeldsValid()) {
 					logger.info("Player " + (finalI + 1) + " is the winner!");
 					winner.setValue(finalI + 1);
 				}
 			});
-			if (i == 0) {
-				if (optionChoices.getPlayer1() == OptionChoices.Type.HUMAN) {
-					Player player = new HumanPlayer(this, hand);
-					players.add(player);
-				} else {
-					Player player = new AIPlayer(optionChoices.getPlayer1().ordinal(), this, hand);
-					players.add(player);
-				}
-			}
-			if (i == 1) {
-				if (optionChoices.getPlayer2() == OptionChoices.Type.HUMAN) {
-					Player player = new HumanPlayer(this, hand);
-					players.add(player);
-				} else {
-					Player player = new AIPlayer(optionChoices.getPlayer2().ordinal(), this, hand);
-					players.add(player);
-				}
-			}
-			if (i == 2) {
-				if (optionChoices.getPlayer3() == OptionChoices.Type.HUMAN) {
-					Player player = new HumanPlayer(this, hand);
-					players.add(player);
-				} else {
-					Player player = new AIPlayer(optionChoices.getPlayer3().ordinal(), this, hand);
-					players.add(player);
-				}
-			}
-			if (i == 3) {
-				if (optionChoices.getPlayer4() == OptionChoices.Type.HUMAN) {
-					Player player = new HumanPlayer(this, hand);
-					players.add(player);
-				} else {
-					Player player = new AIPlayer(optionChoices.getPlayer4().ordinal(), this, hand);
-					players.add(player);
-				}
+		}
+
+		// Create players and attach their hands based on the option given
+		for (int i = 0; i < numPlayers; i++) {
+			if (optionChoices.getPlayer(i + 1) == OptionChoices.Type.HUMAN) {
+				Player player = new HumanPlayer(this, hands.get(i));
+				players.add(player);
+			} else {
+				Player player = new AIPlayer(optionChoices.getPlayer(i + 1).ordinal(), this, hands.get(i));
+				players.add(player);
 			}
 		}
 
@@ -131,7 +116,7 @@ public class Game {
 
 	public void dealInitialTiles() {
 		for (Hand hand : hands) {
-			for (int i = 0; i < 14; i++) {
+			for (int i = hand.getSizeProperty().getValue(); i < 14; i++) {
 				drawTile().ifPresent(hand::addTile);
 			}
 		}

@@ -1,8 +1,10 @@
 package controller;
 
-import factory.TileButtonFactory;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ListChangeListener;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -12,22 +14,14 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import model.Game;
-import model.Hand;
-import javafx.scene.Node;
 import model.observable.ObservableTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ui.TileButton;
-import ui.UIHelper;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
-import javafx.animation.Animation;
-import javafx.animation.KeyValue;
+
 import java.text.MessageFormat;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 public class HumanHandController extends HandController {
 	private static final Logger logger = LogManager.getLogger(HumanHandController.class.getName());
@@ -48,12 +42,10 @@ public class HumanHandController extends HandController {
 
 	private Timeline timer;
 	private boolean shouldTime;
-	private boolean shouldShow;
 
 	public HumanHandController(Game game, int playerNumber, boolean shouldTime, boolean shouldShow) {
-		super(game, playerNumber);
+		super(game, playerNumber, shouldShow);
 		this.shouldTime = shouldTime;
-		this.shouldShow = shouldShow;
 	}
 
 	@FXML
@@ -67,12 +59,12 @@ public class HumanHandController extends HandController {
 			timerLabel.textProperty().bind(timeSeconds.asString());
 			timer = new Timeline();
 			timer.getKeyFrames().add(
-				new KeyFrame(Duration.seconds(121),
-				new KeyValue(timeSeconds, 0)));
-			timer.setOnFinished(event -> { 
+					new KeyFrame(Duration.seconds(121),
+							new KeyValue(timeSeconds, 0)));
+			timer.setOnFinished(event -> {
 				game.endTurn(game.getCurrentPlayerHand());
 				logger.debug("PLAYER " + playerNumber + " HAS RAN OUT OF TIME");
-				});
+			});
 		}
 
 		switch (playerNumber) {
@@ -179,26 +171,10 @@ public class HumanHandController extends HandController {
 			boolean isMyTurn = game.getPlayerTurn() == (playerNumber - 1);
 			updateHand(!isMyTurn);
 		});
+		boolean isMyTurn = game.getPlayerTurn() == (playerNumber - 1);
+		updateHand(!isMyTurn);
 	}
 
-	private void updateHand(boolean hide) {
-		fpHand.getChildren().clear();
-		// Must set back to false since when we drag tiles, the root pane stops listening for mouse events
-		// The call for root.setMouseTransparent(false) in the UIHelper's mouse released event does not fire
-		// since we remove the node as soon as we release the mouse
-		root.setMouseTransparent(false);
-
-		for (ObservableTile t : hand.getTiles()) {
-			Node btn;
-			if (shouldShow) {
-				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, false), root);
-			} else {
-				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, hide), root);
-			}
-			btn.disableProperty().bind(game.getPlayerTurnProperty().isNotEqualTo(playerNumber - 1));
-			fpHand.getChildren().add(btn);
-		}
-	}
 
 	private ListChangeListener<ObservableTile> onTileListChange() {
 		return (ListChangeListener.Change<? extends ObservableTile> change) -> {
