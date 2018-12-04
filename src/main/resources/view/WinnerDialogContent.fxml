@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.Image?>
+<HBox xmlns="http://javafx.com/javafx" alignment="CENTER">
+    <ImageView>
+        <Image url="@../default.gif"/>
+    </ImageView>
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label id="lblWinner" HBox.hgrow="ALWAYS"/>
+</HBox>

@@ -123,7 +123,7 @@ public class TableController {
 			} else {
 				btn.getStyleClass().add("fadeTile");
 			}
-			btn.disableProperty().bind(game.getNPCTurn());
+			btn.disableProperty().bind(game.getNPCTurn().or(game.getWinnerProperty().isNotEqualTo(-1)));
 			addOrReplaceNodeAtCell(btn, meld.getRow(), meld.getCol() + i);
 		}
 	}

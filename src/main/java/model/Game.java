@@ -98,6 +98,10 @@ public class Game {
 	}
 
 	public void update() {
+		// If the winner has been set, then we stop player from playing their turn
+		if (winner.getValue() != -1) {
+			return;
+		}
 		players.get(playerTurn.get()).playTurn();
 	}
 

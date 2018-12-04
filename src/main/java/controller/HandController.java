@@ -74,7 +74,7 @@ public class HandController {
 			} else {
 				btn = UIHelper.makeDraggable(tileButtonFactory.newTileButton(t, hide), root);
 			}
-			btn.disableProperty().bind(game.getPlayerTurnProperty().isNotEqualTo(playerNumber - 1));
+			btn.disableProperty().bind(game.getPlayerTurnProperty().isNotEqualTo(playerNumber - 1).or(game.getWinnerProperty().isNotEqualTo(-1)));
 			fpHand.getChildren().add(btn);
 		}
 	}
