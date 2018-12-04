@@ -111,6 +111,7 @@ public class MenuController {
 				options.setRigHandChecked(rigHandCheck.isSelected());
 				options.setRigTileDrawChecked(rigTileCheck.isSelected());
 				options.setShowHandsChecked(showHandCheck.isSelected());
+				options.setShowStartDialog(true);
 
 				logger.debug("OUTPUTTING OPTIONS STRUCTURE");
 				logger.debug("NUM OF PLAYERS IS " + options.getNumPlayers());

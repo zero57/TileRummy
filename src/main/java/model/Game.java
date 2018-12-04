@@ -14,9 +14,15 @@ import model.player.ai.AIPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import parser.FileParser;
-
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Comparator;
 
 public class Game {
 	private static final Logger logger = LogManager.getLogger(Game.class.getName());
@@ -33,6 +39,7 @@ public class Game {
 
 	private Originator originator = new Originator();
 	private CareTaker careTaker = new CareTaker();
+	LinkedHashMap<Integer, ObservableTile> sortedMap;
 
 	// Note: you must call setStock since we do not do it automatically here
 	// This is because we need to be able to set up the game for integration testing
@@ -87,8 +94,38 @@ public class Game {
 				players.add(player);
 			}
 		}
+		
+		int firstPlayerNum = 0;
+		Stock tempStock = new Stock().shuffle();
+		HashMap<Integer, ObservableTile> map = new HashMap<Integer, ObservableTile>();
 
-		playerTurn = new SimpleIntegerProperty(0);
+		if (optionChoices.getShowStartDialog()) {
+			while (true) {
+				for (int i=0; i<numPlayers; i++) {
+					map.put(i, tempStock.draw().orElse(new ObservableTile(1,Tile.Colours.RED)));
+				}
+				sortedMap = sortHashMapByValues(map);
+				Iterator<Integer> iter = new ArrayList<>(sortedMap.keySet()).iterator();
+				firstPlayerNum = iter.next();
+				for (Map.Entry<Integer, ObservableTile> entry : sortedMap.entrySet()) {
+					ObservableTile tile = entry.getValue();
+					Integer number = entry.getKey();
+					logger.debug("PLAYER " + number + "'S TILE: " + tile);
+				}
+				Iterator<ObservableTile> checkTie = sortedMap.values().iterator();
+				ObservableTile tile = checkTie.next();
+				if (tile.getRank() == (checkTie.next()).getRank()) {
+					logger.info("TIEBREAKER REQUIRED. DRAWING AGAIN.");
+					tempStock = new Stock().shuffle();
+				} else {
+					break;
+				}
+			}
+		}
+
+		logger.debug("PLAYER " + firstPlayerNum + " GOES FIRST");
+
+		playerTurn = new SimpleIntegerProperty(firstPlayerNum);
 		isNPCTurn = Bindings.createBooleanBinding(() -> players.get(getPlayerTurn()) instanceof AIPlayer, playerTurn);
 
 		playerTurn.addListener((observableValue, oldVal, newVal) -> {
@@ -340,4 +377,36 @@ public class Game {
 		}
 		return false;
 	}
+
+	public ObservableTile getDrawnStartTile(int playerNum) {
+		return sortedMap.get(playerNum);
+	}
+
+private LinkedHashMap<Integer, ObservableTile> sortHashMapByValues(HashMap<Integer, ObservableTile> passedMap) {
+	List<Integer> mapKeys = new ArrayList<>(passedMap.keySet());
+	List<ObservableTile> mapValues = new ArrayList<>(passedMap.values());
+	Collections.sort(mapValues, Comparator.comparing(Tile::getRank).reversed());
+	Collections.sort(mapKeys);
+
+	LinkedHashMap<Integer, ObservableTile> sortedMap = new LinkedHashMap<>();
+
+	Iterator<ObservableTile> valueIt = mapValues.iterator();
+	while (valueIt.hasNext()) {
+		ObservableTile val = valueIt.next();
+		Iterator<Integer> keyIt = mapKeys.iterator();
+
+		while (keyIt.hasNext()) {
+		Integer key = keyIt.next();
+		ObservableTile comp1 = passedMap.get(key);
+		ObservableTile comp2 = val;
+
+			if (comp1.equals(comp2)) {
+				keyIt.remove();
+				sortedMap.put(key, val);
+				break;
+			}
+		}
+	}
+	return sortedMap;
+}
 }

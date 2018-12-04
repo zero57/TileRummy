@@ -54,6 +54,7 @@ class IntegrationTest {
 		optionChoices.setShowHandsChecked(false);
 		optionChoices.setTimerChecked(false);
 		controller = new MainController(optionChoices);
+		optionChoices.setShowStartDialog(false);
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/MainView.fxml"));
 		loader.setControllerFactory(c -> controller);
 		StackPane root = loader.load();

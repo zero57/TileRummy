@@ -160,6 +160,10 @@ public class MainController {
 			}
 		});
 
+		if (options.getShowStartDialog()) {
+			loadPlayerFirstDialog();
+		}
+
 		AnimationTimer gameLoop = new AnimationTimer() {
 			@Override
 			public void handle(long l) {
@@ -187,5 +191,27 @@ public class MainController {
 
 	public Pane getPlayer4HandPane() {
 		return player4HandController.getHandPane();
+	}
+
+	private void loadPlayerFirstDialog() {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("view/WinnerDialogContent.fxml"));
+		try {
+			HBox content = fxmlLoader.load();
+			Label lblWinner = content.getChildren().stream()
+					.filter(Label.class::isInstance)
+					.map(Label.class::cast)
+					.filter(l -> l.getId().equals("lblWinner"))
+					.findFirst()
+					.orElseThrow();
+			lblWinner.setText("Player 1 drew: " + game.getDrawnStartTile(0) +
+							  "\nPlayer 2 drew: " + game.getDrawnStartTile(1) +
+							  "\nPlayer 3 drew: " + game.getDrawnStartTile(2) +
+							  "\nPlayer 4 drew: " + game.getDrawnStartTile(3) +
+							  "\nPlayer " + (game.getPlayerTurn()+1) + " gets to go first!");
+			JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+			dialog.show();
+		} catch (IOException e) {
+			logger.error(e);
+		}
 	}
 }

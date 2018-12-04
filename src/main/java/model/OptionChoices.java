@@ -21,6 +21,7 @@ public class OptionChoices {
 	private boolean rigHandChecked;
 	private boolean rigTileDrawChecked;
 	private boolean showHandsChecked;
+	private boolean showStartDialog;
 
 	private String handRigFilePath = "";
 
@@ -36,6 +37,14 @@ public class OptionChoices {
 	public OptionChoices setPlayer1(int index) {
 		player1 = Arrays.stream(Type.values()).filter(t -> t.ordinal() == index).findFirst().orElse(null);
 		return this;
+	}
+
+	public void setShowStartDialog(boolean choice) {
+		showStartDialog = choice;
+	}
+
+	public boolean getShowStartDialog() {
+		return showStartDialog;
 	}
 
 	public OptionChoices setPlayer2(int index) {
