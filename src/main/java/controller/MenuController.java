@@ -125,10 +125,12 @@ public class MenuController {
 				logger.debug("SHOWHANDS CHECKED IS " + options.getShowHandsChecked());
 
 				try {
-					FileParser fileParser = new FileParser();
-					if (!fileParser.isValidFile(options.getHandRigFilePath(), options.getNumPlayers())) {
-						logger.error("Invalid file input. Try again");
-						return;
+					if (!options.getHandRigFilePath().isEmpty()) {
+						FileParser fileParser = new FileParser();
+						if (!fileParser.isValidFile(options.getHandRigFilePath(), options.getNumPlayers())) {
+							logger.error("Invalid file input. Try again");
+							return;
+						}
 					}
 					showMainStage();
 				} catch (Exception e) {
