@@ -5,10 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.Game;
 import model.Meld;
+import model.OptionChoices;
 import model.Stock;
 import model.Tile;
 import model.observable.ObservableTile;
@@ -21,7 +22,6 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import ui.TileButton;
-import model.OptionChoices;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +56,7 @@ class IntegrationTest {
 		controller = new MainController(optionChoices);
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/MainView.fxml"));
 		loader.setControllerFactory(c -> controller);
-		VBox root = loader.load();
+		StackPane root = loader.load();
 		game = controller.getGame();
 
 		// todo: figure out why using the decorator fails to work and we get async exception errors in TestFX

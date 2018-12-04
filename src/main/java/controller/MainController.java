@@ -1,14 +1,17 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import model.Game;
 import model.OptionChoices;
@@ -32,6 +35,9 @@ public class MainController {
 
 	@FXML
 	private JFXButton btnEndTurn;
+
+	@FXML
+	private StackPane root;
 
 	private Game game;
 	private OptionChoices options;
@@ -132,7 +138,27 @@ public class MainController {
 		hboxCenter.getChildren().add(0, tableView);
 
 		btnEndTurn.setOnMouseClicked(b -> game.endTurn(game.getCurrentPlayerHand()));
-		btnEndTurn.disableProperty().bind(game.getNPCTurn());
+		btnEndTurn.disableProperty().bind(game.getNPCTurn().or(game.getWinnerProperty().isNotEqualTo(-1)));
+
+		game.getWinnerProperty().addListener((observableValue, oldVal, newVal) -> {
+			if (newVal.intValue() != -1) {
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("view/WinnerDialogContent.fxml"));
+				try {
+					HBox content = fxmlLoader.load();
+					Label lblWinner = content.getChildren().stream()
+							.filter(Label.class::isInstance)
+							.map(Label.class::cast)
+							.filter(l -> l.getId().equals("lblWinner"))
+							.findFirst()
+							.orElseThrow();
+					lblWinner.setText("Player " + newVal + " is the winner!");
+					JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+					dialog.show();
+				} catch (IOException e) {
+					logger.error(e);
+				}
+			}
+		});
 
 		AnimationTimer gameLoop = new AnimationTimer() {
 			@Override
