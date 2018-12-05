@@ -60,6 +60,9 @@ public class MenuController {
 	@FXML
 	private JFXCheckBox showHandCheck;
 
+	@FXML 
+	private JFXCheckBox showStartPlayerCheck;
+
 	@FXML
 	private Stage stage;
 
@@ -111,7 +114,7 @@ public class MenuController {
 				options.setRigHandChecked(rigHandCheck.isSelected());
 				options.setRigTileDrawChecked(rigTileCheck.isSelected());
 				options.setShowHandsChecked(showHandCheck.isSelected());
-				options.setShowStartDialog(true);
+				options.setShowStartDialog(showStartPlayerCheck.isSelected());
 
 				logger.debug("OUTPUTTING OPTIONS STRUCTURE");
 				logger.debug("NUM OF PLAYERS IS " + options.getNumPlayers());
