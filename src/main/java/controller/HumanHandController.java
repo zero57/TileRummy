@@ -143,7 +143,7 @@ public class HumanHandController extends HandController {
 				logger.error("Can't create a HandController for Player " + playerNumber);
 				return;
 		}
-		if (playerNumber == 1 && shouldTime) {
+		if (playerNumber == (game.getPlayerTurn()+1) && shouldTime) {
 			timer.playFromStart();
 		}
 		hand.getTiles().addListener(onTileListChange());
