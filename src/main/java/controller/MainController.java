@@ -203,11 +203,12 @@ public class MainController {
 					.filter(l -> l.getId().equals("lblWinner"))
 					.findFirst()
 					.orElseThrow();
-			lblWinner.setText("Player 1 drew: " + game.getDrawnStartTile(0) +
-							  "\nPlayer 2 drew: " + game.getDrawnStartTile(1) +
-							  "\nPlayer 3 drew: " + game.getDrawnStartTile(2) +
-							  "\nPlayer 4 drew: " + game.getDrawnStartTile(3) +
-							  "\nPlayer " + (game.getPlayerTurn()+1) + " gets to go first!");
+
+			String playerText = "";
+			for (int i=0; i<options.getNumPlayers(); i++) {
+				playerText += "Player " + (i+1) + " drew: " + game.getDrawnStartTile(i) + "\n";
+			}
+			lblWinner.setText(playerText + "Player " + (game.getPlayerTurn()+1) + " gets to go first!");
 			JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
 			dialog.show();
 		} catch (IOException e) {
