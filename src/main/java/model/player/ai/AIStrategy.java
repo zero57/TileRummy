@@ -49,19 +49,7 @@ public abstract class AIStrategy {
 		game.getTable().forEach(observableMeld -> tiles.addAll(observableMeld.getMeld()));
 		tiles.addAll(hand.getTiles());
 
-		List<List<List<ObservableTile>>> tilesByRank = new ArrayList<List<List<ObservableTile>>>();
-		//dummy in position 0
-		tilesByRank.add(null);
-		for (int i = 1; i <= 13; ++i) {
-			tilesByRank.add(new ArrayList<>());
-			for (int j = 0; j < 4; ++j) {
-				tilesByRank.get(i).add(new ArrayList<ObservableTile>());
-			}
-		}
-
-		for (ObservableTile tile : tiles) {
-			tilesByRank.get(tile.getRank()).get(tile.getColour().ordinal()).add(tile);
-		}
+		List<List<List<ObservableTile>>> tilesByRank = tilesByRank(tiles);
 
 		Hand setTiles = new Hand();
 		Hand runTiles = new Hand();
@@ -81,18 +69,18 @@ public abstract class AIStrategy {
 
 	private boolean allTilePlay(int rank, int[][] runState, List<List<List<ObservableTile>>> tilesByRank, Hand setTiles, Hand runTiles) {
 		int[] redAdditions;
-		int[] greenAdditions;
 		int[] blueAdditions;
+		int[] greenAdditions;
 		int[] orangeAdditions;
 		if (rank <= 11) {
 			redAdditions = findAdditions(runState[0]);
-			greenAdditions = findAdditions(runState[1]);
-			blueAdditions = findAdditions(runState[2]);
+			blueAdditions = findAdditions(runState[1]);
+			greenAdditions = findAdditions(runState[2]);
 			orangeAdditions = findAdditions(runState[3]);
 		} else {
 			redAdditions = findAdditionsRank12or13(runState[0]);
-			greenAdditions = findAdditionsRank12or13(runState[1]);
-			blueAdditions = findAdditionsRank12or13(runState[2]);
+			blueAdditions = findAdditionsRank12or13(runState[1]);
+			greenAdditions = findAdditionsRank12or13(runState[2]);
 			orangeAdditions = findAdditionsRank12or13(runState[3]);
 		}
 		List<List<ObservableTile>> currentTiles = tilesByRank.get(rank);
@@ -102,29 +90,25 @@ public abstract class AIStrategy {
 			if (redTilesRemaining < 0) {
 				continue;
 			}
-			for (int g : greenAdditions) {
-				int greenTilesRemaining = currentTiles.get(1).size() - g;
-				if (greenTilesRemaining < 0) {
+			for (int b : blueAdditions) {
+				int blueTilesRemaining = currentTiles.get(1).size() - b;
+				if (blueTilesRemaining < 0) {
 					continue;
 				}
-				//int maxColour2 = Math.max(redTilesRemaining,greenTilesRemaining);
-				for (int b : blueAdditions) {
-					int blueTilesRemaining = currentTiles.get(2).size() - b;
-					if (blueTilesRemaining < 0) {
+				for (int g : greenAdditions) {
+					int greenTilesRemaining = currentTiles.get(2).size() - g;
+					if (greenTilesRemaining < 0) {
 						continue;
 					}
-					//int maxColour3 = Math.max(maxColour2,blueTilesRemaining);
 					for (int o : orangeAdditions) {
 						int orangeTilesRemaining = currentTiles.get(3).size() - o;
 						if (orangeTilesRemaining < 0) {
 							continue;
 						}
-						//int tilesRemaining = redTilesRemaining + greenTilesRemaining + blueTilesRemaining + orangeTilesRemaining;
-						//int maxColour4 = Math.max(maxColour3,orangeTilesRemaining);
-						if (!canFormSetsUsingAllTiles(redTilesRemaining, greenTilesRemaining, blueTilesRemaining, orangeTilesRemaining)) {
+						if (!canFormSetsUsingAllTiles(redTilesRemaining, blueTilesRemaining, greenTilesRemaining, orangeTilesRemaining)) {
 							continue;
 						}
-						int[] additions = {r, g, b, o};
+						int[] additions = {r, b, g, o};
 
 						if (rank == 13 || allTilePlay(rank + 1, addStateAndAddition(runState, additions), tilesByRank, setTiles, runTiles)) {
 							for (int i = 0; i < 4; ++i) {
@@ -198,12 +182,12 @@ public abstract class AIStrategy {
 		return result;
 	}
 
-	private boolean canFormSetsUsingAllTiles(int numRedTiles, int numGreenTiles, int numBlueTiles, int numOrangeTiles) {
-		int numTiles = numRedTiles + numGreenTiles + numBlueTiles + numOrangeTiles;
+	private boolean canFormSetsUsingAllTiles(int numRedTiles, int numblueTiles, int numgreenTiles, int numOrangeTiles) {
+		int numTiles = numRedTiles + numblueTiles + numgreenTiles + numOrangeTiles;
 		if (numTiles == 1 || numTiles == 2 || numTiles == 5) {
 			return false;
 		}
-		if ((numTiles == 3 || numTiles == 4) && (numRedTiles == 2 || numGreenTiles == 2 || numBlueTiles == 2 || numOrangeTiles == 2)) {
+		if ((numTiles == 3 || numTiles == 4) && (numRedTiles == 2 || numblueTiles == 2 || numgreenTiles == 2 || numOrangeTiles == 2)) {
 			return false;
 		}
 		return true;
@@ -236,24 +220,124 @@ public abstract class AIStrategy {
 			meld.getMeld().forEach(copy::addLastTile);
 			tableMelds.add(copy);
 		}
+
 		List<ObservableTile> tilesToRemove = new ArrayList<ObservableTile>();
 
 		for (Meld meld : tableMelds) {
-			boolean tilesHaveBeenRemoved = true;
-			while (tilesHaveBeenRemoved) {
-				tilesHaveBeenRemoved = false;
+			boolean tilesRemovedThisIteration = true;
+			while (tilesRemovedThisIteration) {
+				tilesRemovedThisIteration = false;
 				for (ObservableTile tile : playableTiles) {
 					if (meld.addLastTile(tile) || meld.addFirstTile(tile)) {
 						tilesToRemove.add(tile);
-						tilesHaveBeenRemoved = true;
+						tilesRemovedThisIteration = true;
 					}
 				}
 				playableTiles.removeAll(tilesToRemove);
 			}
 		}
 
-		if(!tilesToRemove.isEmpty()){
-			playMeldsToTable(tableMelds,false);
+		List<Meld> meldsToAdd = new ArrayList<Meld>();
+
+		for (Meld meld : tableMelds) {
+			if (meld.getType() == Meld.Types.RUN && meld.getSize() >= 5) {
+				for (ObservableTile tile : playableTiles) {
+					int tileRank = tile.getRank();
+					if (tile.getColour() == meld.getMeld().get(0).getColour()
+							&& tileRank >= meld.getMeld().get(0).getRank() + 2
+							&& tileRank <= meld.getMeld().get(meld.getSize() - 1).getRank() - 2) {
+						Meld meldToAdd = new Meld();
+						int numTilesOfLowerRank = tileRank - meld.getMeld().get(0).getRank();
+						for (int i = 0; i < numTilesOfLowerRank; ++i) {
+							meldToAdd.addLastTile(meld.getMeld().get(0));
+							meld.removeFirstTile();
+						}
+						meldToAdd.addLastTile(tile);
+						meldsToAdd.add(meldToAdd);
+						tilesToRemove.add(tile);
+
+						System.out.println(meldToAdd);
+
+						break;
+					}
+				}
+				playableTiles.removeAll(tilesToRemove);
+			}
+		}
+
+		List<List<List<ObservableTile>>> tilesByRank = tilesByRank(playableTiles);
+
+		for (Meld meld : tableMelds) {
+			if (meld.getType() == Meld.Types.SET && meld.getSize() == 4) {
+				int rank = meld.getMeld().get(0).getRank();
+				for (ObservableTile setTile : meld.getMeld()) {
+					int colourNum = setTile.getColour().ordinal();
+					List<ObservableTile> rankMinus2 = new ArrayList<ObservableTile>();
+					List<ObservableTile> rankMinus1 = new ArrayList<ObservableTile>();
+					List<ObservableTile> rankPlus1 = new ArrayList<ObservableTile>();
+					List<ObservableTile> rankPlus2 = new ArrayList<ObservableTile>();
+					if (rank >= 2) {
+						rankMinus1 = tilesByRank.get(rank - 1).get(colourNum);
+						if (rank >= 3) {
+							rankMinus2 = tilesByRank.get(rank - 2).get(colourNum);
+						}
+					}
+					boolean success = true;
+					if (rank <= 12) {
+						rankPlus1 = tilesByRank.get(rank + 1).get(colourNum);
+						if (rank <= 11) {
+							rankPlus2 = tilesByRank.get(rank + 2).get(colourNum);
+						}
+					}
+					if ((!rankMinus2.isEmpty()) && (!rankMinus1.isEmpty())) {
+						Meld meldToAdd = new Meld();
+						meldToAdd.addLastTile(rankMinus2.get(0));
+						tilesToRemove.add(rankMinus2.remove(0));
+						meldToAdd.addLastTile(rankMinus1.get(0));
+						tilesToRemove.add(rankMinus1.remove(0));
+						meldToAdd.addLastTile(setTile);
+						meldsToAdd.add(meldToAdd);
+
+					} else if ((!rankMinus1.isEmpty()) && (!rankPlus1.isEmpty())) {
+						Meld meldToAdd = new Meld();
+						meldToAdd.addLastTile(rankMinus1.get(0));
+						tilesToRemove.add(rankMinus1.remove(0));
+						meldToAdd.addLastTile(setTile);
+						meldToAdd.addLastTile(rankPlus1.get(0));
+						tilesToRemove.add(rankPlus1.remove(0));
+						meldsToAdd.add(meldToAdd);
+
+					} else if ((!rankPlus1.isEmpty()) && (!rankPlus2.isEmpty())) {
+						Meld meldToAdd = new Meld();
+						meldToAdd.addLastTile(setTile);
+						meldToAdd.addLastTile(rankPlus1.get(0));
+						tilesToRemove.add(rankPlus1.remove(0));
+						meldToAdd.addLastTile(rankMinus1.get(0));
+						tilesToRemove.add(rankMinus1.remove(0));
+						meldsToAdd.add(meldToAdd);
+
+					} else {
+						success = false;
+					}
+					if (success) {
+						List<ObservableTile> holdingList = new ArrayList<ObservableTile>();
+						meld.getMeld().forEach(tile -> {
+							if (tile != setTile) {
+								holdingList.add(tile);
+							}
+						});
+						meld.getMeld().clear();
+						holdingList.forEach(meld::addLastTile);
+						break;
+					}
+				}
+			}
+		}
+
+		tableMelds.addAll(meldsToAdd);
+
+		if (!tilesToRemove.isEmpty()) {
+			playMeldsToTable(tableMelds, false);
 			tilesToRemove.forEach(hand::removeTile);
 		}
 
@@ -262,22 +346,7 @@ public abstract class AIStrategy {
 
 	//finds a combination of melds in a hand with maximal total value
 	List<Meld> highestValueMelds(Hand hand) {
-		List<ObservableTile> tiles = new ArrayList<ObservableTile>();
-		tiles.addAll(hand.getTiles());
-
-		List<List<List<ObservableTile>>> tilesByRank = new ArrayList<List<List<ObservableTile>>>();
-		//dummy in position 0
-		tilesByRank.add(null);
-		for (int i = 1; i <= 13; ++i) {
-			tilesByRank.add(new ArrayList<>());
-			for (int j = 0; j < 4; ++j) {
-				tilesByRank.get(i).add(new ArrayList<ObservableTile>());
-			}
-		}
-
-		for (ObservableTile tile : tiles) {
-			tilesByRank.get(tile.getRank()).get(tile.getColour().ordinal()).add(tile);
-		}
+		List<List<List<ObservableTile>>> tilesByRank = tilesByRank(hand.getTiles());
 
 		List<Map<Integer, MaxValAndAdditions>> optimalPathLog = new ArrayList<Map<Integer, MaxValAndAdditions>>();
 		//dummy
@@ -295,18 +364,18 @@ public abstract class AIStrategy {
 	//TODO: implement highestValueMeldsTemplate
 	private void highestValueMeldsTemplate(int rank, int[][] runState, List<List<List<ObservableTile>>> tilesByRank, List<Map<Integer, MaxValAndAdditions>> optimalPathLog) {
 		int[][] redAdditions;
-		int[][] greenAdditions;
 		int[][] blueAdditions;
+		int[][] greenAdditions;
 		int[][] orangeAdditions;
 		if (rank <= 11) {
 			redAdditions = findAdditionsFreely(runState[0]);
-			greenAdditions = findAdditionsFreely(runState[1]);
-			blueAdditions = findAdditionsFreely(runState[2]);
+			blueAdditions = findAdditionsFreely(runState[1]);
+			greenAdditions = findAdditionsFreely(runState[2]);
 			orangeAdditions = findAdditionsFreely(runState[3]);
 		} else {
 			redAdditions = findAdditionsRank12or13freely(runState[0]);
-			greenAdditions = findAdditionsRank12or13freely(runState[1]);
-			blueAdditions = findAdditionsRank12or13freely(runState[2]);
+			blueAdditions = findAdditionsRank12or13freely(runState[1]);
+			greenAdditions = findAdditionsRank12or13freely(runState[2]);
 			orangeAdditions = findAdditionsRank12or13freely(runState[3]);
 		}
 
@@ -321,25 +390,23 @@ public abstract class AIStrategy {
 			if (redTilesRemaining < 0) {
 				continue;
 			}
-			for (int g[] : greenAdditions) {
-				int greenTilesRemaining = currentTiles.get(1).size() - (g[0] + g[1]);
-				if (greenTilesRemaining < 0) {
+			for (int b[] : blueAdditions) {
+				int blueTilesRemaining = currentTiles.get(1).size() - (b[0] + b[1]);
+				if (blueTilesRemaining < 0) {
 					continue;
 				}
-				//int maxColour2 = Math.max(redTilesRemaining,greenTilesRemaining);
-				for (int b[] : blueAdditions) {
-					int blueTilesRemaining = currentTiles.get(2).size() - (b[0] + b[1]);
-					if (blueTilesRemaining < 0) {
+				for (int g[] : greenAdditions) {
+					int greenTilesRemaining = currentTiles.get(2).size() - (g[0] + g[1]);
+					if (greenTilesRemaining < 0) {
 						continue;
 					}
-					//int maxColour3 = Math.max(maxColour2,blueTilesRemaining);
 					for (int o[] : orangeAdditions) {
 						int orangeTilesRemaining = currentTiles.get(3).size() - (o[0] + o[1]);
 						if (orangeTilesRemaining < 0) {
 							continue;
 						}
 
-						int[][] additions = {r, g, b, o};
+						int[][] additions = {r, b, g, o};
 						int[][] nextRunState = addStateAndAddition(runState, additions);
 						int compressedNextRunState = compressRunState(nextRunState);
 
@@ -353,7 +420,7 @@ public abstract class AIStrategy {
 							nextMaxValue = maxValAndAdditions.maxValue;
 						}
 
-						int value = numSetTiles(redTilesRemaining, greenTilesRemaining, blueTilesRemaining, orangeTilesRemaining) * rank + valueFromNewRuns(rank, runState, additions) + nextMaxValue;
+						int value = numSetTiles(redTilesRemaining, blueTilesRemaining, greenTilesRemaining, orangeTilesRemaining) * rank + valueFromNewRuns(rank, runState, additions) + nextMaxValue;
 						if (value >= maxValue) {
 							maxValue = value;
 							bestAdditions = additions;
@@ -444,13 +511,13 @@ public abstract class AIStrategy {
 		return result;
 	}
 
-	private int numSetTiles(int numRedTiles, int numGreenTiles, int numBlueTiles, int numOrangeTiles) {
-		int numTiles = numRedTiles + numGreenTiles + numBlueTiles + numOrangeTiles;
+	private int numSetTiles(int numRedTiles, int numblueTiles, int numgreenTiles, int numOrangeTiles) {
+		int numTiles = numRedTiles + numblueTiles + numgreenTiles + numOrangeTiles;
 		if (numTiles <= 2) {
 			return 0;
 		}
 		int[] tileNumFrequency = new int[3];
-		int[] numTileArray = {numRedTiles, numGreenTiles, numBlueTiles, numOrangeTiles};
+		int[] numTileArray = {numRedTiles, numblueTiles, numgreenTiles, numOrangeTiles};
 		for (int i : numTileArray) {
 			++tileNumFrequency[i];
 		}
@@ -610,24 +677,21 @@ public abstract class AIStrategy {
 				meld1.addLastTile(tiles.get(i).get(0));
 				meld2.addLastTile(tiles.get(i).get(1));
 			}
+			if (i == 13) {
+				if (meld1.isValidLength()) {
+					result.add(meld1);
+				}
+				if (meld2.isValidLength()) {
+					result.add(meld2);
+				}
+			}
 		}
 		return result;
 	}
 
 	List<Meld> findSetsInHand(Hand hand) {
 		List<Meld> melds = new ArrayList<Meld>();
-		List<List<List<ObservableTile>>> tilesByRank = new ArrayList<List<List<ObservableTile>>>();
-		//dummy in position 0
-		tilesByRank.add(new ArrayList<>());
-		for (int i = 1; i <= 13; ++i) {
-			tilesByRank.add(new ArrayList<>());
-			for (int j = 0; j < 4; ++j) {
-				tilesByRank.get(i).add(new ArrayList<ObservableTile>());
-			}
-		}
-		for (ObservableTile tile : hand.getTiles()) {
-			tilesByRank.get(tile.getRank()).get(tile.getColour().ordinal()).add(tile);
-		}
+		List<List<List<ObservableTile>>> tilesByRank = tilesByRank(hand.getTiles());
 		for (int i = 1; i <= 13; ++i) {
 			List<List<ObservableTile>> tilesOfRank = tilesByRank.get(i);
 			melds.addAll(formSetsOfASingleRank(tilesOfRank));
@@ -638,10 +702,10 @@ public abstract class AIStrategy {
 	private List<Meld> formSetsOfASingleRank(List<List<ObservableTile>> tiles) {
 		List<Meld> result = new ArrayList<Meld>();
 		int numRedTiles = tiles.get(0).size();
-		int numGreenTiles = tiles.get(1).size();
-		int numBlueTiles = tiles.get(2).size();
+		int numblueTiles = tiles.get(1).size();
+		int numgreenTiles = tiles.get(2).size();
 		int numOrangeTiles = tiles.get(3).size();
-		int numTiles = numRedTiles + numGreenTiles + numBlueTiles + numOrangeTiles;
+		int numTiles = numRedTiles + numblueTiles + numgreenTiles + numOrangeTiles;
 		if (numTiles <= 2) {
 			return result;
 		}
@@ -683,7 +747,23 @@ public abstract class AIStrategy {
 		return result;
 	}
 
-	//
+	private List<List<List<ObservableTile>>> tilesByRank(List<ObservableTile> tiles) {
+		List<List<List<ObservableTile>>> tilesByRank = new ArrayList<List<List<ObservableTile>>>();
+		//dummy in position 0
+		tilesByRank.add(null);
+		for (int i = 1; i <= 13; ++i) {
+			tilesByRank.add(new ArrayList<>());
+			for (int j = 0; j < 4; ++j) {
+				tilesByRank.get(i).add(new ArrayList<ObservableTile>());
+			}
+		}
+
+		for (ObservableTile tile : tiles) {
+			tilesByRank.get(tile.getRank()).get(tile.getColour().ordinal()).add(tile);
+		}
+		return tilesByRank;
+	}
+
 	void playMeldsToTable(List<Meld> melds, boolean keepExistingMelds) {
 		int i = 0;
 		int j = 0;
