@@ -2,6 +2,8 @@ package model.player.ai;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
+
 import model.Meld;
 import model.Hand;
 import model.Tile;
@@ -15,6 +17,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AIStrategyTest {
 
@@ -36,7 +41,7 @@ public class AIStrategyTest {
 	private Hand ai1Hand;
 	private Hand ai2Hand;
 	private Hand ai3Hand;
-	private ArrayList<Meld> melds;
+	private List<Meld> melds;
 	Game game;
 
 	@BeforeEach
@@ -240,5 +245,151 @@ public class AIStrategyTest {
 
 		boolean played30Points = ((AIStrategy2)ai2.getAiStrategy()).firstHandStrategy();
 		assertThat(played30Points, is(false));
+	}
+
+	@Test
+	public void testAttemptToPlayAllTiles() {
+
+		Meld meld1 = new Meld();
+		meld1.addLastTile(new ObservableTile(1, Tile.Colours.RED));
+		meld1.addLastTile(new ObservableTile(1, Tile.Colours.GREEN));
+		meld1.addLastTile(new ObservableTile(1, Tile.Colours.BLUE));
+		meld1.addLastTile(new ObservableTile(1, Tile.Colours.ORANGE));
+
+		Meld meld2 = new Meld();
+		meld2.addLastTile(new ObservableTile(1, Tile.Colours.RED));
+		meld2.addLastTile(new ObservableTile(2, Tile.Colours.RED));
+		meld2.addLastTile(new ObservableTile(3, Tile.Colours.RED));
+		meld2.addLastTile(new ObservableTile(4, Tile.Colours.RED));
+
+		Meld meld3 = new Meld();
+		meld3.addLastTile(new ObservableTile(6, Tile.Colours.BLUE));
+		meld3.addLastTile(new ObservableTile(7, Tile.Colours.BLUE));
+		meld3.addLastTile(new ObservableTile(8, Tile.Colours.BLUE));
+		meld3.addLastTile(new ObservableTile(9, Tile.Colours.BLUE));
+
+		Meld meld4 = new Meld();
+		meld4.addLastTile(new ObservableTile(6, Tile.Colours.ORANGE));
+		meld4.addLastTile(new ObservableTile(7, Tile.Colours.ORANGE));
+		meld4.addLastTile(new ObservableTile(8, Tile.Colours.ORANGE));
+		meld4.addLastTile(new ObservableTile(9, Tile.Colours.ORANGE));
+
+		melds.add(meld1);
+		melds.add(meld2);
+		melds.add(meld3);
+		melds.add(meld4);
+		ai1.getAiStrategy().playMeldsToTable(melds,false);
+		game.getTable().forEach(meld -> meld.getMeld().forEach(ObservableTile::play));
+
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(5, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(2, Tile.Colours.BLUE));
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.BLUE));
+		ai1Hand.addTile(new ObservableTile(9, Tile.Colours.GREEN));
+
+		assertTrue(ai1.getAiStrategy().attemptToPlayAllTiles());
+
+		ai1.getAiStrategy().playMeldsToTable(melds,false);
+		game.getTable().forEach(meld -> meld.getMeld().forEach(ObservableTile::play));
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(5, Tile.Colours.RED));
+		//hand.addTile(new ObservableTile(2, Tile.Colours.BLUE));
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.BLUE));
+		ai1Hand.addTile(new ObservableTile(9, Tile.Colours.GREEN));
+
+		assertFalse(ai1.getAiStrategy().attemptToPlayAllTiles());
+	}
+
+
+	@Test
+	public void testHighestValueMelds(){
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.GREEN));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.GREEN));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.BLUE));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.ORANGE));
+		ai1Hand.addTile(new ObservableTile(2, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(2, Tile.Colours.GREEN));
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.GREEN));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.GREEN));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.BLUE));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.ORANGE));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.ORANGE));
+
+		List<Meld> highMelds = ai1.getAiStrategy().highestValueMelds(ai1Hand);
+		int totalValue = 0;
+		for (Meld m:highMelds) {
+			totalValue+=m.getValue();
+		}
+
+		//R1-G1-B1, G1-B1-O1, G2-G3-G4, R4-B4-O4 achieves 28 points
+		assertTrue(totalValue>=27);
+
+	}
+
+	@Test
+	public void testPlayConservative(){
+		Meld meld1 = new Meld();
+		meld1.addLastTile(new ObservableTile(5, Tile.Colours.RED));
+		meld1.addLastTile(new ObservableTile(6, Tile.Colours.RED));
+		meld1.addLastTile(new ObservableTile(7, Tile.Colours.RED));
+
+		Meld meld2 = new Meld();
+		meld2.addLastTile(new ObservableTile(11, Tile.Colours.RED));
+		meld2.addLastTile(new ObservableTile(11, Tile.Colours.ORANGE));
+		meld2.addLastTile(new ObservableTile(11, Tile.Colours.GREEN));
+
+		melds.add(meld1);
+		melds.add(meld2);
+		ai1.getAiStrategy().playMeldsToTable(melds,false);
+
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.ORANGE));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.GREEN));
+
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(8, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(9, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(11, Tile.Colours.BLUE));
+
+		ai1Hand.addTile(new ObservableTile(13, Tile.Colours.RED));
+
+		ai1.getAiStrategy().playConservative();
+		assertTrue(ai1Hand.getSizeProperty().get()<=4);
+	}
+
+	@Test
+	public void testPlayLiberal(){
+		Meld meld1 = new Meld();
+		meld1.addLastTile(new ObservableTile(5, Tile.Colours.RED));
+		meld1.addLastTile(new ObservableTile(6, Tile.Colours.RED));
+		meld1.addLastTile(new ObservableTile(7, Tile.Colours.RED));
+
+		Meld meld2 = new Meld();
+		meld2.addLastTile(new ObservableTile(11, Tile.Colours.RED));
+		meld2.addLastTile(new ObservableTile(11, Tile.Colours.ORANGE));
+		meld2.addLastTile(new ObservableTile(11, Tile.Colours.GREEN));
+
+		melds.add(meld1);
+		melds.add(meld2);
+		ai1.getAiStrategy().playMeldsToTable(melds,false);
+
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.ORANGE));
+		ai1Hand.addTile(new ObservableTile(1, Tile.Colours.GREEN));
+
+		ai1Hand.addTile(new ObservableTile(3, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(4, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(8, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(9, Tile.Colours.RED));
+		ai1Hand.addTile(new ObservableTile(11, Tile.Colours.BLUE));
+
+		ai1Hand.addTile(new ObservableTile(13, Tile.Colours.RED));
+
+		ai1.getAiStrategy().playLiberal();
+		assertTrue(ai1Hand.getSizeProperty().get()<=1);
 	}
 }
