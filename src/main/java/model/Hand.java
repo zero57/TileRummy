@@ -35,9 +35,12 @@ public class Hand {
 	}
 
 	public void restoreHandFromSave(Hand otherHand) {
-		unsortedTiles.clear();
+		int initialHandSize = unsortedTiles.size();
 		for (ObservableTile t : otherHand.getTiles()) {
 			unsortedTiles.add(t);
+		}
+		for (int i = 0; i < initialHandSize; i++) {
+			unsortedTiles.remove(0);
 		}
 	}
 
