@@ -64,6 +64,7 @@ public class TableController {
 					if (game.addTileToTable(tile, row, col)) {
 						game.getCurrentPlayerHand().removeTile(tile);
 					}
+					updateTable();
 				}
 			});
 		});
