@@ -129,9 +129,21 @@ public class Game {
 		isNPCTurn = Bindings.createBooleanBinding(() -> players.get(getPlayerTurn()) instanceof AIPlayer, playerTurn);
 
 		playerTurn.addListener((observableValue, oldVal, newVal) -> {
-				originator.setState(FXCollections.observableArrayList(table), new Hand(getCurrentPlayerHand()));
+				originator.setState(deepCopyTable(table), new Hand(getCurrentPlayerHand()));
 				careTaker.add(originator.saveStateToMemento());
 			});
+	}
+
+	private ObservableList<ObservableMeld> deepCopyTable(ObservableList<ObservableMeld> otherTable) {
+		ObservableList<ObservableMeld> newTable = FXCollections.observableArrayList();
+		for (ObservableMeld meld : otherTable) {
+			ObservableMeld newMeld = new ObservableMeld(meld.getRow(), meld.getCol());
+			for (ObservableTile tile : meld.getMeld()) {
+				newMeld.addLastTile(tile);
+			}
+			newTable.add(newMeld);
+		}
+		return newTable;
 	}
 
 	public void update() {
