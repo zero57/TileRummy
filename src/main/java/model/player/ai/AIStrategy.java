@@ -45,6 +45,9 @@ public abstract class AIStrategy {
 	//does some setup work then calls allTilePlay to find a way to play all tiles to table, if such a way exists.
 	//in that case it performs that play
 	boolean attemptToPlayAllTiles() {
+		if (hand.hasJoker()){
+			return false;
+		}
 		List<ObservableTile> tiles = new ArrayList<ObservableTile>();
 		game.getTable().forEach(observableMeld -> tiles.addAll(observableMeld.getMeld()));
 		tiles.addAll(hand.getTiles());
@@ -240,7 +243,7 @@ public abstract class AIStrategy {
 		List<Meld> meldsToAdd = new ArrayList<Meld>();
 
 		for (Meld meld : tableMelds) {
-			if (meld.getType() == Meld.Types.RUN && meld.getSize() >= 5) {
+			if (meld.getType() == Meld.Types.RUN && meld.getSize() >= 5 && !meld.hasJoker()) {
 				for (ObservableTile tile : playableTiles) {
 					int tileRank = tile.getRank();
 					if (tile.getColour() == meld.getMeld().get(0).getColour()
@@ -268,7 +271,7 @@ public abstract class AIStrategy {
 		List<List<List<ObservableTile>>> tilesByRank = tilesByRank(playableTiles);
 
 		for (Meld meld : tableMelds) {
-			if (meld.getType() == Meld.Types.SET && meld.getSize() == 4) {
+			if (meld.getType() == Meld.Types.SET && meld.getSize() == 4 && !meld.hasJoker()) {
 				int rank = meld.getMeld().get(0).getRank();
 				for (ObservableTile setTile : meld.getMeld()) {
 					int colourNum = setTile.getColour().ordinal();
@@ -759,7 +762,9 @@ public abstract class AIStrategy {
 		}
 
 		for (ObservableTile tile : tiles) {
-			tilesByRank.get(tile.getRank()).get(tile.getColour().ordinal()).add(tile);
+			if(!tile.isJoker()){
+				tilesByRank.get(tile.getRank()).get(tile.getColour().ordinal()).add(tile);
+			}
 		}
 		return tilesByRank;
 	}

@@ -24,7 +24,7 @@ public class StockTest {
 
 	@Test
 	public void testStockCreation() {
-		assertThat(stock.getStock(), hasSize(104));
+		assertThat(stock.getStock(), hasSize(106));
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class StockTest {
 	@Test
 	public void testStockDraw() {
 		ObservableTile tile = stock.draw().orElseThrow();
-		assertThat(stock.getStock(), hasSize(103));
+		assertThat(stock.getStock(), hasSize(105));
 		assertThat(stock.getStock(), not(hasItem(tile)));
 	}
 
@@ -49,12 +49,12 @@ public class StockTest {
 		ObservableTile tile1 = stock.draw().orElseThrow();
 		ObservableTile tile2 = stock.draw().orElseThrow();
 		assertThat(tile1, is(not(tile2)));
-		assertThat(stock.getSize(), is(102));
+		assertThat(stock.getSize(), is(104));
 	}
 
 	@Test
 	public void testEmptyStock() {
-		assertThat(stock.getSize(), is(104));
+		assertThat(stock.getSize(), is(106));
 		for (int i = stock.getSize(); i > 0; i--) {
 			stock.draw();
 		}

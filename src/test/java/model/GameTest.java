@@ -26,9 +26,9 @@ public class GameTest {
 
 	@Test
 	public void testDealInitialTiles() {
-		assertThat(game.getStockSize(), is(104));
+		assertThat(game.getStockSize(), is(106));
 		game.dealInitialTiles();
-		assertThat(game.getStockSize(), is(48));
+		assertThat(game.getStockSize(), is(50));
 	}
 	
 	@Test
@@ -937,7 +937,7 @@ public class GameTest {
 				.setHandRigFilePath("src/main/resources/handRiggingExampleFiles/twoPlayerHandRigging")
 		);
 		assertThat(game.getNumPlayers(), is(numPlayers));
-		assertThat(game.getStockSize(), is(76));
+		assertThat(game.getStockSize(), is(78));
 		assertThat(game.getPlayer1Hand().getSizeProperty().getValue(), is(14));
 		assertThat(game.getPlayer2Hand().getSizeProperty().getValue(), is(14));
 
@@ -1011,7 +1011,7 @@ public class GameTest {
 				.setHandRigFilePath("src/main/resources/handRiggingExampleFiles/threePlayerHandRigging")
 		);
 		assertThat(game.getNumPlayers(), is(numPlayers));
-		assertThat(game.getStockSize(), is(62));
+		assertThat(game.getStockSize(), is(64));
 		assertThat(game.getPlayer1Hand().getSizeProperty().getValue(), is(14));
 		assertThat(game.getPlayer2Hand().getSizeProperty().getValue(), is(14));
 		assertThat(game.getPlayer3Hand().getSizeProperty().getValue(), is(14));
@@ -1116,7 +1116,7 @@ public class GameTest {
 				.setHandRigFilePath("src/main/resources/handRiggingExampleFiles/fourPlayerHandRigging")
 		);
 		assertThat(game.getNumPlayers(), is(numPlayers));
-		assertThat(game.getStockSize(), is(48));
+		assertThat(game.getStockSize(), is(50));
 		assertThat(game.getPlayer1Hand().getSizeProperty().getValue(), is(14));
 		assertThat(game.getPlayer2Hand().getSizeProperty().getValue(), is(14));
 		assertThat(game.getPlayer3Hand().getSizeProperty().getValue(), is(14));

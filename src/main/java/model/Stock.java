@@ -15,9 +15,14 @@ public class Stock {
 	public Stock() {
 		stock = new ArrayList<>();
 		for (Tile.Colours colour : Tile.Colours.values()) {
-			for (int rank = 1; rank <= 13; rank++) {
-				stock.add(new ObservableTile(rank, colour));
-				stock.add(new ObservableTile(rank, colour));
+			if(colour== Tile.Colours.UNDEFINED){
+				stock.add(new ObservableTile(true));
+				stock.add(new ObservableTile(true));
+			}else {
+				for (int rank = 1; rank <= 13; rank++) {
+					stock.add(new ObservableTile(rank, colour));
+					stock.add(new ObservableTile(rank, colour));
+				}
 			}
 		}
 	}

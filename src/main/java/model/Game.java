@@ -252,10 +252,15 @@ public class Game {
 	private boolean hasInitial30Points() {
 		Player currPlayer = players.get(getPlayerTurn());
 		for (ObservableMeld meld : table) {
+			boolean meldIsUnplayed = true;
 			for (ObservableTile t : meld.getMeld()) {
-				if (!t.hasBeenPlayed()) {
-					currPlayer.addScore(t.getRank()); 
+				if (t.hasBeenPlayed()) {
+					meldIsUnplayed = false;
+					break;
 				}
+			}
+			if(meldIsUnplayed){
+				currPlayer.addScore(meld.getValue());
 			}
 		}
 		return (currPlayer.getScore() >= 30) ? true : false;
@@ -305,6 +310,25 @@ public class Game {
 	public boolean removeTileFromTable(ObservableTile tile, int row, int col) {
 		for (ObservableMeld meld : table) {
 			// Assume that there exists at least one tile in the Meld, as we do not allow empty melds to exist on the table
+			if(meld.hasJoker()){
+				if(tile.isJoker() && row == meld.getRow() && col == meld.getCol()+meld.getJokerPosition()){
+					if(meld.getSize()>1){
+						for (ObservableTile t: getCurrentPlayerHand().getTiles()){
+							if(!t.isJoker() && meld.replaceJoker(t)){
+								getCurrentPlayerHand().removeTile(t);
+								return true;
+							}
+						}
+						return false;
+					}else{
+						meld.getMeld().clear();
+						table.remove(meld);
+						return true;
+					}
+				}else{
+					continue;
+				}
+			}
 			ObservableTile firstTile = meld.getMeld().get(0);
 			ObservableTile lastTile = meld.getMeld().get(meld.getSize() - 1);
 
