@@ -64,7 +64,7 @@ public class Game {
 		if (!optionChoices.getHandRigFilePath().isEmpty()) {
 			FileParser fileParser = new FileParser();
 			ArrayList<Hand> tmpHands = fileParser.getHandsFromFile(optionChoices.getHandRigFilePath());
-			setStock(fileParser.getStock());
+			setStock(fileParser.getStock().shuffle());
 			for (int i = 0; i < numPlayers; i++) {
 				hands.add(tmpHands.remove(0));
 			}
