@@ -77,7 +77,7 @@ public class Game {
 			final int finalI = i;
 			Hand hand = hands.get(i);
 			hand.getSizeProperty().addListener((observableValue, oldVal, newVal) -> {
-				if (newVal.intValue() == 0 && allMeldsValid()) {
+				if (newVal.intValue() == 0 && allMeldsValid() && hasInitial30Points()) {
 					logger.info("Player " + (finalI + 1) + " is the winner!");
 					winner.setValue(finalI + 1);
 				}
