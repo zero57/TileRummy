@@ -57,6 +57,7 @@ public class TableController {
 							// add it back if you can't add it to the spot
 							game.addTileToTable(tile, btn.getRow(), btn.getCol());
 						}
+						updateTable();
 					}
 				} else {
 					// Click and drag tile from hand to table
