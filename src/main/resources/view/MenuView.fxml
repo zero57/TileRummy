@@ -33,6 +33,7 @@
 				<JFXCheckBox text="Set Tile To Draw" fx:id="rigTileCheck"/>
 				<JFXCheckBox text="Set Initial Hands" fx:id="rigHandCheck"/>
 				<JFXCheckBox text="Show All Players' Hand" fx:id="showHandCheck"/>
+				<JFXCheckBox text="Determine Starting Player With Tile Draw" fx:id="showStartPlayerCheck"/>
 				<JFXButton fx:id="btnFileHandRig" text="Rig Hands Using File" />
 				<JFXButton fx:id="exitBtn" text="Exit Game" />
 			</children>
