@@ -188,10 +188,7 @@ public class HandRigController {
 		mainStage.show();
 
 		logger.info("Game Scene loaded");
-		// If we choose to rig the hands using file, then the game internally sets the stock for us
-		if (options.getHandRigFilePath().isEmpty()) {
-			mainController.getGame().setStock(new Stock().shuffle());
-		}
+		mainController.getGame().setStock(new Stock().shuffle());
 		mainController.getGame().dealInitialTiles();
 		logger.info("Game started.");
 	}
