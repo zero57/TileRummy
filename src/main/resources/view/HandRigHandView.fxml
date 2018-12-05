@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:controller="controller.HandRigHandController" xmlns="http://javafx.com/javafx/10.0.1"
+      fx:id="root" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity">
+    <Label fx:id="lblPlayerNumber" maxWidth="Infinity" alignment="CENTER" styleClass="label-player-hand">Player #</Label>
+    <FlowPane fx:id="fpHand" maxWidth="Infinity" maxHeight="Infinity" VBox.vgrow="ALWAYS" styleClass="player-hand"/>
+</VBox>

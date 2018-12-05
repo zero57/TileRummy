@@ -125,14 +125,18 @@ public class MenuController {
 				logger.debug("SHOWHANDS CHECKED IS " + options.getShowHandsChecked());
 
 				try {
-					if (!options.getHandRigFilePath().isEmpty()) {
-						FileParser fileParser = new FileParser();
-						if (!fileParser.isValidFile(options.getHandRigFilePath(), options.getNumPlayers())) {
-							logger.error("Invalid file input. Try again");
-							return;
+					if (options.getRigHandChecked()) {
+						showHandRigStage();
+					} else {
+						if (!options.getHandRigFilePath().isEmpty()) {
+							FileParser fileParser = new FileParser();
+							if (!fileParser.isValidFile(options.getHandRigFilePath(), options.getNumPlayers())) {
+								logger.error("Invalid file input. Try again");
+								return;
+							}
 						}
+						showMainStage();
 					}
-					showMainStage();
 				} catch (Exception e) {
 					logger.error(e);
 				}
@@ -176,5 +180,24 @@ public class MenuController {
 		}
 		mainController.getGame().dealInitialTiles();
 		logger.info("Game started.");
+	}
+
+	public void showHandRigStage() throws Exception {
+		Platform.setImplicitExit(false);
+
+		Stage mainStage = new Stage();
+		HandRigController controller = new HandRigController(mainStage, options);
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/HandRigView.fxml"));
+		loader.setControllerFactory(c -> controller);
+		StackPane root = loader.load();
+
+		var decorator = new JFXDecorator(mainStage, root);
+		decorator.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource("css/window.css")).toExternalForm());
+		var scene = new Scene(decorator, width, height);
+		mainStage.setScene(scene);
+		stage.hide();
+		mainStage.show();
+
+		logger.info("Hand Rig GUI Scene loaded");
 	}
 }
