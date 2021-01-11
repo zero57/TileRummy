@@ -11,6 +11,15 @@ Abrar Kazi
 An Ha  
 Grayson Lafreniere  
 
+# Rules of the Game
+You can find the rules of the game
+[here](https://www.rrrummy.com/en/tilerummy-rules.php)
+
+# Screenshots
+![Main menu of the game](screenshots/mainmenu.png)
+
+![Gameplay](screenshots/gameplay1.png)
+
 # How to Run Game
 `mvn compile exec:java`
 
