@@ -9,6 +9,10 @@ public class ObservableTile extends Tile {
 		super(rank, colour);
 	}
 
+	public ObservableTile(boolean isJoker) {
+		super(isJoker);
+	}
+
 	public void play() {
 		beenPlayed = true;
 	}

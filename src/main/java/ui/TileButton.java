@@ -17,6 +17,9 @@ public class TileButton extends JFXButton {
 
 	public TileButton(ObservableTile tile, boolean hide, int row, int col) {
 		super(Integer.toString(tile.getRank()));
+		if(tile.getRank()==-1){
+			setText("J");
+		}
 		this.tile = tile;
 		switch (tile.getColour()) {
 			case RED:
@@ -30,6 +33,9 @@ public class TileButton extends JFXButton {
 				break;
 			case ORANGE:
 				this.getStyleClass().add("orangeTile");
+				break;
+			case UNDEFINED:
+				this.getStyleClass().add("jokerTile");
 				break;
 		}
 		if (hide) {

@@ -63,4 +63,13 @@ public class Hand {
 	public void clear() {
 		unsortedTiles.clear();
 	}
+
+	public boolean hasJoker(){
+		for (ObservableTile tile:tiles) {
+			if (tile.isJoker()){
+				return true;
+			}
+		}
+		return false;
+	}
 }

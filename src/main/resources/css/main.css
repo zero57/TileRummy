@@ -7,6 +7,7 @@
     -fx-green-color: #66BB6A;
     -fx-orange-color: #FF7043;
     -fx-indigo-color: #5C6BC0;
+    -fx-brown-color: #c09a76;
 }
 
 .root {
@@ -40,6 +41,12 @@
 .orangeTile {
     -jfx-button-type: RAISED;
     -fx-background-color: -fx-orange-color;
+    -fx-text-fill: white;
+}
+
+.jokerTile {
+    -jfx-button-type: RAISED;
+    -fx-background-color: -fx-brown-color;
     -fx-text-fill: white;
 }
 

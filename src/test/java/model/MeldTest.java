@@ -2,6 +2,7 @@ package model;
 
 import model.observable.ObservableTile;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -129,19 +130,19 @@ public class MeldTest {
 		meld.addLastTile(t1);
 		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(new ObservableTile(4, Tile.Colours.RED));
-		assertEquals(meld.getType(), Meld.Types.RUN);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(new ObservableTile(5, Tile.Colours.RED));
 		assertEquals(meld.getType(), Meld.Types.RUN);
 		//remove all cards but one
 		meld.removeLastTile();
-		assertEquals(meld.getType(), Meld.Types.RUN);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.removeLastTile();
 		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		//create a set
 		var t2 = new ObservableTile(3, Tile.Colours.ORANGE);
 		var t3 = new ObservableTile(3, Tile.Colours.GREEN);
 		meld.addLastTile(t2);
-		assertEquals(meld.getType(), Meld.Types.SET);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(t3);
 		assertEquals(meld.getType(), Meld.Types.SET);
 		assertThat(meld.getMeld(), contains(t1, t2, t3));
@@ -159,19 +160,19 @@ public class MeldTest {
 		meld.addLastTile(t1);
 		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(new ObservableTile(3, Tile.Colours.ORANGE));
-		assertEquals(meld.getType(), Meld.Types.SET);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(new ObservableTile(3, Tile.Colours.GREEN));
 		assertEquals(meld.getType(), Meld.Types.SET);
 		//remove all cards but one
 		meld.removeLastTile();
-		assertEquals(meld.getType(), Meld.Types.SET);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.removeLastTile();
 		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		//create a run
 		var t2 = new ObservableTile(2, Tile.Colours.RED);
 		var t3 = new ObservableTile(4, Tile.Colours.RED);
 		meld.addFirstTile(t2);
-		assertEquals(meld.getType(), Meld.Types.RUN);
+		assertEquals(meld.getType(), Meld.Types.UNDETERMINED);
 		meld.addLastTile(t3);
 		assertEquals(meld.getType(), Meld.Types.RUN);
 		assertThat(meld.getMeld(), contains(t2, t1, t3));
@@ -189,9 +190,9 @@ public class MeldTest {
 	public void testValue() {
 		assertEquals(0, meld.getValue());
 		meld.addLastTile(new ObservableTile(4, Tile.Colours.RED));
-		assertEquals(4, meld.getValue());
+		assertEquals(0, meld.getValue());
 		meld.addLastTile(new ObservableTile(5, Tile.Colours.RED));
-		assertEquals(9, meld.getValue());
+		assertEquals(0, meld.getValue());
 		meld.addFirstTile(new ObservableTile(3, Tile.Colours.RED));
 		assertEquals(12, meld.getValue());
 		meld.addLastTile(new ObservableTile(7, Tile.Colours.GREEN));
@@ -199,9 +200,9 @@ public class MeldTest {
 		meld.addFirstTile(new ObservableTile(1, Tile.Colours.ORANGE));
 		assertEquals(12, meld.getValue());
 		meld.removeLastTile();
-		assertEquals(7, meld.getValue());
+		assertEquals(0, meld.getValue());
 		meld.removeFirstTile();
-		assertEquals(4, meld.getValue());
+		assertEquals(0, meld.getValue());
 		meld.removeLastTile();
 		assertEquals(0, meld.getValue());
 		meld.removeLastTile();
